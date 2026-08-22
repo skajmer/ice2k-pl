@@ -911,54 +911,54 @@ int makeDirectory(const char *dir) {
 
 
 
-int writeWallpaperConfig(char* image, int imgmode, FXColor color, void* pattern=NULL) {
-	char cfgpath[512] = "";
-	snprintf(cfgpath, sizeof(cfgpath), "%s/%s", getHomeDir(), ".icewm/cfg");
+int writeWallpaperConfig(char* image,
+                         int imgmode,
+                         FXColor color,
+                         void* pattern = NULL) {
+    char dirpath[PATH_MAX];
+    char cfgpath[PATH_MAX];
 
-	unsigned int cfgpathlen = strlen(cfgpath);
+    snprintf(dirpath, sizeof(dirpath),
+             "%s/.icewm/cfg", getHomeDir());
 
-	if (makeDirectory(cfgpath)) {
-		strncat(cfgpath, "/backmgr.ini", sizeof(cfgpath)-cfgpathlen-1);
-		cfgpath[sizeof(cfgpath)-1] = '\0';
-	}
+    if (makeDirectory(dirpath) < 0) {
+        perror("Nie udało się utworzyć folderu konfiguracji tapety!");
+        return 0;
+    }
 
-	FILE* fp = fopen(cfgpath, "w");
+    snprintf(cfgpath, sizeof(cfgpath),
+             "%s/backmgr.ini", dirpath);
 
-	fputs("[Wallpaper]\n", fp);
+    FILE* fp = fopen(cfgpath, "w");
+    if (!fp) {
+        perror(cfgpath);
+        return 0;
+    }
+    fputs("[Tło:]\n", fp);
 
-	if (imgmode == _IMGMODE_TILED) {
-		fputs("Mode=Tiled\n", fp);
-	} else if (imgmode == _IMGMODE_CENTER) {
-		fputs("Mode=Center\n", fp);
-	} else if (imgmode == _IMGMODE_STRETCH) {
-		fputs("Mode=Stretch\n", fp);
-	} else {
-		fputs("Mode=Fill\n", fp);
-	}
+    if (imgmode == _IMGMODE_TILED) {
+        fputs("Położenie:=Sąsiadująco\n", fp);
+    } else if (imgmode == _IMGMODE_CENTER) {
+        fputs("Położenie:=Do środka\n", fp);
+    } else if (imgmode == _IMGMODE_STRETCH) {
+        fputs("Położenie:=Rozciągnięcie\n", fp);
+    } else {
+        fputs("Położenie:=Wypełnienie\n", fp);
+    }
 
-	char hex[8];
+    fprintf(fp, "Kolor:=#%02X%02X%02X\n",
+            FXREDVAL(color),
+            FXGREENVAL(color),
+            FXBLUEVAL(color));
 
-	//color = ((color & 0xFF) << 16) | (color & 0xFF00) | ((color >> 16) & 0xFF);
+    if (image != NULL && image[0] != '\0') {
+        fprintf(fp, "Obraz=%s\n", image);
+    }
 
-	unsigned char r = FXREDVAL(color);
-	unsigned char g = FXGREENVAL(color);
-	unsigned char b = FXBLUEVAL(color);
-
-	snprintf(hex, sizeof(hex), "#%02X%02X%02X", r, g, b);
-
-	fprintf(fp, "Kolor=%s\n", hex);
-
-	char* img = (char*)image;
-	if (img)
-		//	fprintf(fp, "Image=\n")else
-		fprintf(fp, "Obraz=%s\n", image);
-
-	//fprintf(stdout, 
-
-	fclose(fp);
-
-	return 1;
+    fclose(fp);
+    return 1;
 }
+
 
 I2KListBox* picdisplay;
 
