@@ -234,7 +234,7 @@ int main(int argc, char *argv[]) {
 	free(tmp);
 
 	strcat(physmemtext, " KB");
-	strcat("Windows:");
+	strcat(physmemtext, "Windows:");
 
 
 	if (windows >= ICE2K_BRAND_WINXP) {
