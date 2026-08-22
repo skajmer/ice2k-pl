@@ -537,7 +537,7 @@ HotplugDialog::HotplugDialog(FXApp *app):FXMainWindow(app, "Bezpieczne usuwanie 
   chkbtn->disable();
 
 
-  new FXButton(bottominfo, "Za&knij", NULL, this, ID_CLOSE, LAYOUT_SIDE_RIGHT|LAYOUT_BOTTOM|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,83,23, 0,0,0,0);
+  new FXButton(bottominfo, "Za&mknij", NULL, this, ID_CLOSE, LAYOUT_SIDE_RIGHT|LAYOUT_BOTTOM|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,83,23, 0,0,0,0);
 
   //new FXButton(toolbar,"\tUp",ico_hist_up,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  0,0,0,0);
 
