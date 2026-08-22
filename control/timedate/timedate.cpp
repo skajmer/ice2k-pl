@@ -937,9 +937,25 @@ TimeDateCPL::TimeDateCPL(FXApp *a) : FXMainWindow(a, "Właściwości: Data i god
 
 	monthbox = new FXListBox(datetop, this, ID_MONTHBOX, FRAME_NORMAL|LISTBOX_NORMAL|LAYOUT_CENTER_Y|LAYOUT_FILL_X);
 
-	for (int i = 1; i <= 12; ++i) {
-		monthbox->appendItem(tr(FXDate::monthName(i)));
-    }
+static const FXchar* polishMonths[] = {
+    "styczeń",
+    "luty",
+    "marzec",
+    "kwiecień",
+    "maj",
+    "czerwiec",
+    "lipiec",
+    "sierpień",
+    "wrzesień",
+    "październik",
+    "listopad",
+    "grudzień"
+};
+
+for (int i = 0; i < 12; ++i) {
+    monthbox->appendItem(polishMonths[i]);
+}
+
 	monthbox->setCurrentItem(FXDate::localDate().month()-1);
 
 	monthbox->setNumVisible(12);
