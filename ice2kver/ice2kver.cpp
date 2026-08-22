@@ -1,6 +1,6 @@
 #include <fx.h>
 #include <X11/Xlib.h>
-
+#include <X11/Xutil.h>
 #include <FXPNGIcon.h>
 #include <FXId.h>
 #include <iostream>
@@ -251,47 +251,29 @@ int main(int argc, char *argv[]) {
 
 
 	application.create();
-
-
-	if (windows >= ICE2K_BRAND_WINXP) {
-		eulaunderscore1->setX(eulalink1->getX());
-		eulaunderscore1->setY(eulalink1->getY() + eulalink1->getDefaultHeight() - 1);
-		eulaunderscore1->setWidth( eulalink1->getDefaultWidth() );
-
-		eulaunderscore2->setX(eulalink2->getX());
-		eulaunderscore2->setY(eulalink2->getY() + eulalink2->getDefaultHeight() - 7);
-		eulaunderscore2->setWidth( eulalink2->getDefaultWidth() );
-	}
-
-	main->show(PLACEMENT_SCREEN);
-
-	setOnTop((Display*)ptrapp->getDisplay(), main->id());
-
+	return application.run();
 	application.create();
 
-	main->resize(bannerWidth, main->getDefaultHeight());
+	const FXint windowWidth = bannericon->getWidth();
+	const FXint windowHeight = main->getDefaultHeight();
+
+	main->resize(windowWidth, windowHeight);
+
+	Display* display = application.getDisplay();
+	Window window = main->id();
 
 	XSizeHints sizeHints;
-	long supplied;
+	sizeHints.flags = PMinSize | PMaxSize;
+	sizeHints.min_width = windowWidth;
+	sizeHints.max_width = windowWidth;
+	sizeHints.min_height = 0;
+	sizeHints.max_height = 0;
 
-	if (XGetWMNormalHints(
-    	main->getDisplay(),
-        main->id(),
-    	&sizeHints,
-        &supplied)) {
-
-   	 sizeHints.flags |= PMinSize | PMaxSize;
-
-   	 sizeHints.min_width = bannerWidth;
-     sizeHints.max_width = bannerWidth;
-
-     XSetWMNormalHints(
-         main->getDisplay(),
-         main->id(),
-         &sizeHints);
-}
+	XSetWMNormalHints(display, window, &sizeHints);
+	XFlush(display);
 
 	main->show(PLACEMENT_SCREEN);
 
 	return application.run();
+
 }
