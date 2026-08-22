@@ -133,9 +133,6 @@ int main(int argc, char *argv[]) {
 	application.init(argc, argv);
 	FXMainWindow *main=new FXMainWindow(&application, "Windows - informacje", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0, 0, 0, 0);
 	const FXint bannerWidth = bannericon->getWidth();
-	
-	main->setMinWidth(bannerWidth);
-	main->setMaxWidth(bannerWidth);
 
 	new FXLabel(main, "", bannericon, LAYOUT_CENTER_X, 0, 0, 0, 0, 0, 0, 0);
 	int windows = i2kBGetWinVersionInt();
@@ -269,6 +266,32 @@ int main(int argc, char *argv[]) {
 	main->show(PLACEMENT_SCREEN);
 
 	setOnTop((Display*)ptrapp->getDisplay(), main->id());
-	
+
+	application.create();
+
+	main->resize(bannerWidth, main->getDefaultHeight());
+
+	XSizeHints sizeHints;
+	long supplied;
+
+	if (XGetWMNormalHints(
+    	main->getDisplay(),
+        main->id(),
+    	&sizeHints,
+        &supplied)) {
+
+   	 sizeHints.flags |= PMinSize | PMaxSize;
+
+   	 sizeHints.min_width = bannerWidth;
+     sizeHints.max_width = bannerWidth;
+
+     XSetWMNormalHints(
+         main->getDisplay(),
+         main->id(),
+         &sizeHints);
+}
+
+	main->show(PLACEMENT_SCREEN);
+
 	return application.run();
 }
