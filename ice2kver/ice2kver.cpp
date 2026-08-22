@@ -228,13 +228,13 @@ int main(int argc, char *argv[]) {
 
 	char *tmp = strdup(physmemtext);
 
-	strcpy(physmemtext, "Pamięć fizyczna dostępna dla systemu\n"
-		"Windows:    ");
+	strcpy(physmemtext, "Pamięć fizyczna dostępna dla systemu");  
 	strcat(physmemtext, tmp);
 
 	free(tmp);
 
-	strcat(physmemtext, " KB");
+	strcat(physmemtext, " KB\n"
+		"Windows:");
 
 
 	if (windows >= ICE2K_BRAND_WINXP) {
