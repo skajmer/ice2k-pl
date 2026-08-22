@@ -140,14 +140,14 @@ int main(int argc, char *argv[]) {
 	if (windows >= ICE2K_BRAND_WINXP) {
 		new FXLabel(winverinfo, "Microsoft ® Windows", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 3);
 		if (windows == ICE2K_BRAND_WINSRV03) {
-			new FXLabel(winverinfo, "Wersja 5.2 (Build 3790.srv03_sp1_rtm.050324-1447 : Dodatek Service Pack 1)", NULL, 0, 0, 0, 0, 0, 1, 0, 0, 2);
+			new FXLabel(winverinfo, "Wersja 5.2 (Kompilacja 3790.srv03_sp1_rtm.050324-1447 : Dodatek Servic)", NULL, 0, 0, 0, 0, 0, 1, 0, 0, 2);
 			new FXLabel(winverinfo, "Copyright © 1985-2005 Microsoft Corporation", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 3);
 		} else {
 #ifdef __x86_64__
-		new FXLabel(winverinfo, "Wersja 5.2 (Kompilacja 3790.srv03_sp1_rtm.050324-1447 : Dodatek Service Pack 1)", NULL, 0, 0, 0, 0, 0, 1, 0, 0, 2);
+		new FXLabel(winverinfo, "Wersja 5.2 (Kompilacja 3790.srv03_sp1_rtm.050324-1447 : Dodatek Servic)", NULL, 0, 0, 0, 0, 0, 1, 0, 0, 2);
 		new FXLabel(winverinfo, "Copyright © 1985-2005 Microsoft Corporation", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 3);
 #else
-		new FXLabel(winverinfo, "Wersja 5.1 (Kompilacja 2600.xpsp_sp2_gdr.050301-1519 : Dodatek Service Pack 2)", NULL, 0, 0, 0, 0, 0, 1, 0, 0, 2);
+		new FXLabel(winverinfo, "Wersja 5.1 (Kompilacja 2600.xpsp_sp2_gdr.050301-1519 : Dodatek Servic)", NULL, 0, 0, 0, 0, 0, 1, 0, 0, 2);
 		new FXLabel(winverinfo, "Copyright © 1985-2001 Microsoft Corporation", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 3);
 #endif
 		}	
