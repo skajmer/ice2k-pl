@@ -59,7 +59,15 @@ using namespace FX;
 /*******************************************************************************/
 
 namespace FX {
-
+static const FXchar* polishWeekdays[] = {
+  "N",
+  "P",
+  "W",
+  "Ś",
+  "C",
+  "P",
+  "S"
+};
 FXDEFMAP(FXCalendarView) FXCalendarViewMap[]={
   FXMAPFUNC(SEL_PAINT,0,FXCalendarView::onPaint),
   FXMAPFUNC(SEL_LEFTBUTTONPRESS,0,FXCalendarView::onLeftBtnPress),
@@ -95,7 +103,7 @@ FXCalendarView::FXCalendarView(FXComposite *p,FXObject* tgt,FXSelector sel,FXuin
   has_selection=false;
   backColor=getApp()->getBackColor();
   selected=current=FXDate::localDate();
-  firstday=0; // Sunday
+  firstday=1; // Monday
 
   // Setup Default Colors
   weekendcolor  = FXRGB(180,0,0);
@@ -371,7 +379,8 @@ long FXCalendarView::onPaint(FXObject*,FXSelector,void*ptr){
     }
 
   for(c=firstday,i=coloffset; c<firstday+7; c++,i++){
-    text.format("%s",tr(FXDate::dayNameShort(c%7)));
+   text = polishWeekdays[c % 7];
+
     if(c%7==0 || c%7==6)
       dc.setForeground(weekendcolor);
     else
