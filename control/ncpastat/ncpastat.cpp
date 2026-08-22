@@ -391,7 +391,7 @@ void NCPAStatWindow::create() {
 	char title[64];
 	FXMainWindow::create();
 	
-	snprintf(title, sizeof(title), "%s Właściwości", ifvalues.ifname);
+	snprintf(title, sizeof(title), "Stan: %s", ifvalues.ifname);
 
 	this->setTitle(title);
 
