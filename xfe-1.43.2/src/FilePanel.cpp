@@ -332,7 +332,7 @@ FilePanel::FilePanel(FXWindow* owner, const char* nm, FXComposite* p, DirPanel* 
 
     //FXLabel* locationstatusic = new FXLabel(locationstatusct, "", tbcomputericon, JUSTIFY_LEFT|LAYOUT_LEFT|LAYOUT_CENTER_Y|LAYOUT_FIX_X, 2, 0, 0, 0, 0, 0, 0, 0);
     new FXLabel(locationstatusct, "", tbcomputericon, JUSTIFY_LEFT|LAYOUT_LEFT|LAYOUT_CENTER_Y|LAYOUT_FIX_X, 2, 0, 0, 0, 0, 0, 0, 0);
-    new FXLabel(locationstatusct, "My Computer", NULL, JUSTIFY_LEFT|LAYOUT_LEFT|LAYOUT_CENTER_Y|LAYOUT_FIX_X, 22, 0, 0, 0, 0, 0, 0, 0);
+    new FXLabel(locationstatusct, "Mój Komputer", NULL, JUSTIFY_LEFT|LAYOUT_LEFT|LAYOUT_CENTER_Y|LAYOUT_FIX_X, 22, 0, 0, 0, 0, 0, 0, 0);
 
     filterlabel = new FXLabel(hframe, "", NULL, JUSTIFY_LEFT|LAYOUT_LEFT, 0, 0, 0, 0, 4, 17, 0, 0);
     filterlabel->hide();
@@ -6381,14 +6381,14 @@ long FilePanel::onUpdStatus(FXObject* sender, FXSelector, void*)
             {
                 linkto = ::readLink(path+PATHSEPSTRING+name);
                 //str = name + "->" + linkto.text() + " | " + type + " | " + date + " | " + usr + " | " + grp + " | " + perm;
-                str = name + "->" + linkto.text() + "; Type: " + type + ";  Date Modified: " + date + "; Size: " + hsize;
+                str = name + "->" + linkto.text() + "; Typ: " + type + ";  Data Modyfikacji: " + date + "; Rozmiar: " + hsize;
                 sizestatusct->setText(" ");
             }
             else if (type.contains(_("Link")))
             {
                 linkto = ::readLink(path+PATHSEPSTRING+name);
                 //str = name + "->" + linkto.text() + " | " + type + " | " + date + " | " + usr + " | " + grp + " | " + perm;
-                str = name + "->" + linkto.text() + "; Type: " + type + ";  Date Modified: " + date + "; Size: " + hsize;
+                str = name + "->" + linkto.text() + "; Typ: " + type + ";  Data Modyfikacji: " + date + "; Rozmiar: " + hsize;
                 sizestatusct->setText(" ");
             }
             else
@@ -6408,7 +6408,7 @@ long FilePanel::onUpdStatus(FXObject* sender, FXSelector, void*)
                     }
                 }
                 //str = hsize+ " | " + type + " | " + date + " | " + usr + " | " + grp + " | " + perm;
-                str = "Type: " + type + "; Date Modified: " + date + "; Size: " + hsize;
+                str = "Typ: " + type + "; Data Modyfikacji: " + date + "; Rozmiar: " + hsize;
                 sizestatusct->setText(hsize.text());
             }
         }
