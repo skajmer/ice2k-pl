@@ -155,7 +155,7 @@ int main(int argc, char *argv[]) {
 		new FXLabel(winverinfo, " ", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 	} else {
 		new FXLabel(winverinfo, "Microsoft (R) Windows", NULL, 0, 0,0,0,0, 0,0,0,3);
-		new FXLabel(winverinfo, "Version 5.0 (Kompilacja 2195: Service Pack 4)", NULL, 0, 0,0,0,0, 0,0,0,2);
+		new FXLabel(winverinfo, "Wersja 5.0 (Kompilacja 2195: Service Pack 4)", NULL, 0, 0,0,0,0, 0,0,0,2);
 		new FXLabel(winverinfo, "Copyright (C) 1981-1999 Microsoft Corp.", NULL, 0, 0,0,0,0, 0,0,0,3);
 		new FXLabel(winverinfo, " ", NULL, 0, 0,0,0,0, 0,0,0,3);
 		new FXLabel(winverinfo, " ", NULL, 0, 0,0,0,0, 0,0,0,1);
