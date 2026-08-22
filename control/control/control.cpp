@@ -376,22 +376,22 @@ int changeTitle() {
 	
 	switch(shellfolder) {
 		case SHF_ID_CONTROL:
-			controlwin->setTitle("Control Panel");
-			address->setText("Control Panel");
+			controlwin->setTitle("Panel sterowania");
+			address->setText("Panel sterowania");
 			controlwin->setIcon(ico_control);
 			addressicon->setIcon(ico_control);
 			break;
 
 		case SHF_ID_NCPA:
-			controlwin->setTitle("Network Connections");
-			address->setText("Network Connections");
+			controlwin->setTitle("Połączenia sieciowe");
+			address->setText("Połączenia sieciowe");
 			controlwin->setIcon(ico_ncpa_16);
 			addressicon->setIcon(ico_ncpa_16);
 			break;
 
 		case SHF_ID_FONTS:
-			controlwin->setTitle("Fonts");
-			address->setText("Fonts");
+			controlwin->setTitle("Czcionki");
+			address->setText("Czcionki");
 			controlwin->setIcon(ico_fonts_16);
 			addressicon->setIcon(ico_fonts_16);
 			break;
@@ -412,23 +412,23 @@ void controlPanelList(FXIconList* icl) {
 	changeTitle();
 
 	icl->setHeaders(NULL, 0);
-	icl->appendHeader("Name", NULL, 150);
-	icl->appendHeader("Comment", NULL, 300);
+	icl->appendHeader("Nazwa", NULL, 150);
+	icl->appendHeader("Komentarze", NULL, 300);
 
-	icl->appendItem("Add/Remove\tInstalls and removes programs", ico_appwiz_32, ico_appwiz_16, (void*)CPL_ID_APPWIZ);
-	icl->appendItem("Controllers\tAdds, removes, and configures game controller hardware such as joysticks and gamepads", ico_joy_32, ico_joy_16, (void*)CPL_ID_JOY);
-	icl->appendItem("Date/Time\tSets the date, time, and time zone for your computer", ico_timedate_32, ico_timedate_16, (void*)CPL_ID_TIMEDATE);
+	icl->appendItem("Dodaj lub usuń programy\tZainstaluj lub usuń programy i składniki systemu Windows.", ico_appwiz_32, ico_appwiz_16, (void*)CPL_ID_APPWIZ);
+	icl->appendItem("Kontrolery gier\tDodaj, usuń i konfiguruj sprzęt kontrolerów gier taki jak joysticki i konsole do gier.", ico_joy_32, ico_joy_16, (void*)CPL_ID_JOY);
+	icl->appendItem("Data i godzina\tUstaw datę, godzinę i strefę czasową komputera.", ico_timedate_32, ico_timedate_16, (void*)CPL_ID_TIMEDATE);
 	//icl->appendItem("Device Manager\tThe Device Manager lists all the hardware devices installed on your computer", ico_devmgmt_32, ico_devmgmt_16, (void*)CPL_ID_DEVMGMT);
-	icl->appendItem("Display\tCustomizes your desktop display and screen saver", ico_desk_32, ico_desk_16, (void*)CPL_ID_DESK);
-	icl->appendItem("Fonts\tDisplays and manages fonts on your computer", ico_fonts_32, ico_fonts_16, (void*)CPL_ID_FONTS);
-	icl->appendItem("Input\tCustomizes your keyboard and mouse settings", ico_keyb_32, ico_keyb_16, (void*)CPL_ID_KEYB);
-	icl->appendItem("Internet\tCustomizes your Internet display and connections settings", ico_inetcpl_32, ico_inetcpl_16, (void*)CPL_ID_INETCPL);
-	icl->appendItem("Modems\tConfigures your modem properties", ico_modem_32, ico_modem_16, (void*)CPL_ID_MODEM);
-	icl->appendItem("Printers\tAdds, removes, and configures local and network printers", ico_printers_32, ico_printers_16, (void*)CPL_ID_PRINTERS);
-	icl->appendItem("Sound\tConfigures sound devices", ico_mmsys_32, ico_mmsys_16, (void*)CPL_ID_MMSYS);
-	icl->appendItem("Network Connections\tConnects to other computers, networks, and the Internet", ico_ncpa_32, ico_ncpa_16, (void*)CPL_ID_NCPA);
-	icl->appendItem("Power\tConfigures energy-saving settings for your computer", ico_powercfg_32, ico_powercfg_16, (void*)CPL_ID_POWERCFG);
-	icl->appendItem("System\tProvides system information and changes environment settings", ico_sysdm_32, ico_sysdm_16, (void*)CPL_ID_SYSDM);
+	icl->appendItem("Ekran\tZmien wygląd pulpitu na przykład tło, wygaszacz ekranu, kolory, rozmiar czcionek i rozdzielczość ekranu.", ico_desk_32, ico_desk_16, (void*)CPL_ID_DESK);
+	icl->appendItem("Czcionki\tDodaj lub zmień czcionki zainstalowane na komputerze oraz zarządzaj nimi", ico_fonts_32, ico_fonts_16, (void*)CPL_ID_FONTS);
+	icl->appendItem("Urządzenia wejściowe\tSkonfiguruj ustawienia klawiatury i myszy.", ico_keyb_32, ico_keyb_16, (void*)CPL_ID_KEYB);
+	icl->appendItem("Opcje internetowe\tKonfiguruje internetowe ustawienia ekranu i połączeń", ico_inetcpl_32, ico_inetcpl_16, (void*)CPL_ID_INETCPL);
+	icl->appendItem("Opcje telefonu i modemu\tKonfiguruje reguły wybierania numerów telefonu i ustawienia modemu.", ico_modem_32, ico_modem_16, (void*)CPL_ID_MODEM);
+	icl->appendItem("Drukarki i faksy\tPokazuje zainstalowane drukarki i faks-drukarki oraz pomaga w dodawaniu nowych.", ico_printers_32, ico_printers_16, (void*)CPL_ID_PRINTERS);
+	icl->appendItem("Dźwięki i urządzenia audio\tZmień schemat dźwiękowy dla tego komputera lub skonfiguruj ustawienia głośników i urządzeń nagrywających.", ico_mmsys_32, ico_mmsys_16, (void*)CPL_ID_MMSYS);
+	icl->appendItem("Połączenia sieciowe\tŁączy z innymi komputerami, sieciami i Internetem.", ico_ncpa_32, ico_ncpa_16, (void*)CPL_ID_NCPA);
+	icl->appendItem("Opcje zasilania\tKonfiugurj ustawienia oszczędzania energii dla tego komputera.", ico_powercfg_32, ico_powercfg_16, (void*)CPL_ID_POWERCFG);
+	icl->appendItem("System\tWyświetl informacje o swoim systemie komputerowym i zmień ustawienia sprzętu, wydajności i automatycznych aktualizacji.", ico_sysdm_32, ico_sysdm_16, (void*)CPL_ID_SYSDM);
 }
 
 
@@ -623,8 +623,8 @@ void fontsList(FXIconList* icl) {
 	changeTitle();
 
 	icl->setHeaders(NULL, 0);
-	icl->appendHeader("Font Name", NULL, 400);
-	icl->appendHeader("Type", NULL, 100);
+	icl->appendHeader("Nazwa czcionki", NULL, 400);
+	icl->appendHeader("Typ", NULL, 100);
 
 	FXFontDesc* fonts;
 	FXuint numfonts, i;
@@ -632,13 +632,13 @@ void fontsList(FXIconList* icl) {
 	if (FXFont::listFonts(fonts, numfonts, FXString::null)) {
 		for (i = 0; i < numfonts; i++) {
 			if (fonts[i].flags & FXFont::Scalable) {
-				sprintf(entryname, "%.*s\tTrueType Font",
-						(int)(sizeof(entryname)-sizeof("\tTrueType Font")-1)-1,
+				sprintf(entryname, "%.*s\tCzcionka TrueType",
+						(int)(sizeof(entryname)-sizeof("\tCzcionka TrueType")-1)-1,
 						fonts[i].face);
 				icl->appendItem(entryname, ico_ttffont_32, ico_ttffont_16);
 			} else {
-				sprintf(entryname, "%.*s\tBitmap Font",
-						(int)(sizeof(entryname)-sizeof("\tBitmap Font")-1)-1,
+				sprintf(entryname, "%.*s\tCzcionka Bitmap",
+						(int)(sizeof(entryname)-sizeof("\tCzcionka Bitmap")-1)-1,
 						fonts[i].face);
 				icl->appendItem(entryname, ico_bmpfont_32, ico_bmpfont_16);
 			}
@@ -676,17 +676,17 @@ void ncpaList(FXIconList* icl) {
 		if (!strcmp(tmp->ifa_name, "lo")) goto next;
 
 		if (!strncmp(tmp->ifa_name, "wl", 2)) {
-			strcpy(nettype, "Wireless");
+			strcpy(nettype, "Bezprzewodowe");
 			iftype = NCPA_IFTYPE_WLAN;
 		} else {
-			strcpy(nettype, "LAN");
+			strcpy(nettype, "Sieć LAN lub szybki Internet");
 			iftype = NCPA_IFTYPE_LAN;
 		}
 
 		if (tmp->ifa_flags & IFF_UP) {
-			sprintf(netitem, "%.15s\t%.32s\tEnabled", tmp->ifa_name, nettype);
+			sprintf(netitem, "%.15s\t%.32s\tWłączone", tmp->ifa_name, nettype);
 		} else {
-			sprintf(netitem, "%.15s\t%.32s\tDisabled", tmp->ifa_name, nettype);
+			sprintf(netitem, "%.15s\t%.32s\tWyłączone", tmp->ifa_name, nettype);
 		}
 		
 		switch (iftype) {
@@ -736,7 +736,7 @@ long ControlPanel::switchFolder(int folder) {
 			fontsList(iconlist);
 			break;
 		default:
-			fputs("Invalid shell folder!\n", stderr);
+			fputs("Nieprawidłowy folder powłoki!\n", stderr);
 			return 0;
 	}
 
@@ -776,7 +776,7 @@ long ControlPanel::onCmdUp(FXObject*,FXSelector,void*) {
 			switchFolderHist(SHF_ID_EXPLORER);
 			break;
 		case SHF_ID_NCPA:
-			switchFolderHist(SHF_ID_CONTROL);
+		switchFolderHist(SHF_ID_CONTROL);
 			break;
 		case SHF_ID_FONTS:
 			switchFolderHist(SHF_ID_CONTROL);
@@ -811,7 +811,7 @@ long ControlPanel::onCmdForward(FXObject*,FXSelector,void*) {
 		--historyval;
 		return 0;
 	}
-
+	
 	if (historyval+1 == sizeof(history)/sizeof(history[0]) || history[historyval+1] == 0) {
 		forwardbtn->disable();
 		forwardarr->disable();
@@ -819,7 +819,7 @@ long ControlPanel::onCmdForward(FXObject*,FXSelector,void*) {
 
 	backbtn->enable();
 	backarr->enable();
-	
+
 	switchFolder(history[historyval]);
 	//printf("forward historyval: %d\n", historyval);
 
@@ -874,7 +874,7 @@ int ControlPanel::runCpl(int cpl) {
 			system("devmgmt&");
 			break;
 		default:
-			fputs("No action asociated!\n", stderr);
+			fputs("Brak przypisanej akcji!\n", stderr);
 			return 0;
 	}
 	return 1;
@@ -915,7 +915,7 @@ long ControlPanel::onCplActivate(FXObject*,FXSelector,void* ptr) {
 			break;
 		}
 		default:
-			fputs("Invalid shell folder!\n", stderr);
+			fputs("Nieprawidłowy folder powłoki!\n", stderr);
 			return 0;
 	}
 
@@ -987,60 +987,60 @@ ControlPanel::ControlPanel(FXApp *app):FXMainWindow(app, "Control Panel", ico_co
 
 	FXMenuCommand* menucmd; FXMenuRadio* menurad; FXMenuCheck* menuchk;
 	
-	new FXMenuTitle(menubar, "&File", NULL, filemenu);
-	new FXMenuCommand(filemenu,"&Open",NULL,this,ID_OPEN);
+	new FXMenuTitle(menubar, "&Plik", NULL, filemenu);
+	new FXMenuCommand(filemenu,"&Otwórz",NULL,this,ID_OPEN);
 	new FXMenuSeparator(filemenu);
-	menucmd = new FXMenuCommand(filemenu,"Rena&me");
+	menucmd = new FXMenuCommand(filemenu,"Zmień nazwę");
 	menucmd->disable();
-	menucmd = new FXMenuCommand(filemenu,"&Delete");
+	menucmd = new FXMenuCommand(filemenu,"&Usuń");
 	menucmd->disable();
-	menucmd = new FXMenuCommand(filemenu,"P&roperties");
+	menucmd = new FXMenuCommand(filemenu,"Właściwości");
 	menucmd->disable();
 	new FXMenuSeparator(filemenu);
-	new FXMenuCommand(filemenu,"&Close\tCtl-Q",NULL,getApp(),FXApp::ID_QUIT);
+	new FXMenuCommand(filemenu,"&Zamknij\tCtl-Q",NULL,getApp(),FXApp::ID_QUIT);
 
-	menucmd = new FXMenuCommand(helpmenu, "&Help Topics"); menucmd->disable();
+	menucmd = new FXMenuCommand(helpmenu, "Tematy pomocy"); menucmd->disable();
 	new FXMenuSeparator(helpmenu);
-	new FXMenuCommand(helpmenu, "&About", NULL, this, ID_ABOUT);
+	new FXMenuCommand(helpmenu, "Windows - informacje", NULL, this, ID_ABOUT);
 
-	new FXMenuTitle(menubar, "&Edit", NULL, editmenu);
+	new FXMenuTitle(menubar, "&Edycja", NULL, editmenu);
 
-	menucmd = new FXMenuCommand(editmenu,"&Undo");
+	menucmd = new FXMenuCommand(editmenu,"Cofnij");
 	menucmd->disable();
 	new FXMenuSeparator(editmenu);
-	menucmd = new FXMenuCommand(editmenu,"Cu&t");
+	menucmd = new FXMenuCommand(editmenu,"Wytnij");
 	menucmd->disable();
-	menucmd = new FXMenuCommand(editmenu,"&Copy");
+	menucmd = new FXMenuCommand(editmenu,"Kopiuj");
 	menucmd->disable();
-	menucmd = new FXMenuCommand(editmenu,"&Paste");
+	menucmd = new FXMenuCommand(editmenu,"Wklej");
 	menucmd->disable();
-	menucmd = new FXMenuCommand(editmenu,"Paste &Shortcut");
+	menucmd = new FXMenuCommand(editmenu,"Wklej skrót");
 	menucmd->disable();
 	new FXMenuSeparator(editmenu);
-	menucmd = new FXMenuCommand(editmenu,"Copy to &Folder...");
+	menucmd = new FXMenuCommand(editmenu,"Kopiuj do folderu...");
 	menucmd->disable();
-	menucmd = new FXMenuCommand(editmenu,"Mo&ve to Folder...");
+	menucmd = new FXMenuCommand(editmenu,"Przenieś do folderu...");
 	menucmd->disable();
 
 	new FXMenuSeparator(editmenu);
-	menucmd = new FXMenuCommand(editmenu,"Select &All\tCtl-A", NULL, this, ID_SELECTALL);
-	menucmd = new FXMenuCommand(editmenu,"&Invert Selection", NULL, this, ID_INVERTSELECT);
+	menucmd = new FXMenuCommand(editmenu,"Zaznacz wszystko\tCtl-A", NULL, this, ID_SELECTALL);
+	menucmd = new FXMenuCommand(editmenu,"Odwróć zaznaczenie", NULL, this, ID_INVERTSELECT);
 
-	new FXMenuTitle(menubar, "&View", NULL, viewmenu);
-	new FXMenuTitle(menubar, "F&avorites", NULL, favoritesmenu);
-	menucmd = new FXMenuCommand(favoritesmenu,"&Add to Favorites...");
+	new FXMenuTitle(menubar, "&Widok", NULL, viewmenu);
+	new FXMenuTitle(menubar, "Ulubione", NULL, favoritesmenu);
+	menucmd = new FXMenuCommand(favoritesmenu,"Dodaj do ulubionych...");
 	menucmd->disable();
-	menucmd = new FXMenuCommand(favoritesmenu,"&Organize Favorites...");
+	menucmd = new FXMenuCommand(favoritesmenu,"Organizuj ulubione...");
 	menucmd->disable();
 	new FXMenuSeparator(favoritesmenu);
-	menucmd = new FXMenuCommand(favoritesmenu,"(Empty)");
+	menucmd = new FXMenuCommand(favoritesmenu,"(Puste)");
 	menucmd->disable();
 
-	new FXMenuTitle(menubar, "&Tools", NULL, toolsmenu);
-	menucmd = new FXMenuCommand(toolsmenu,"Folder &Options...");
+	new FXMenuTitle(menubar, "&Narzędzia", NULL, toolsmenu);
+	menucmd = new FXMenuCommand(toolsmenu,"Opcje folderów...");
 	menucmd->disable();
 
-	new FXMenuTitle(menubar, "&Help", NULL, helpmenu);
+	new FXMenuTitle(menubar, "Pomoc", NULL, helpmenu);
 
 
 	/*menucmd = new FXMenuCommand(viewmenu, "C&ustomize...\t\tCustomizes the view"); menucmd->disable();
@@ -1057,7 +1057,7 @@ ControlPanel::ControlPanel(FXApp *app):FXMainWindow(app, "Control Panel", ico_co
 	adtoolbar = new FXToolBar(topdock,tbshell,LAYOUT_FILL_Y|LAYOUT_FILL_X|LAYOUT_DOCK_NEXT|LAYOUT_SIDE_TOP|FRAME_RAISED,0,0,0,0, 0,0,0,0,  0,0);
 	new FXToolBarGrip(adtoolbar, adtoolbar, FXToolBar::ID_TOOLBARGRIP, TOOLBARGRIP_SINGLE,0,0,0,0,2,3,2,2);
 
-	new FXLabel(adtoolbar, "A&ddress",NULL,LAYOUT_CENTER_Y,0,0,0,0,1,4,0,0);
+	new FXLabel(adtoolbar, "Adres",NULL,LAYOUT_CENTER_Y,0,0,0,0,1,4,0,0);
 	
 	FXHorizontalFrame* addresscont = new FXHorizontalFrame(adtoolbar, FRAME_NORMAL|LAYOUT_FILL_X|LAYOUT_CENTER_Y, 0,0,0,0, 1,0,0,0, 1,0);
 	addresscont->setBackColor(app->getBackColor());
@@ -1067,20 +1067,20 @@ ControlPanel::ControlPanel(FXApp *app):FXMainWindow(app, "Control Panel", ico_co
 
 	address = new FXComboBox(addresscont, 10, NULL, 0, COMBOBOX_INSERT_LAST|JUSTIFY_LEFT|LAYOUT_FILL_X|LAYOUT_CENTER_Y, 0,0,0,0, 2,2,3,1);
 	address->setEditable(FALSE);
-	address->setText("Control Panel");
+	address->setText("Panel sterowania");
 
 
 	if (xpmode) {
-		new FXButton(adtoolbar, "Go", ico_exp_go, NULL, 0, BUTTON_TOOLBAR|ICON_BEFORE_TEXT|FRAME_RAISED|LAYOUT_FILL_Y, 0,0,0,0, 4,14,0,0);
+		new FXButton(adtoolbar, "Przejdź", ico_exp_go, NULL, 0, BUTTON_TOOLBAR|ICON_BEFORE_TEXT|FRAME_RAISED|LAYOUT_FILL_Y, 0,0,0,0, 4,14,0,0);
 	} else {
-		new FXButton(adtoolbar, "Go", ico_exp_go, NULL, 0, BUTTON_TOOLBAR|ICON_BEFORE_TEXT|FRAME_RAISED|LAYOUT_FILL_Y, 0,0,0,0, 2,6,0,0);
+		new FXButton(adtoolbar, "Przejdź", ico_exp_go, NULL, 0, BUTTON_TOOLBAR|ICON_BEFORE_TEXT|FRAME_RAISED|LAYOUT_FILL_Y, 0,0,0,0, 2,6,0,0);
 	}
 
 
 	FXButton* btn;
 
 
-    backbtn = new FXButton(toolbar, "Back", ico_exp_back, this, ID_BACK, BUTTON_TOOLBAR|ICON_BEFORE_TEXT|FRAME_RAISED|LAYOUT_FILL_Y,0,0,0,0,5,3,2,2);
+    backbtn = new FXButton(toolbar, "Wstecz", ico_exp_back, this, ID_BACK, BUTTON_TOOLBAR|ICON_BEFORE_TEXT|FRAME_RAISED|LAYOUT_FILL_Y,0,0,0,0,5,3,2,2);
 	backbtn->disable();
 	backarr = new FXButton(toolbar, "", ico_arrow, NULL, 0, LAYOUT_FILL_Y,0,0,0,0, 4,3,2,0);
 	backarr->disable();
@@ -1093,8 +1093,8 @@ ControlPanel::ControlPanel(FXApp *app):FXMainWindow(app, "Control Panel", ico_co
 
 	new FXVerticalSeparator(toolbar, SEPARATOR_GROOVE|LAYOUT_FILL_Y, 0, 0, 0, 0, 1, 2, 2, 2);
 
-	btn = new FXButton(toolbar, "Search", ico_exp_search, NULL, 0, BUTTON_TOOLBAR|ICON_BEFORE_TEXT|FRAME_RAISED|LAYOUT_FILL_Y,0,0,0,0,5,3,2,2);
-	btn = new FXButton(toolbar, "Folders", ico_exp_folders, NULL, 0, BUTTON_TOOLBAR|ICON_BEFORE_TEXT|FRAME_RAISED|LAYOUT_FILL_Y,0,0,0,0,5,3,2,2);
+	btn = new FXButton(toolbar, "Wyszukaj", ico_exp_search, NULL, 0, BUTTON_TOOLBAR|ICON_BEFORE_TEXT|FRAME_RAISED|LAYOUT_FILL_Y,0,0,0,0,5,3,2,2);
+	btn = new FXButton(toolbar, "Foldery", ico_exp_folders, NULL, 0, BUTTON_TOOLBAR|ICON_BEFORE_TEXT|FRAME_RAISED|LAYOUT_FILL_Y,0,0,0,0,5,3,2,2);
 
 	new FXVerticalSeparator(toolbar, SEPARATOR_GROOVE|LAYOUT_FILL_Y, 0, 0, 0, 0, 1, 2, 2, 2);
 
@@ -1124,12 +1124,12 @@ ControlPanel::ControlPanel(FXApp *app):FXMainWindow(app, "Control Panel", ico_co
 			ICONLIST_EXTENDEDSELECT|ICONLIST_BIG_ICONS|ICONLIST_COLUMNS|SCROLLERS_DONT_TRACK);
 
 
-	new FXMenuRadio(viewmenu,"&Details",iconlist,FXIconList::ID_SHOW_DETAILS);
-	new FXMenuRadio(viewmenu,"&Small Icons",iconlist,FXIconList::ID_SHOW_MINI_ICONS);
-	new FXMenuRadio(viewmenu,"&Big Icons",iconlist,FXIconList::ID_SHOW_BIG_ICONS);
+	new FXMenuRadio(viewmenu,"Szczegóły",iconlist,FXIconList::ID_SHOW_DETAILS);
+	new FXMenuRadio(viewmenu,"Małe ikony",iconlist,FXIconList::ID_SHOW_MINI_ICONS);
+	new FXMenuRadio(viewmenu,"Duże ikony",iconlist,FXIconList::ID_SHOW_BIG_ICONS);
 	new FXMenuSeparator(viewmenu);
-	new FXMenuRadio(viewmenu,"&Rows",iconlist,FXIconList::ID_ARRANGE_BY_ROWS);
-	new FXMenuRadio(viewmenu,"&Columns",iconlist,FXIconList::ID_ARRANGE_BY_COLUMNS);
+	new FXMenuRadio(viewmenu,"Wiersze",iconlist,FXIconList::ID_ARRANGE_BY_ROWS);
+	new FXMenuRadio(viewmenu,"Kolumny",iconlist,FXIconList::ID_ARRANGE_BY_COLUMNS);
 
 	iconlist->setItemSpace(76);
 
@@ -1138,7 +1138,7 @@ ControlPanel::ControlPanel(FXApp *app):FXMainWindow(app, "Control Panel", ico_co
 			controlPanelList(iconlist);
 			break;
 		default:
-			fputs("Invalid shell folder!\n", stderr);
+			fputs("Nieprawidłowy folder powłoki!\n", stderr);
 	}*/
 
 	switchFolder(shellfolder);
@@ -1345,6 +1345,7 @@ int main(int argc, char *argv[]) {
 			shellfolder = SHF_ID_FONTS;
 		}
 	}
+
 
 	controlwin = new ControlPanel(app);
 	application.create();

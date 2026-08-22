@@ -187,7 +187,7 @@ long ShutdownDialog::onRealUnfocus(FXObject* sender,FXSelector sel,void* ptr) {
 FXIMPLEMENT(ShutdownDialog,FXDialogBox,ShutdownDialogMap,ARRAYNUMBER(ShutdownDialogMap))
 
 	// Construct a ShutdownDialog
-	ShutdownDialog::ShutdownDialog(FXWindow* owner):FXDialogBox(owner, "Shut Down Windows", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0, 0, 0, 0, 0, 0, 0, 0) {
+	ShutdownDialog::ShutdownDialog(FXWindow* owner):FXDialogBox(owner, "Zamykanie systemu Windows", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0, 0, 0, 0, 0, 0, 0, 0) {
 		const unsigned char *banner = i2kBGetWinShutBrandingImage();
 
 
@@ -209,26 +209,26 @@ FXIMPLEMENT(ShutdownDialog,FXDialogBox,ShutdownDialogMap,ARRAYNUMBER(ShutdownDia
 
 		FXVerticalFrame* vercont = new FXVerticalFrame(horcont, LAYOUT_FILL_X|LAYOUT_FILL_Y, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-		new FXLabel(vercont, "What do you want the computer to do?", NULL, LABEL_NORMAL, 0, 0, 0, 0, 0, 0, 0, 8);
+		new FXLabel(vercont, "Jaką czynność komputer ma wykonać?", NULL, LABEL_NORMAL, 0, 0, 0, 0, 0, 0, 0, 8);
 
 		listbox = new I2KListBox(vercont,this,ID_CLICK_OPTION,COMBOBOX_INSERT_LAST|LAYOUT_FILL_X|COMBOBOX_STATIC|FRAME_SUNKEN|FRAME_THICK, 0, 0, 0, 0, 2, 0, 2, 1);
 
 
-		listbox->insertItem(_OPTION_LOGOFF,   "Log off");
-		listbox->insertItem(_OPTION_SHUTDOWN, "Shut down");
-		listbox->insertItem(_OPTION_RESTART,  "Restart");
-		listbox->insertItem(_OPTION_STANDBY,  "Stand by");
+		listbox->insertItem(_OPTION_LOGOFF,   "Wyloguj");
+		listbox->insertItem(_OPTION_SHUTDOWN, "Wyłącz");
+		listbox->insertItem(_OPTION_RESTART,  "Uruchom ponownie");
+		listbox->insertItem(_OPTION_STANDBY,  "Stan wstrzymania");
 
 		listbox->setNumVisible(listbox->getNumItems());
 		listbox->setCurrentItem(_OPTION_SHUTDOWN);
 
-		actionlbl1 = new FXLabel(vercont, "Ends your session and shuts down Windows so that", NULL, JUSTIFY_LEFT|LABEL_NORMAL, 0, 0, 0, 0, 0, 0, 11, 0);
-		actionlbl2 = new FXLabel(vercont, "you can safely turn off power.", NULL, LABEL_NORMAL, 0, 0, 0, 0, 0, 0, 0, 0);
+		actionlbl1 = new FXLabel(vercont, "Zamyka system Windows, aby można było bezpiecznie", NULL, JUSTIFY_LEFT|LABEL_NORMAL, 0, 0, 0, 0, 0, 0, 11, 0);
+		actionlbl2 = new FXLabel(vercont, "wyłączyć komputer.", NULL, LABEL_NORMAL, 0, 0, 0, 0, 0, 0, 0, 0);
 
 		FXHorizontalFrame* btncont = new FXHorizontalFrame(this, LAYOUT_RIGHT, 0, 0, 0, 0, 0, 10, 0, 11, 6, 0);
 		FXButton* okbtn = new FXButton(btncont, "OK", NULL, this, ID_ACCEPT, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
-		new FXButton(btncont, "Cancel", NULL, this, ID_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
-		new FXButton(btncont, "&Help", NULL, this, ID_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
+		new FXButton(btncont, "Anuluj", NULL, this, ID_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
+		new FXButton(btncont, "Pomoc", NULL, this, ID_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
 
 		okbtn->setFocus();
 	}
@@ -249,23 +249,23 @@ long ShutdownDialog::onClickOption(FXObject* sender, FXSelector sel, void* ptr)
 	intptr_t option = (intptr_t)ptr;
 	switch(option) {
 		case _OPTION_LOGOFF:
-			actionlbl1->setText("Ends your session, leaving the computer running on");
-			actionlbl2->setText("full power.");
+			actionlbl1->setText("Zamyka programy i kończy sesję systemu Windows.");
+			actionlbl2->setText("");
 			return 1;
 		case _OPTION_SHUTDOWN:
-			actionlbl1->setText("Ends your session and shuts down Windows so that");
-			actionlbl2->setText("you can safely turn off power.");
+			actionlbl1->setText("Zamyka system Windows, aby można było bezpiecznie");
+			actionlbl2->setText("wyłączyć komputer.");
 			return 1;
 		case _OPTION_RESTART:
-			actionlbl1->setText("Ends your session, shuts down Windows and starts");
-			actionlbl2->setText("Windows again.");
+			actionlbl1->setText("Zamyka, a następnie uruchamia ponownie");
+			actionlbl2->setText("system Windows.");
 			return 1;
 		case _OPTION_STANDBY:
-			actionlbl1->setText("Maintains your session, keeping the computer running");
-			actionlbl2->setText("on low power with data still in memory.");
+			actionlbl1->setText("Utrzymuje twoją sesję, pozostawiając komputer działający"); //loosly translated because it was greyed out on my vm for some reason
+			actionlbl2->setText("w stanie niskiego poboru prądu z danymi w pamięci.");
 			return 1;
 		default:
-			fputs("Invalid option!!!\n", stderr);
+			fputs("Niewsłaściwa opcja!!!\n", stderr);
 	}
 	return 0;
 }
@@ -361,7 +361,7 @@ class FadeWindow : public FXMainWindow {
 };
 
 
-FadeWindow::FadeWindow(FXApp* a):FXMainWindow(a, "Shut Down Windows", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0, 0, 0, 0, 0, 0, 0, 0) {
+FadeWindow::FadeWindow(FXApp* a):FXMainWindow(a, "Zamykanie systemu Windows", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0, 0, 0, 0, 0, 0, 0, 0) {
 }
 
 FadeWindow::~FadeWindow() {

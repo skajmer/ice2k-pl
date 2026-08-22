@@ -41,14 +41,14 @@ shadowon="$(shadowon)"
 	desktopiconpid="$(ActiveDesktopIconsPID 2>/dev/null)"
 if [ "$1" = "menu" ]; then
 	if [ "$deskiconson" -eq 1 ]; then
-		echo 'prog "Show Desktop Icons" "ice2k-checkbox"' "~/.icewm/programs/explorer/desktopicons switch"
+		echo 'prog "Pokaż ikony pulpitu" "ice2k-checkbox"' "~/.icewm/programs/explorer/desktopicons switch"
 	else
-		echo 'prog "Show Desktop Icons" ""' "~/.icewm/programs/explorer/desktopicons switch"
+		echo 'prog "Pokaż ikony pulpitu" ""' "~/.icewm/programs/explorer/desktopicons switch"
 	fi
 	if [ "$shadowon" -eq 1 ]; then
-		echo 'prog "Show Icon Shadow" "ice2k-checkbox"' "~/.icewm/programs/explorer/desktopicons shadow"
+		echo 'prog "Pokazuj cienie ikon" "ice2k-checkbox"' "~/.icewm/programs/explorer/desktopicons shadow"
 	else
-		echo 'prog "Show Icon Shadow" ""' "~/.icewm/programs/explorer/desktopicons shadow"
+		echo 'prog "Pokazuj cienie ikon" ""' "~/.icewm/programs/explorer/desktopicons shadow"
 	fi
 elif [ "$1" = "switch" ]; then
 	if [ "$deskiconson" -eq 1 ]; then

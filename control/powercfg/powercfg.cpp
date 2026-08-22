@@ -200,18 +200,18 @@ void addPowerSchemes(FXListBox* lb) {
 	}
 
 	if (govperformance) {
-		lb->appendItem("Performance", NULL, (void*)(FXuval)GOVERNOR_PERFORMANCE);
+		lb->appendItem("Wysoka wydajność", NULL, (void*)(FXuval)GOVERNOR_PERFORMANCE);
 		if (curgov == GOVERNOR_PERFORMANCE) lb->setCurrentItem(lb->getNumItems()-1);
 	}
 
 	if (govschedutil) {
-		lb->appendItem("Balanced", NULL, (void*)(FXuval)GOVERNOR_SCHEDUTIL);
+		lb->appendItem("Zrównoważony", NULL, (void*)(FXuval)GOVERNOR_SCHEDUTIL);
 
 		if (curgov == GOVERNOR_SCHEDUTIL || curgov == GOVERNOR_ONDEMAND) {
 			lb->setCurrentItem(lb->getNumItems()-1);
 		}
 	} else if (govondemand) {
-		lb->appendItem("Balanced", NULL, (void*)(FXuval)GOVERNOR_ONDEMAND);
+		lb->appendItem("Zrównoważony", NULL, (void*)(FXuval)GOVERNOR_ONDEMAND);
 
 		if (curgov == GOVERNOR_SCHEDUTIL || curgov == GOVERNOR_ONDEMAND) {
 			lb->setCurrentItem(lb->getNumItems()-1);
@@ -219,7 +219,7 @@ void addPowerSchemes(FXListBox* lb) {
 	}
 
 	if (govpowersave) {
-		lb->appendItem("Power Saving", NULL, (void*)(FXuval)GOVERNOR_POWERSAVE);
+		lb->appendItem("Oszczędzanie energii", NULL, (void*)(FXuval)GOVERNOR_POWERSAVE);
 		if (curgov == GOVERNOR_POWERSAVE) lb->setCurrentItem(lb->getNumItems()-1);
 	}
 
@@ -228,46 +228,44 @@ void addPowerSchemes(FXListBox* lb) {
 	return;
 }
 
-PowerCfgWindow::PowerCfgWindow(FXApp *a) : FXMainWindow(a, "Power Options Properties", ico_powercfg_16, NULL, DECOR_BORDER|DECOR_CLOSE|DECOR_TITLE, 0,0,0,0, 0,0,3,3, 0,6) {
+PowerCfgWindow::PowerCfgWindow(FXApp *a) : FXMainWindow(a, "Właściwości: Opcje zasilania", ico_powercfg_16, NULL, DECOR_BORDER|DECOR_CLOSE|DECOR_TITLE, 0,0,0,0, 0,0,3,3, 0,6) {
 	FXPacker* tempcont;
 	FXButton* btn;
 
 	cont = new FXVerticalFrame(this, LAYOUT_FILL_Y|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 0,0);
-	
+
 	tabbook = new FXTabBook(cont, NULL, 0, TABBOOK_NORMAL|LAYOUT_FILL, 0,0,0,0, 6,6,5,5);
-	new FXTabItem(tabbook, "Power Schemes", NULL, TAB_TOP_NORMAL, 0,0,0,0, 4,4,1,2);
+	new FXTabItem(tabbook, "Schematy zasilania", NULL, TAB_TOP_NORMAL, 0,0,0,0, 4,4,1,2);
 	schemecont = new FXVerticalFrame(tabbook, LAYOUT_FILL|FRAME_RAISED|FRAME_THICK, 0,0,0,0, 13,2,11,10, 8,8);
 	schemetopcont = new FXHorizontalFrame(schemecont, LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 16,16);
 
 	new FXLabel(schemetopcont, "", ico_powercfg_32, FRAME_NONE, 0,0,0,0, 0,0,0,0);
-
 	schemetext = new FXText(schemetopcont, NULL, 0, LAYOUT_FILL_X|LAYOUT_FIX_HEIGHT|TEXT_WORDWRAP);
 	schemetext->setText(
-			"Select the power scheme with the most appropriate settings "
-			"for this computer. Note that changing the settings below "
-			"will modify the selected scheme.");
+			"Wybierz schemat zasilania, którego ustawienia najlepiej odpowiadają temu komputerowi."
+			"Zauważ, że zmiana poniższych ustawień zmodyfikuje wybrany schemat.");
 	schemetext->disable();
 	schemetext->setMarginTop(1);
 	schemetext->setMarginLeft(0);
-	schemetext->setMarginBottom(5);
+	schemetext->setMarginTop(1);
 	schemetext->setMarginRight(0);
 	schemetext->setBackColor(getApp()->getBaseColor());
 	schemetext->setDefaultCursor(getApp()->getDefaultCursor(DEF_ARROW_CURSOR));
 
 	schemecont2 = new FXVerticalFrame(schemecont, LAYOUT_FILL, 0,0,0,0, 0,10,0,0, 8,8);
-	schemegrp = new FXGroupBox(schemecont2, "Power schemes", GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 8,9, 2,8, 8,8);
+	schemegrp = new FXGroupBox(schemecont2, "Schematy zasilania", GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 8,9, 2,8, 8,8);
 	FXListBox* schemesbox = new FXListBox(schemegrp, NULL, 0, FRAME_NORMAL|LISTBOX_NORMAL|LAYOUT_FILL_X, 0,0,0,0, 3,3,2,1);
-	schemesbox->appendItem("(None)");
+	schemesbox->appendItem("(Brak)");
 	schemesbox->disable();
 	FXHorizontalFrame* schemebtns = new FXHorizontalFrame(schemegrp, PACK_UNIFORM_WIDTH|LAYOUT_RIGHT, 0,0,0,0, 0,0,0,0, 4,4);
-	btn = new FXButton(schemebtns, "&Save As...", NULL, NULL, 0, BUTTON_NORMAL, 0,0,0,0, 10,10,2,3);
+	btn = new FXButton(schemebtns, "Z&apisz jako...", NULL, NULL, 0, BUTTON_NORMAL, 0,0,0,0, 10,10,2,3);
 	btn->disable();
-	btn = new FXButton(schemebtns, "&Delete", NULL, NULL, 0, BUTTON_NORMAL, 0,0,0,0, 10,10,2,3);
+	btn = new FXButton(schemebtns, "&Usuń", NULL, NULL, 0, BUTTON_NORMAL, 0,0,0,0, 10,10,2,3);
 	btn->disable();
 
-	settingsgrp = new FXGroupBox(schemecont2, "Settings", GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 8,9, 2,10);
+	settingsgrp = new FXGroupBox(schemecont2, "Ustawienia", GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 8,9, 2,10);
 	tempcont = new FXMatrix(settingsgrp, 2, MATRIX_BY_COLUMNS|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 8,8);
-	new FXLabel(tempcont, "CPU governor: ", NULL, LAYOUT_CENTER_Y);
+	new FXLabel(tempcont, "Zarządca procesora: ", NULL, LAYOUT_CENTER_Y);
 	powerbox = new FXListBox(tempcont, this, ID_POWERBOX, FRAME_NORMAL|LISTBOX_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_COLUMN, 0,0,0,0, 3,3,2,1);
 	addPowerSchemes(powerbox);
 
@@ -276,36 +274,36 @@ PowerCfgWindow::PowerCfgWindow(FXApp *a) : FXMainWindow(a, "Power Options Proper
 	new FXListBox(tempcont, NULL, 0, FRAME_NORMAL|LISTBOX_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_COLUMN, 0,0,0,0, 3,3,2,1);*/
 
 
-	new FXTabItem(tabbook, "Power Meter", NULL, TAB_TOP_NORMAL, 0,0,0,0, 4,4,1,2);
+	new FXTabItem(tabbook, "Miernik Mocy", NULL, TAB_TOP_NORMAL, 0,0,0,0, 4,4,1,2);
 	batmetercont = new FXVerticalFrame(tabbook, LAYOUT_FILL|FRAME_RAISED|FRAME_THICK, 0,0,0,0, 6,8,9,8, 0,0);
 	batmeter = new I2KBatMeter(batmetercont, LAYOUT_FILL);
 	batmeter->hideAlwaysShowChk();
 
-	new FXTabItem(tabbook, "Advanced", NULL, TAB_TOP_NORMAL, 0,0,0,0, 4,4,1,2);
+	new FXTabItem(tabbook, "Zaawansowane", NULL, TAB_TOP_NORMAL, 0,0,0,0, 4,4,1,2);
 
 	advancedcont = new FXVerticalFrame(tabbook, LAYOUT_FILL|FRAME_RAISED|FRAME_THICK, 0,0,0,0, 13,15,11,30, 8,8);
 	advancedtopcont = new FXHorizontalFrame(advancedcont, LAYOUT_FILL_X, 0,0,0,0, 0,0,0,4, 16,16);
 	new FXLabel(advancedtopcont, "", ico_powercfg_32, FRAME_NONE, 0,0,0,0, 0,0,0,0);
-	new FXLabel(advancedtopcont, "Select the power-saving settings you want to use.", NULL, LAYOUT_CENTER_Y, 0,0,0,0, 0,0,0,0);
+	new FXLabel(advancedtopcont, "Wybierz ustawienia oszczędzania energii, których chcesz używać.", NULL, LAYOUT_CENTER_Y, 0,0,0,0, 0,0,0,0);
 
-	optionsgrp = new FXGroupBox(advancedcont, "Options", GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 6,7, 2,60);
-	new FXCheckButton(optionsgrp, "Alway&s show icon on the taskbar", this, ID_SHOWICON);
-	powerbtngrp = new FXGroupBox(advancedcont, "Power buttons", GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL, 0,0,0,0, 6,7, 2,20);
+	optionsgrp = new FXGroupBox(advancedcont, "Opcje", GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 6,7, 2,60);
+	new FXCheckButton(optionsgrp, "Z&awsze pokazuj ikonę na pasku zadań", this, ID_SHOWICON);
+	powerbtngrp = new FXGroupBox(advancedcont, "Przyciski zasilania", GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL, 0,0,0,0, 6,7, 2,20);
 	powerbtncont = new FXVerticalFrame(powerbtngrp, LAYOUT_CENTER_Y|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 4,4);
 	
-	new FXLabel(powerbtncont, "Wh&en I press the power button on my computer:", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
+	new FXLabel(powerbtncont, "Ki&edy w komputerze zostanie naciśnięty przycisk zasilania:", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
 	powerbtnbox = new FXListBox(powerbtncont, NULL, 0, FRAME_NORMAL|LISTBOX_NORMAL|LAYOUT_FILL_X, 0,0,0,0, 3,3,2,1);
-	powerbtnbox->appendItem("Performance");
-	powerbtnbox->appendItem("Power Saving");
-	powerbtnbox->appendItem("Balanced");
+	powerbtnbox->appendItem("Najwyższa wydajność");
+	powerbtnbox->appendItem("Oszczędzanie energii");
+	powerbtnbox->appendItem("Zrównoważony");
 	powerbtnbox->disable();
 
 
 	FXHorizontalFrame* btncont = new FXHorizontalFrame(cont, LAYOUT_RIGHT, 0,0,0,0, 0,6,1,4, 6,0);
 	
 	okbtn = new FXButton(btncont, "OK", NULL, this, ID_DLG_OK, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
-	cancelbtn = new FXButton(btncont, "Cancel", NULL, this, ID_DLG_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
-	applybtn = new FXButton(btncont, "&Apply", NULL, this, ID_DLG_APPLY, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
+	cancelbtn = new FXButton(btncont, "Anuluj", NULL, this, ID_DLG_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
+	applybtn = new FXButton(btncont, "&Zastosuj", NULL, this, ID_DLG_APPLY, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
 
 	applybtn->disable();
 
@@ -333,7 +331,6 @@ int main(int argc, char *argv[]) {
 		ico_powercfg_32 = new FXPNGIcon(&application, resico_2k_powercfg_32);
 		ico_powercfg_16 = new FXPNGIcon(&application, resico_2k_powercfg_16);
 	}
-
 	new PowerCfgWindow(&application);
 
 	application.create();

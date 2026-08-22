@@ -292,7 +292,7 @@ long HotplugDialog::changeStatus(FXTreeList* tree, FXTreeItem* currentItem, char
     //puts(hardDrive);
     //puts(hardDriveModel);
 
-    snprintf(statusTextChar, statusTextCharSize, "%s at Device %s", hardDriveModel, hardDrive);
+    snprintf(statusTextChar, statusTextCharSize, "%s pod adresem %s", hardDriveModel, hardDrive);
     
 
     //devtext->setText(statusTextChar);
@@ -388,7 +388,7 @@ long HotplugDialog::addDevices(FXObject* sender, FXSelector sel, void* ptr) {
           if (hardDriveModel[i] != ' ')
 		break;
 	    else
-            snprintf(hardDriveModel, sizeof(hardDriveModel), "Generic USB Mass Storage Device (/dev/%s)", hardDrive);
+            snprintf(hardDriveModel, sizeof(hardDriveModel), "Masowe urządzenie magazynujące USB (/dev/%s)", hardDrive);
             noname = 0;
 	  }
 
@@ -473,18 +473,18 @@ long HotplugDialog::addDevices(FXObject* sender, FXSelector sel, void* ptr) {
 }
 
 //int main(int argc, char *argv[]) {
-HotplugDialog::HotplugDialog(FXApp *app):FXMainWindow(app, "Safely Remove Hardware", ico_hotplug, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,417,398,  11,10,16,11,  0,0) {	
+HotplugDialog::HotplugDialog(FXApp *app):FXMainWindow(app, "Bezpieczne usuwanie sprzętu", ico_hotplug, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,417,398,  11,10,16,11,  0,0) {	
 
   FXPacker* topinfo = new FXPacker(this, LAYOUT_FILL_X, 0,0,0,0,  0,0,0,8, 11, -1);
 
 
   new FXLabel(topinfo, "", ico_hotplug_big, LAYOUT_SIDE_LEFT|LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
 
-  new FXLabel(topinfo, "Select the device you want to unplug or eject, and then click Stop. When", NULL, LAYOUT_SIDE_TOP|LABEL_NORMAL, 0,0,0,0, 0,0,4,0);
-  new FXLabel(topinfo, "Windows notifies you that it is safe to do so unplug the device from your", NULL, LAYOUT_SIDE_TOP|LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
-  new FXLabel(topinfo, "computer.", NULL, LAYOUT_SIDE_TOP|LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
+  new FXLabel(topinfo, "Wybierz urządzenie, które chcesz odłączyć lub wysunąć, a następnie", NULL, LAYOUT_SIDE_TOP|LABEL_NORMAL, 0,0,0,0, 0,0,4,0);
+  new FXLabel(topinfo, "kliknij przycisk Zatrzymaj. Odłącz urządzenie, gdy system Windows", NULL, LAYOUT_SIDE_TOP|LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
+  new FXLabel(topinfo, "powiadomi Cię, że można to bezpiecznie uczynić.", NULL, LAYOUT_SIDE_TOP|LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
 
-  new FXLabel(this, "&Hardware devices:", NULL, LAYOUT_SIDE_TOP|LABEL_NORMAL, 0,0,0,0, 0,0,0,3);
+  new FXLabel(this, "&Urządzenia sprzętowe:", NULL, LAYOUT_SIDE_TOP|LABEL_NORMAL, 0,0,0,0, 0,0,0,3);
 
   FXPacker* bottominfo = new FXPacker(this, LAYOUT_SIDE_BOTTOM|LAYOUT_FILL_X, 0,0,0,0,  0,0,0,0, 0,0);
   
@@ -499,7 +499,7 @@ HotplugDialog::HotplugDialog(FXApp *app):FXMainWindow(app, "Safely Remove Hardwa
   addDevices(NULL, 0, NULL);
 
   FXTreeItem* firstitem = tree->getFirstItem();
-  devtext = new FXLabel(bottominfo, "No hotpluggable devices found.", NULL, LAYOUT_SIDE_TOP|LABEL_NORMAL, 0,0,0,0, 0,0,3,0);
+  devtext = new FXLabel(bottominfo, "Nie znaleziono urządzeń.", NULL, LAYOUT_SIDE_TOP|LABEL_NORMAL, 0,0,0,0, 0,0,3,0);
 
 
 
@@ -515,8 +515,8 @@ HotplugDialog::HotplugDialog(FXApp *app):FXMainWindow(app, "Safely Remove Hardwa
 
   FXButton* btn;
 
-  btn = new FXButton(tbtncont, "&Properties", NULL, NULL, 0, LAYOUT_SIDE_LEFT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,83,23, 0,0,0,0); btn->disable();
-  btn = new FXButton(tbtncont, "&Stop", NULL, this, ID_STOP, LAYOUT_SIDE_LEFT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,83,23, 0,0,0,0);
+  btn = new FXButton(tbtncont, "&Właściwości", NULL, NULL, 0, LAYOUT_SIDE_LEFT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,83,23, 0,0,0,0); btn->disable();
+  btn = new FXButton(tbtncont, "&Zatrzymaj", NULL, this, ID_STOP, LAYOUT_SIDE_LEFT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,83,23, 0,0,0,0);
 
   if (!firstitem)
     btn->disable();
@@ -529,15 +529,15 @@ HotplugDialog::HotplugDialog(FXApp *app):FXMainWindow(app, "Safely Remove Hardwa
 
   FXCheckButton* chkbtn;
 
-  chkbtn = new FXCheckButton(chkcont, "&Display device components", NULL, 0, CHECKBUTTON_NORMAL, 0,0,0,0,  0,0,0,0);
+  chkbtn = new FXCheckButton(chkcont, "Wyświetl s&kładniki urządzenia", NULL, 0, CHECKBUTTON_NORMAL, 0,0,0,0,  0,0,0,0);
   chkbtn->disable();
 
-  chkbtn = new FXCheckButton(chkcont, "Show Unplug/Eject &icon on the taskbar", NULL, 0, CHECKBUTTON_NORMAL, 0,0,0,0,  0,0,0,0);
+  chkbtn = new FXCheckButton(chkcont, "Pokaż ikonę Odłącz/Wysuń na pasku zadań", NULL, 0, CHECKBUTTON_NORMAL, 0,0,0,0,  0,0,0,0);
   chkbtn->setCheck(TRUE);
   chkbtn->disable();
 
 
-  new FXButton(bottominfo, "&Close", NULL, this, ID_CLOSE, LAYOUT_SIDE_RIGHT|LAYOUT_BOTTOM|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,83,23, 0,0,0,0);
+  new FXButton(bottominfo, "Za&knij", NULL, this, ID_CLOSE, LAYOUT_SIDE_RIGHT|LAYOUT_BOTTOM|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,83,23, 0,0,0,0);
 
   //new FXButton(toolbar,"\tUp",ico_hist_up,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  0,0,0,0);
 

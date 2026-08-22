@@ -40,9 +40,9 @@ FXIMPLEMENT(EjectTray, FXObject, EjectTrayMap, ARRAYNUMBER(EjectTrayMap));
 EjectTray::EjectTray(FXApp* a) :
 	app(a)
 {
-    tray = new I2KTrayIcon(app, "Safely Remove Hardware", ico_eject, 0, this, ID_SAFELYREMOVE, TRAY_CMD_ON_LEFT|TRAY_MENU_ON_RIGHT);
+    tray = new I2KTrayIcon(app, "Bezpieczne usuwanie sprzętu", ico_eject, 0, this, ID_SAFELYREMOVE, TRAY_CMD_ON_LEFT|TRAY_MENU_ON_RIGHT);
     popup = new FXPopup(tray);
-    new FXMenuCommand(popup, "Safely Remove Hardware", NULL, this, ID_SAFELYREMOVE);
+    new FXMenuCommand(popup, "Bezpieczne usuwanie sprzętu", NULL, this, ID_SAFELYREMOVE);
 	tray->setMenu(popup);
 }
 

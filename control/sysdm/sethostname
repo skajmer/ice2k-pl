@@ -1,6 +1,6 @@
 #!/bin/sh
 if ! test "$1"; then
-	echo 'Please put hostname in first parameter!' >&2
+	echo 'Proszę wpisać nazwę hosta w pierwszy parametr!' >&2
 	exit 2
 fi
 
@@ -13,7 +13,7 @@ isHostnameValid() {
 }
 
 if ! isHostnameValid "$1"; then
-	echo 'Hostname is invalid!' >&2
+	echo 'Nazwa hosta jest nieprawidłowa!' >&2
 	exit 3
 fi
 

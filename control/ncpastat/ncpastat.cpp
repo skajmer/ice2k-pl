@@ -220,7 +220,7 @@ int getDefaultGateway(char* ip, int len, char* iface) {
 	return 1;
 }
 
-NCPAStatWindow::NCPAStatWindow(FXApp *a) : FXMainWindow(a, "Network Properties", mainIcon, NULL,
+NCPAStatWindow::NCPAStatWindow(FXApp *a) : FXMainWindow(a, "Właściwości sieci", mainIcon, NULL,
 		DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,338,0) {
 	char ip[sizeof("255.255.255.255")] = {0};
 	char ipmask[sizeof("255.255.255.255")] = {0};
@@ -237,19 +237,19 @@ NCPAStatWindow::NCPAStatWindow(FXApp *a) : FXMainWindow(a, "Network Properties",
 	tabbook = new FXTabBook(cont, NULL, 0,
 			TABBOOK_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 0,0,0,0);
 
-	new FXTabItem(tabbook, "General", NULL, TAB_TOP_NORMAL, 0,0,0,0, 6, 6, 1, 2);
+	new FXTabItem(tabbook, "Ogólne", NULL, TAB_TOP_NORMAL, 0,0,0,0, 6, 6, 1, 2);
 
 	generalcont = new FXVerticalFrame(tabbook, FRAME_RAISED|FRAME_THICK, 0,0,0,0, 13,13,12,12, 8, 8);
 
-	connectiongrp = new FXGroupBox(generalcont, "Connection",
+	connectiongrp = new FXGroupBox(generalcont, "Połączenie",
 			GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 12,12,0,4, 0,0);
 
 	connectionmatrix = new FXMatrix(connectiongrp, 2, MATRIX_BY_COLUMNS|LAYOUT_FILL_X|PACK_UNIFORM_WIDTH, 0,0,0,0, 0,0,0,0, 0,0);
 
 #if 0
-	printf("Interface Name: %s\n", ifvalues.ifname);
-	printf("Packets Sent: %llu\n", ifvalues.sent);
-	printf("Packets Received: %llu\n", ifvalues.received);
+	printf("Nazwa interfejsu: %s\n", ifvalues.ifname);
+	printf("Packiety Wysłano: %llu\n", ifvalues.sent);
+	printf("Packiety Odebrano: %llu\n", ifvalues.received);
 	puts(ip);
 	/*printf("Speed: %d\n", ifvalues.speed);*/
 #endif
@@ -257,20 +257,20 @@ NCPAStatWindow::NCPAStatWindow(FXApp *a) : FXMainWindow(a, "Network Properties",
 	sprintf(ipmask, "%hhu.%hhu.%hhu.%hhu", ifvalues.mask.octets.byte1, ifvalues.mask.octets.byte2, ifvalues.mask.octets.byte3, ifvalues.mask.octets.byte4);
 
 
-	new FXLabel(connectionmatrix, "Status:", NULL, LAYOUT_FILL_X|JUSTIFY_LEFT|LAYOUT_FILL_COLUMN);
+	new FXLabel(connectionmatrix, "Stan:", NULL, LAYOUT_FILL_X|JUSTIFY_LEFT|LAYOUT_FILL_COLUMN);
 	if (ifvalues.up) {
-		conlbl = new FXLabel(connectionmatrix, "Connected", NULL, LAYOUT_FILL_X|JUSTIFY_RIGHT|LAYOUT_FILL_COLUMN);
+		conlbl = new FXLabel(connectionmatrix, "Połączono", NULL, LAYOUT_FILL_X|JUSTIFY_RIGHT|LAYOUT_FILL_COLUMN);
 	} else {
-		conlbl = new FXLabel(connectionmatrix, "Disconnected", NULL, LAYOUT_FILL_X|JUSTIFY_RIGHT|LAYOUT_FILL_COLUMN);
+		conlbl = new FXLabel(connectionmatrix, "Rozłączono", NULL, LAYOUT_FILL_X|JUSTIFY_RIGHT|LAYOUT_FILL_COLUMN);
 	}
 		
-	new FXLabel(connectionmatrix, "Interface:", NULL, LAYOUT_FILL_X|JUSTIFY_LEFT|LAYOUT_FILL_COLUMN);
+	new FXLabel(connectionmatrix, "Interfejs:", NULL, LAYOUT_FILL_X|JUSTIFY_LEFT|LAYOUT_FILL_COLUMN);
 	new FXLabel(connectionmatrix, ifvalues.ifname, NULL, LAYOUT_FILL_X|JUSTIFY_RIGHT|LAYOUT_FILL_COLUMN);
-	/*new FXLabel(connectionmatrix, "Speed:", NULL, LAYOUT_FILL_X|JUSTIFY_LEFT|LAYOUT_FILL_COLUMN);
+	/*new FXLabel(connectionmatrix, "Szybkość:", NULL, LAYOUT_FILL_X|JUSTIFY_LEFT|LAYOUT_FILL_COLUMN);
 	new FXLabel(connectionmatrix, "1.0 Gbps", NULL, LAYOUT_FILL_X|JUSTIFY_RIGHT|LAYOUT_FILL_COLUMN);*/
-	new FXLabel(connectionmatrix, "IP Address:", NULL, LAYOUT_FILL_X|JUSTIFY_LEFT|LAYOUT_FILL_COLUMN);
+	new FXLabel(connectionmatrix, "Adres IP:", NULL, LAYOUT_FILL_X|JUSTIFY_LEFT|LAYOUT_FILL_COLUMN);
 	new FXLabel(connectionmatrix, ip, NULL, LAYOUT_FILL_X|JUSTIFY_RIGHT|LAYOUT_FILL_COLUMN);
-	activitygrp = new FXGroupBox(generalcont, "Activity",
+	activitygrp = new FXGroupBox(generalcont, "Aktywność",
 			GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 0,0);
 
 	activitymtx = new FXMatrix(activitygrp, 3, MATRIX_BY_COLUMNS|LAYOUT_FILL_X,
@@ -283,7 +283,7 @@ NCPAStatWindow::NCPAStatWindow(FXApp *a) : FXMainWindow(a, "Network Properties",
 	horfrm = new FXHorizontalFrame(activitymtx, LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_COLUMN,
 			0,0,0,0, 0,0,0,0, 8,0);
 
-	new FXLabel(horfrm, "Sent", NULL, LAYOUT_CENTER_Y|LAYOUT_FILL_X|LAYOUT_FILL_COLUMN|JUSTIFY_RIGHT);
+	new FXLabel(horfrm, "Wysłano", NULL, LAYOUT_CENTER_Y|LAYOUT_FILL_X|LAYOUT_FILL_COLUMN|JUSTIFY_RIGHT);
 	
 	horsep = new FXHorizontalSeparator(horfrm, 
 			LAYOUT_CENTER_Y|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT,
@@ -303,12 +303,12 @@ NCPAStatWindow::NCPAStatWindow(FXApp *a) : FXMainWindow(a, "Network Properties",
 	
 	horsep->setBackColor(getApp()->getShadowColor());
 
-	new FXLabel(horfrm, "Received", NULL, LAYOUT_CENTER_Y);
+	new FXLabel(horfrm, "Odebrano", NULL, LAYOUT_CENTER_Y);
 
 	horfrm = new FXHorizontalFrame(activitymtx, LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_COLUMN,
 			0,0,0,0, 0,0,0,0, 0,0);
 
-	new FXLabel(horfrm, "Packets:", NULL, LAYOUT_FILL_COLUMN);
+	new FXLabel(horfrm, "Pakiety:", NULL, LAYOUT_FILL_COLUMN);
 
 	sprintf(tmpstr, "%llu", ifvalues.received);
 
@@ -330,16 +330,16 @@ NCPAStatWindow::NCPAStatWindow(FXApp *a) : FXMainWindow(a, "Network Properties",
 			0,0,0,0, 0,0,0,0, 4,4);
 
 
-	new FXButton(btnleftcont, "&Properties", NULL, this,
+	new FXButton(btnleftcont, "Właś&ciwości", NULL, this,
 			FXDialogBox::ID_ACCEPT,
 			BUTTON_NORMAL|BUTTON_DEFAULT|BUTTON_INITIAL,
 			0,0,0,0, 12, 12);
-	disablebtn = new FXButton(btnleftcont, "&Disable", NULL, this,
+	disablebtn = new FXButton(btnleftcont, "&Wyłącz", NULL, this,
 			ID_DISABLE,
 			BUTTON_NORMAL|BUTTON_DEFAULT|BUTTON_INITIAL,
 			0,0,0,0, 12, 12);
 	
-	wlanbtn = new FXButton(horfrm, "&View Wireless Networks", NULL, this, ID_WLAN,
+	wlanbtn = new FXButton(horfrm, "Wyświetl sieci bezprzewodowe", NULL, this, ID_WLAN,
 			BUTTON_NORMAL|BUTTON_DEFAULT|BUTTON_INITIAL|LAYOUT_FILL_X,
 			0,0,0,0, 12, 12);
 
@@ -347,27 +347,27 @@ NCPAStatWindow::NCPAStatWindow(FXApp *a) : FXMainWindow(a, "Network Properties",
 		wlanbtn->hide();
 	}
 
-	showicon = new FXCheckButton(generalcont, "Sho&w icon in notification area when connected");
+	showicon = new FXCheckButton(generalcont, "Pokaż ikony na pasku zadań podczas połączenia");
 	showicon->setCheck(ifvalues.trayshown);
 
-	new FXTabItem(tabbook, "Support", NULL, TAB_TOP_NORMAL, 0,0,0,0, 6, 6, 1, 2);
+	new FXTabItem(tabbook, "Obsługa", NULL, TAB_TOP_NORMAL, 0,0,0,0, 6, 6, 1, 2);
 
 	supportcont = new FXVerticalFrame(tabbook, FRAME_RAISED|FRAME_THICK, 0,0,0,0, 13,13,12,12, 8, 8);
 	
-	statusgrp = new FXGroupBox(supportcont, "Connection status",
+	statusgrp = new FXGroupBox(supportcont, "Stan połączenia",
 			GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 12,12,0,4, 0,0);
 
-	/*new FXLabel(horfrm, "", ico_ncpa_lan_txrx, LABEL_NORMAL,
+/*new FXLabel(horfrm, "", ico_ncpa_lan_txrx, LABEL_NORMAL,
 			0,0,0,0, 0,4,0,0);*/
 
 	statusmtx = new FXMatrix(statusgrp, 2, MATRIX_BY_COLUMNS|LAYOUT_FILL_X,
 				0,0,0,0, 0,0,0,0, 80,0);
 
-	new FXLabel(statusmtx, "IP Address: ");
+	new FXLabel(statusmtx, "Adres IP: ");
 	new FXLabel(statusmtx, ip);
-	new FXLabel(statusmtx, "Subnet Mask: ");
+	new FXLabel(statusmtx, "Maska podsieci: ");
 	new FXLabel(statusmtx, ipmask);
-	new FXLabel(statusmtx, "Default Gateway: ");
+	new FXLabel(statusmtx, "Brama domyślna: ");
 
 	char gateway[sizeof("255.255.255.255")] = {0};
 	getDefaultGateway(gateway, sizeof(gateway), ifvalues.ifname);
@@ -375,7 +375,7 @@ NCPAStatWindow::NCPAStatWindow(FXApp *a) : FXMainWindow(a, "Network Properties",
 	//new FXLabel(statusmtx, gateway, NULL, LAYOUT_FILL_COLUMN);
 
 
-	new FXButton(cont, "&Close", NULL, this,
+	new FXButton(cont, "&Zamknij", NULL, this,
 			ID_ACCEPT,
 			BUTTON_NORMAL|BUTTON_DEFAULT|BUTTON_INITIAL|LAYOUT_RIGHT,
 			0,0,0,0, 20, 20);
@@ -391,7 +391,7 @@ void NCPAStatWindow::create() {
 	char title[64];
 	FXMainWindow::create();
 	
-	snprintf(title, sizeof(title), "%s Properties", ifvalues.ifname);
+	snprintf(title, sizeof(title), "%s Właściwości", ifvalues.ifname);
 
 	this->setTitle(title);
 
@@ -543,7 +543,7 @@ FXIcon* ico_ncpa_lan_tx;
 FXIcon* ico_ncpa_lan_txrx;
 #endif
 
-	if (ifvalues.up && ifvalues.running) {
+if (ifvalues.up && ifvalues.running) {
 		if (ifvalues.received > ifvalues_old.received) {
 			if (ifvalues.sent > ifvalues_old.sent) {
 				iconlbl->setIcon(ico_ncpa_lan_txrx);
@@ -556,16 +556,16 @@ FXIcon* ico_ncpa_lan_txrx;
 			iconlbl->setIcon(ico_ncpa_lan_idle);
 		}
 
-		conlbl->setText("Connected");
+		conlbl->setText("Połączono");
 	} else {
 		iconlbl->setIcon(ico_ncpa_lan_nohw);
-		conlbl->setText("Disconnected");
+		conlbl->setText("Rozłączono");
 	}
 
 	if (ifvalues.up) {
-		disablebtn->setText("&Disable");
+		disablebtn->setText("&Wyłącz");
 	} else {
-		disablebtn->setText("&Enable");
+		disablebtn->setText("&Włącz");
 	}
 
 	/*sprintf(ip, "%hhu.%hhu.%hhu.%hhu\n", ifvalues.ip.octets.byte1, ifvalues.ip.octets.byte2, ifvalues.ip.octets.byte3, ifvalues.ip.octets.byte4);*/
@@ -586,8 +586,8 @@ long NCPAStatWindow::onCmdAccept(FXObject*, FXSelector, void*) {
 		}
 
 		FXMessageBox::information(getApp(), MBOX_OK,
-				"Network Properties",
-				"You will need to log off for these changes to apply.");
+				"Właściwości sieci",
+				"Musisz się wylogować, aby zastosować te zmiany.");
 	}
 
 	getApp()->exit();
@@ -619,7 +619,7 @@ int main(int argc, char *argv[]) {
 
 	if (argv[1] == NULL) {
 		application.create();
-		FXMessageBox::error(&application, MBOX_OK, "Error", "Please specify interface name in argument!");
+		FXMessageBox::error(&application, MBOX_OK, "Błąd", "Podaj nazwę interfejsu w argumencie!");
 		return 1;
 	}
 
@@ -627,7 +627,7 @@ int main(int argc, char *argv[]) {
 
 	if (ifvalues.exists == 0) {
 		application.create();
-		FXMessageBox::error(&application, MBOX_OK, "Error", "The interface doesn't exist!");
+		FXMessageBox::error(&application, MBOX_OK, "Błąd", "Interfejs nie istnieje!");
 		application.exit();
 		return 1;
 	}

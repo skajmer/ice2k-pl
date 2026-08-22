@@ -83,11 +83,11 @@ FXDEFMAP(FontViewer) FontViewerMap[] = {
 FXIMPLEMENT(FontViewer, FXMainWindow, FontViewerMap, ARRAYNUMBER(FontViewerMap));
 
 FontViewer::FontViewer(FXApp *a) : FXMainWindow(a, "Hello World!", winicon, NULL, DECOR_ALL, 0,0,640,480) {
-	const char brownfox[] = "The quick brown fox jumps over the lazy dog. 1234567890";
+	const char brownfox[] = "Zażółć gęślą jaźń. 1234567890";
 
 	buttoncont = new FXHorizontalFrame(this, LAYOUT_FILL_X|PACK_UNIFORM_WIDTH, 0,0,0,0, 8,8,8,6, 0,0);
-	new FXButton(buttoncont, "&Done", NULL, getApp(), FXApp::ID_QUIT, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 14,14,1,2);
-	FXButton* printbtn = new FXButton(buttoncont, "&Print", NULL, NULL, 0, BUTTON_NORMAL|LAYOUT_RIGHT, 0,0,0,0, 14,14,1,2);
+	new FXButton(buttoncont, "Gotowe", NULL, getApp(), FXApp::ID_QUIT, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 14,14,1,2);
+	FXButton* printbtn = new FXButton(buttoncont, "Drukuj", NULL, NULL, 0, BUTTON_NORMAL|LAYOUT_RIGHT, 0,0,0,0, 14,14,1,2);
 	printbtn->disable();
 	FXFrame* sep = new FXFrame(this, FRAME_NONE|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_X, 0,0,0,2, 0,0,0,0);
 	sep->setBackColor(getApp()->getShadowColor());
@@ -272,7 +272,7 @@ int main(int argc, char *argv[]) {
 
 	if (argv[1] == NULL || argv[1][0] == '\0') {
 		application.create();
-		FXMessageBox::error(&application, MBOX_OK, "Error", "Please specify font name in argument!");
+		FXMessageBox::error(&application, MBOX_OK, "Błąd", "Podaj czcionkę jako argument!");
 		return 1;
 	}
 
@@ -294,7 +294,7 @@ int main(int argc, char *argv[]) {
 		FXFREE(&fonts);
 	} else {
 		application.create();
-		FXMessageBox::error(&application, MBOX_OK, "Error", "Font does not exist!");
+		FXMessageBox::error(&application, MBOX_OK, "Błąd", "Czcionka nie istnieje!");
 		return 1;
 	}
 

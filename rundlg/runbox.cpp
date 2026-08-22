@@ -267,7 +267,7 @@ const char* getHomeDir() {
 
 
 long RunBox::onCmdBrowse(FXObject*,FXSelector,void*){
-	FXFileDialog open(mainwin,"Browse");
+	FXFileDialog open(mainwin,"Przeglądanie");
 
 	const char* home = getHomeDir();
 	open.setDirectory(home);
@@ -280,29 +280,29 @@ long RunBox::onCmdBrowse(FXObject*,FXSelector,void*){
 }
 
 // Construct a RunBox
-RunBox::RunBox(FXApp *a) : FXMainWindow(a, "Run", mainIcon, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,0,0, 11,11,18,17, 11, 10) {
+RunBox::RunBox(FXApp *a) : FXMainWindow(a, "Uruchom", mainIcon, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,0,0, 11,11,18,17, 11, 10) {
 	FXPacker* infocont = new FXPacker(this,FRAME_NONE, 0,0,0,0, 0,0,0,0, 11,0); 
 
 
 	new FXLabel(infocont, "", mainIconLarge, LAYOUT_SIDE_LEFT|LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
-	new FXLabel(infocont, "Type the name of a program, folder, document, or", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,-1);
-	new FXLabel(infocont, "Internet resource, and Windows will open it for you.", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
+	new FXLabel(infocont, "Wpisz nazwę programu, folderu, dokumentu lub zasobu", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,-1);
+	new FXLabel(infocont, "internetowego, a zostanie on otwaty przez system Windows.", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
 
 	FXHorizontalFrame* textbcont = new FXHorizontalFrame(this,LAYOUT_FILL_X|FRAME_NONE, 0,0,0,0, 0,1,0,0, 13,0); 
 
-	new FXLabel(textbcont, "&Open:", NULL, LAYOUT_CENTER_Y|LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
+	new FXLabel(textbcont, "Otwórz:", NULL, LAYOUT_CENTER_Y|LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
 	textbox = new FXTextField(textbcont, 44,this,ID_ACCEPT,TEXTFIELD_ENTER_ONLY|LAYOUT_CENTER_Y|LAYOUT_FILL_X|FRAME_SUNKEN|FRAME_THICK,0,0,0,0, 4,3,1,2);
 
 	FXHorizontalFrame* btncont = new FXHorizontalFrame(this,LAYOUT_RIGHT|FRAME_NONE, 0,0,0,0, 0,0,23,0, 6,0); 
 
 
 	// Button to clear
-	new FXButton(btncont, "OK", NULL, this, ID_ACCEPT, LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|BUTTON_DEFAULT|FRAME_THICK|FRAME_RAISED, 0,0,75,23, 0,0,0,0);
+	new FXButton(btncont, "OK", NULL, this, ID_ACCEPT, LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|BUTTON_DEFAULT|FRAME_THICK|FRAME_RAISED, 0,0,77,23, 0,0,0,0);
 
 	// Exit button
-	new FXButton(btncont, "Cancel", NULL, getApp(), FXApp::ID_QUIT, LAYOUT_FIX_WIDTH|BUTTON_DEFAULT|LAYOUT_FIX_HEIGHT|FRAME_THICK|FRAME_RAISED, 0,0,75,23, 0,0,0,0);
+	new FXButton(btncont, "Anuluj", NULL, getApp(), FXApp::ID_QUIT, LAYOUT_FIX_WIDTH|BUTTON_DEFAULT|LAYOUT_FIX_HEIGHT|FRAME_THICK|FRAME_RAISED, 0,0,77,23, 0,0,0,0);
 
-	new FXButton(btncont, "&Browse...", NULL, this, ID_BROWSE, LAYOUT_FIX_WIDTH|BUTTON_DEFAULT|LAYOUT_FIX_HEIGHT|FRAME_THICK|FRAME_RAISED, 0,0,75,23, 0,0,0,0);
+	new FXButton(btncont, "Przeglądanie...", NULL, this, ID_BROWSE, LAYOUT_FIX_WIDTH|BUTTON_DEFAULT|LAYOUT_FIX_HEIGHT|FRAME_THICK|FRAME_RAISED, 0,0,77,23, 0,0,0,0);
 	
 }
 

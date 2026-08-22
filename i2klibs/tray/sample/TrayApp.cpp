@@ -36,17 +36,17 @@ FXIMPLEMENT(TrayApp, FXObject, TrayAppMap, ARRAYNUMBER(TrayAppMap));
 TrayApp::TrayApp(FXApp* a) :
 	app(a)
 {
-    tray = new I2KTrayIcon(app, "Tray Test", mainicon, 0, this, ID_HELLO, TRAY_CMD_ON_LEFT|TRAY_MENU_ON_RIGHT);
+    tray = new I2KTrayIcon(app, "Test zasobnika", mainicon, 0, this, ID_HELLO, TRAY_CMD_ON_LEFT|TRAY_MENU_ON_RIGHT);
 
     popup = new FXPopup(tray);
-    new FXMenuCommand(popup, "Hello", 0, this, TrayApp::ID_HELLO);
+    new FXMenuCommand(popup, "Witaj", 0, this, TrayApp::ID_HELLO);
     new FXMenuSeparator(popup);
-    new FXMenuCommand(popup, "E&xit", 0, a, FXApp::ID_QUIT);
+    new FXMenuCommand(popup, "Zamknij", 0, a, FXApp::ID_QUIT);
 	tray->setMenu(popup);
 }
 
 long TrayApp::onHello(FXObject*, FXSelector, void*) {
-    FXMessageBox::information(app, MBOX_OK, "Tray Test", "Hello World!");
+    FXMessageBox::information(app, MBOX_OK, "Test zasobnika", "Witaj świecie!");
 
     return 1;
 }

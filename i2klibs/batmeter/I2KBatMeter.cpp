@@ -58,7 +58,7 @@ void I2KBatMeter::refreshInfo() {
 	getOverallPercentage(&percentage);
 
 	if (powersource == POWER_PSU_TYPE_BATTERY) {
-		powersrc->setText("Batteries");
+		powersrc->setText("Baterie");
 
 		if (percentage > 66) {
 			iconlbl->setIcon(ico_batfull);
@@ -70,13 +70,13 @@ void I2KBatMeter::refreshInfo() {
 			iconlbl->setIcon(ico_batcrit);
 		}
 	} else {
-		powersrc->setText("AC power");
+		powersrc->setText("Zasilany prądem przemiennym (AC)");
 	}
 	
 	int duration = 0;
 	char durationstr[sizeof("99:59:59")];
 	if (status == POWER_BAT_STATUS_CHARGING) {
-		sprintf(percentagestr, "%d%%      (charging)", percentage);
+		sprintf(percentagestr, "%d%%      (ładowanie)", percentage);
 		sprintf(percentage2str, "%d%%", percentage);
 
 		getOverallDuration(1, &duration);
@@ -100,7 +100,7 @@ void I2KBatMeter::refreshInfo() {
 	if ((duration > 0 && duration < 360000) &&
 			status != POWER_BAT_STATUS_FULL) {
 		powerduration->setText(durationstr);
-		powerdurationleft->setText("Total time remaining:");
+		powerdurationleft->setText("Całkowity pozostały czas:");
 	} else {
 		powerduration->setText(" ");
 		powerdurationleft->setText(" ");
@@ -232,23 +232,23 @@ I2KBatMeter::I2KBatMeter(FXComposite* p, FXuint opts, FXint x, FXint y, FXint w,
 	ico_chargeplug->render();
 
 	topcont = new FXHorizontalFrame(this, LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 12,12);
-	showiconchk = new FXCheckButton(topcont, "&Always show icon on the taskbar.");
-	showdetailschk = new FXCheckButton(topcont, "Show details for each &battery.", this, ID_DETAILED,
+	showiconchk = new FXCheckButton(topcont, "Zawsze pokazuj ikonę na pasku zadań.");
+	showdetailschk = new FXCheckButton(topcont, "Pokaż szczegóły dla kazdej baterii.", this, ID_DETAILED,
 			CHECKBUTTON_NORMAL);
 
 	powergrpcont = new FXPacker(this, LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 7,8,1,5, 0,0);
-	powergrp = new FXGroupBox(powergrpcont, "Power status", FRAME_GROOVE|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+	powergrp = new FXGroupBox(powergrpcont, "Stan zasilania", FRAME_GROOVE|LAYOUT_FILL_X|LAYOUT_FILL_Y);
 
 	powerinfocont = new FXHorizontalFrame(powergrp, LAYOUT_FILL_X, 0,0,0,0, 24,6,6,6, 14,14);
 	iconlbl = new FXLabel(powerinfocont, "", ico_bathalf, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
 	powerinfomtx = new FXMatrix(powerinfocont, 2, MATRIX_BY_COLUMNS|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 13,2);
 
-	new FXLabel(powerinfomtx, "Current power source:", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
+	new FXLabel(powerinfomtx, "Bieżące źródło zasilania:", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
 	powersrc = new FXLabel(powerinfomtx, "POWERSOURCE", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
 
-	powerremaininfo = new FXLabel(powerinfomtx, "Total battery power remaining:", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
+	powerremaininfo = new FXLabel(powerinfomtx, "Pozostały całkowity stan energii w bateriach:", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
 	powerremain = new FXLabel(powerinfomtx, "POWERREMAIN", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
-	powerdurationleft = new FXLabel(powerinfomtx, "Total time remaining:", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
+	powerdurationleft = new FXLabel(powerinfomtx, "Całkowity pozostały czas:", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
 	powerduration = new FXLabel(powerinfomtx, "POWERDURATION", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
 
 	switcher = new FXSwitcher(powergrp, LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 0,0,0,0);
@@ -281,8 +281,8 @@ I2KBatMeter::I2KBatMeter(FXComposite* p, FXuint opts, FXint x, FXint y, FXint w,
 	batbtn7 = new I2KBatButton(batbtnmtx, "#7", ico_batcrit, this, ID_BATBUTTON, LAYOUT_FILL_COLUMN|LAYOUT_FILL_ROW|LAYOUT_CENTER_X);
 	batbtn8 = new I2KBatButton(batbtnmtx, "#8", ico_batcrit, this, ID_BATBUTTON, LAYOUT_FILL_COLUMN|LAYOUT_FILL_ROW|LAYOUT_CENTER_X);
 
-	new FXLabel(detailedcont, "Click an individual battery icon for more information.", NULL, LAYOUT_FILL_X, 0,0,0,0, 40,40,37,13);
-	FXLabel* dislbl = new FXLabel(switcher, "No batteries have been found!", NULL,
+	new FXLabel(detailedcont, "Kliknij ikonę pojedynczej baterii, aby uzyskać więcej informacji.", NULL, LAYOUT_FILL_X, 0,0,0,0, 40,40,37,13);
+	FXLabel* dislbl = new FXLabel(switcher, "Nie znaleziono baterii!", NULL,
 			LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 0,0,0,30);
 
 	dislbl->disable();
@@ -317,7 +317,6 @@ long I2KBatMeter::onChkDetailed(FXObject*, FXSelector, void* ptr) {
 	else switcher->setCurrent(1);
 	return 1;
 }
-
 long I2KBatMeter::onCmdBattery(FXObject* obj, FXSelector, void*) {
 	I2KBatDialog dlg(this, 1, (char*)((I2KBatButton*)obj)->getUserData());
 	dlg.execute(PLACEMENT_OWNER);

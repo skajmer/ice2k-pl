@@ -67,8 +67,8 @@ FXDEFMAP(HelloWindow) HelloWindowMap[] = {
 FXIMPLEMENT(HelloWindow, FXMainWindow, HelloWindowMap, ARRAYNUMBER(HelloWindowMap));
 
 // constructs window
-HelloWindow::HelloWindow(FXApp *a) : FXMainWindow(a, "Hello World!", mainIcon, NULL, DECOR_ALL, 0,0,0,0) {
-	new FXButton(this, "Hello World!", NULL, this, ID_HELLO, BUTTON_NORMAL);
+HelloWindow::HelloWindow(FXApp *a) : FXMainWindow(a, "Witaj świecie!", mainIcon, NULL, DECOR_ALL, 0,0,0,0) {
+	new FXButton(this, "Witaj świecie!", NULL, this, ID_HELLO, BUTTON_NORMAL);
 }
 
 // deconstructs window

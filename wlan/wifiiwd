@@ -26,12 +26,12 @@ dbms() {
 }
 
 if ! test "$1"; then
-	echo 'err: No interface specified!' >&2
+	echo 'err: Nie podano interfejsu!' >&2
 	exit 1
 fi
 
 if ! type iwctl >/dev/null 2>&1; then
-	echo 'err: IWD is not installed!' >&2;
+	echo 'err: IWD nie jest zainstalowany!' >&2;
 	exit 1
 fi
 

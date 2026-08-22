@@ -310,7 +310,7 @@ long WLANWizard::onPageChange(FXObject* obj,FXSelector sel, void* ptr) {
 	if (current == 1) {
 		char networklbl[256];
 		snprintf(networklbl, sizeof(networklbl),
-				"Please wait while Windows connects to the '%s' network.", getSelectedNetwork());
+				"Czekaj, aż system Windows połączy się z siecią '%s'", getSelectedNetwork());
 		waitlbl->setText(networklbl);
 		connecting_horframe = 0;
 		connecting_verframe = 0;
@@ -380,7 +380,7 @@ int WLANWizard::wifiList() {
 						sprintf(item, "%c\t%s\t802.1.x", indic, ssid);
 						break;
 					default:
-						sprintf(item, "%c\t%s\tOpen", indic, ssid);
+						sprintf(item, "%c\t%s\tOtwórz", indic, ssid);
 				}
 				iconlist->appendItem(item, wifiicon, wifiicon);
 				i = 0;
@@ -424,10 +424,10 @@ long WLANWizard::onTimeoutScanning(FXObject* obj,FXSelector sel, void* ptr) {
 long WLANWizard::onTimeoutConnecting(FXObject* obj,FXSelector sel, void* ptr) {
 	char infotext[256];
 	snprintf(infotext, sizeof(infotext),
-			"The network '%s' requires a network key (also called a WEP key or WPA key). "
-			"A network key helps prevent unknown intruders from connecting to this network.\n"
+			"Sieć '%s' wymaga klucza sieciowego (nazywanego także kluczem WEP lub WPA). "
+			"Klucz sieciowy pomaga zapobiec łączeniu się nieznanym intruzom z ta siecią.\n"
 			"\n"
-			"Type the key, and then click Next.", getSelectedNetwork());
+			"Wpisz klucz, a nastepnie kliknij przycisk Połącz.", getSelectedNetwork());
 
 	if (!connecting) {
 		if (connect_err == 0) {
@@ -443,10 +443,10 @@ long WLANWizard::onTimeoutConnecting(FXObject* obj,FXSelector sel, void* ptr) {
 			char errmsg[256] = {0};
 
 			snprintf(errmsg, sizeof(errmsg),
-					"Failed to connect to the '%s' network.",
+					"Nie udało się połączyć z siecią '%s'.",
 					getSelectedNetwork());
 			
-			FXMessageBox::error(this, MBOX_OK, "Error",
+			FXMessageBox::error(this, MBOX_OK, "Błąd",
 					errmsg);
 
 			wiz->setCurrent(0);
@@ -472,10 +472,10 @@ long WLANWizard::onTimeoutConnectingPassword(FXObject* obj,FXSelector sel, void*
 			char errmsg[256] = {0};
 
 			snprintf(errmsg, sizeof(errmsg),
-					"Failed to connect to the '%s' network. Make sure you typed the password\n"
-					"correctly, then try again.", getSelectedNetwork());
+					"Nie udało się połączyć z siecią '%s'. Upewnij się, że wpisałeś hasło\n"
+					"poprawnie, i spróbuj ponownie.", getSelectedNetwork());
 			
-			FXMessageBox::error(this, MBOX_OK, "Error",
+			FXMessageBox::error(this, MBOX_OK, "Błąd",
 					errmsg);
 
 			wiz->setCurrent(2);
@@ -510,7 +510,7 @@ long WLANWizard::onListDoubleClk(FXObject* obj,FXSelector sel, void* ptr) {
 }
 
 
-WLANWizard::WLANWizard(FXApp *a) : FXMainWindow(a, "Connect to Wireless Network", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,497,360) {
+WLANWizard::WLANWizard(FXApp *a) : FXMainWindow(a, "Połączenie sieci bezprzewodowej", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,497,360) {
 	wiz = new I2KWizard(this, this, ID_WIZARD);
 	wiz->getNextButton()->disable();
 
@@ -524,7 +524,7 @@ WLANWizard::WLANWizard(FXApp *a) : FXMainWindow(a, "Connect to Wireless Network"
 
 	cont = new FXVerticalFrame(wiz->getSwitcher(),FRAME_NONE, 0,0,0,0, 0,0,0,0, 0,0);
 
-	new I2KWizHeader(cont, wizIcon, "Set up a wireless connection", "Choose a wireless network to connect to");
+	new I2KWizHeader(cont, wizIcon, "Połączenie siebi bezprzewodowej", "Wybierz sieć bezprzewodową");
 	cont = new FXVerticalFrame(cont, LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 22,20,23,12, 10,10);
 
 	switcher = new FXSwitcher(cont, LAYOUT_FILL_X|LAYOUT_FILL_Y|FRAME_NORMAL, 0,0,0,0, 0,0,0,0);
@@ -544,9 +544,9 @@ WLANWizard::WLANWizard(FXApp *a) : FXMainWindow(a, "Connect to Wireless Network"
 	FXHorizontalFrame* scanbtm = new FXHorizontalFrame(cont, LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 4,4);
 	new FXLabel(scanbtm, "", ico_info, FRAME_NONE, 0,0,0,0, 0,4,0,0);
 	scantext = new FXText(scanbtm, NULL, 0, LAYOUT_FILL_X|LAYOUT_FIX_HEIGHT|TEXT_WORDWRAP);
-	scantext->setText("If the desired network does not appear, "
-			"verify that your wireless router/access point is turned on and click Search Again. "
-			"If you do not own this network, please contact your adminstrator.");
+	scantext->setText("Jeśli żądana siec nie jest widoczna, "
+			"upewnij się, że twój router/punkt dostępu jest włączony i kliknij Szukaj ponownie. "
+			"Jeśli nie posiadasz tej sieci, skontaktuj się z administratorem.");
 	scantext->disable();
 	scantext->setMarginTop(0);
 	scantext->setMarginLeft(0);
@@ -555,14 +555,14 @@ WLANWizard::WLANWizard(FXApp *a) : FXMainWindow(a, "Connect to Wireless Network"
 	scantext->setBackColor(getApp()->getBaseColor());
 	scantext->setDefaultCursor(getApp()->getDefaultCursor(DEF_ARROW_CURSOR));
 
-	scanbtn = new FXButton(scanbtm, "&Search Again", NULL, this, ID_REFRESH,
+	scanbtn = new FXButton(scanbtm, "&Szukaj ponownie", NULL, this, ID_REFRESH,
 			BUTTON_DEFAULT|LAYOUT_BOTTOM|BUTTON_NORMAL,
 			0,0,0,0, 14,14,2,2);
 	//scanbtn->disable();
 
-	iconlist->appendHeader("Present",NULL,16+18);
-	iconlist->appendHeader("Network",NULL,351-scrollbarsize);
-	iconlist->appendHeader("Security",NULL,66);
+	iconlist->appendHeader("Widoczna",NULL,16+18);
+	iconlist->appendHeader("Sieć",NULL,351-scrollbarsize);
+	iconlist->appendHeader("Zabezpieczenia",NULL,66);
 
 	iconlist->getHeader()->setPadTop(0);
 	iconlist->getHeader()->setPadBottom(-1000);
@@ -585,7 +585,7 @@ WLANWizard::WLANWizard(FXApp *a) : FXMainWindow(a, "Connect to Wireless Network"
 	iconlist->appendItem("Really BIG and wide item to test\tPSK", ico_wifi0, ico_wifi0);
 	iconlist->appendItem("Really BIG and wide item to test\tPSK", ico_wifi0, ico_wifi0);*/
 
-	FXLabel* nonetlbl = new FXLabel(switcher, "No networks available");
+	FXLabel* nonetlbl = new FXLabel(switcher, "Brak dostępnych sieci");
 	nonetlbl->setBackColor(getApp()->getBackColor());
 	nonetlbl->setTextColor(getApp()->getShadowColor());
 
@@ -594,28 +594,28 @@ WLANWizard::WLANWizard(FXApp *a) : FXMainWindow(a, "Connect to Wireless Network"
 
 	cont = new FXVerticalFrame(wiz->getSwitcher(),FRAME_NONE, 0,0,0,0, 0,0,0,0, 0,0);
 
-	new I2KWizHeader(cont, wizIcon, "Set up a wireless connection", "Waiting for network to be ready...");
+	new I2KWizHeader(cont, wizIcon, "Połączenie sieci bezprzewodowej", "Trwa oczekiwanie, aż sieć będzie gotowa...");
 
 	cont = new FXVerticalFrame(cont, LAYOUT_FILL_X, 0,0,0,0, 32,32,12,12, 6,6);
 
 	waitlbl = new FXLabel(cont, "PLACEHOLDER");
-	new FXLabel(cont, "Waiting for network to be ready...");
+	new FXLabel(cont, "Trwa oczekiwanie, aż sieć będzie gotowa...");
 	animcanvas = new FXCanvas(cont, this, ID_ANIMATE_CONNECTING, LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_CENTER_X,
 			0,0, ANIM_CONNECTING_WIDTH, ANIM_CONNECTING_HEIGHT);
 
 	cont = new FXVerticalFrame(wiz->getSwitcher(),FRAME_NONE, 0,0,0,0, 0,0,0,0, 0,0);
 
-	new I2KWizHeader(cont, wizIcon, "Set up a wireless connection", "Type the key required for the network");
+	new I2KWizHeader(cont, wizIcon, "Połączenie sieci bezprzewodowej", "Wpisz wymagany klucz dla sieci");
 
 	cont = new FXVerticalFrame(cont, LAYOUT_FILL_X, 0,0,0,0, 32,10,10,10, 3,3);
 
 	getApp()->addTimeout(this, ID_SCAN, 0);
 
 	nettext = new FXText(cont, NULL, 0, LAYOUT_FILL_X|LAYOUT_FIX_HEIGHT|TEXT_WORDWRAP);
-	nettext->setText("The network '...' requires a network key (also called a WEP key or WPA key). "
-			"A network key helps prevent unknown intruders from connecting to this network.\n"
+	nettext->setText("Sieć '...' wymaga klucza sieciowego (nazywanego także kluczem WEP lub WPA). "
+			"Klucz sieciowy pomaga zapobiec łączeniu się nieznanym intruzom z tą siecią.\n"
 			"\n"
-			"Type the key, and then click Next.");
+			"Wpisz klucz, a następnie kliknij przycisk Połącz.");
 	nettext->disable();
 	nettext->setMarginTop(0);
 	nettext->setMarginLeft(0);
@@ -625,12 +625,12 @@ WLANWizard::WLANWizard(FXApp *a) : FXMainWindow(a, "Connect to Wireless Network"
 	nettext->setDefaultCursor(getApp()->getDefaultCursor(DEF_ARROW_CURSOR));
 	FXMatrix* keymtx = new FXMatrix(cont, 2, MATRIX_BY_COLUMNS|LAYOUT_FILL_X, 0,0,0,0, 0,24,10,0, 20, 4);
 
-	new FXLabel(keymtx,"Network key: ",	NULL, LAYOUT_CENTER_Y, 0,0,0,0, 0,0,0,0);
+	new FXLabel(keymtx,"Klucz sieciowy: ",	NULL, LAYOUT_CENTER_Y, 0,0,0,0, 0,0,0,0);
 	keyfield = new FXTextField(keymtx, 10, this, ID_KEYFIELD,
 			LAYOUT_FILL_X|LAYOUT_FILL_COLUMN|TEXTFIELD_PASSWD|FRAME_NORMAL|LAYOUT_CENTER_Y|TEXTFIELD_ENTER_ONLY,
 			0,0,0,0, 3,2,1,1);
 	
-	new FXLabel(keymtx,"Confirm network key: ",	NULL, LAYOUT_CENTER_Y, 0,0,0,0, 0,0,0,0);
+	new FXLabel(keymtx,"Potwierdź klucz sieciowy: ",	NULL, LAYOUT_CENTER_Y, 0,0,0,0, 0,0,0,0);
 
 	confirmkeyfield = new FXTextField(keymtx, 10, this, ID_KEYFIELD,
 			LAYOUT_FILL_X|LAYOUT_FILL_COLUMN|TEXTFIELD_PASSWD|FRAME_NORMAL|LAYOUT_CENTER_Y|TEXTFIELD_ENTER_ONLY,
@@ -755,7 +755,7 @@ int main(int argc, char *argv[]) {
 
 	if (argv[1] == NULL) {
 		application.create();
-		FXMessageBox::error(&application, MBOX_OK, "Error", "Please specify interface name in argument!");
+		FXMessageBox::error(&application, MBOX_OK, "Błąd", "Podaj nazwę interfejsu w argumencie!");
 		return 1;
 	}
 

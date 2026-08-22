@@ -88,7 +88,7 @@ FXIMPLEMENT(ScribbleWindow, FXMainWindow, ScribbleWindowMap, ARRAYNUMBER(Scribbl
 
 
 // Construct a ScribbleWindow
-ScribbleWindow::ScribbleWindow(FXApp *a) : FXMainWindow(a, "Scribble Application", mainIcon, NULL, DECOR_ALL, 0,0,800,600) {
+ScribbleWindow::ScribbleWindow(FXApp *a) : FXMainWindow(a, "Aplikacja do gryzmołów", mainIcon, NULL, DECOR_ALL, 0,0,800,600) {
 
 	FX7Segment* seven = new FX7Segment(this, "010", SEVENSEGMENT_NORMAL, 0,0,0,0, 0,0,0,0);
 

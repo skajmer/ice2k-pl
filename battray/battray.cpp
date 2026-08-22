@@ -75,9 +75,9 @@ static void secToStr(char* str, unsigned int sec) {
 	int s = sec % 60;
 
 	if (h > 99) {
-		sprintf(str, "99:59 hours");
+		sprintf(str, "99:59 godzin");
 	} else if (h) {
-		sprintf(str, "%d:%02d hours", h, m);
+		sprintf(str, "%d:%02d godzin", h, m);
 	} else {
 		sprintf(str, "%d:%02d min", m, s);
 	}
@@ -154,18 +154,18 @@ void BatTray::refreshInfo() {
 
 			if (amount > 1) {
 				textptr += snprintf(textptr, textend-textptr,
-						"Battery %d: ", i+1);
+						"Bateria %d: ", i+1);
 
 				if (textptr >= textend) break;
 			}
 			
 			if (duration > 0 && duration < 360000) {
 				textptr += snprintf(textptr, textend-textptr,
-						"%s (%d%%) remaining",
+						"pozostało %s (%d%%)",
 						durationstr, percentage);
 			} else {
 				textptr += snprintf(textptr, textend-textptr,
-						"%d%% remaining",
+						"pozostało %d%%",
 						percentage);
 			}
 
@@ -173,14 +173,14 @@ void BatTray::refreshInfo() {
 
 			if (status == POWER_BAT_STATUS_CHARGING) {
 				textptr += snprintf(textptr, textend-textptr,
-						" (charging)");
+						" (ładowanie)");
 			}
 			if (textptr >= textend) break;
 
 			++i;
 		}
 	} else {
-		strcpy(textbuf, "No batteries installed!");
+		strcpy(textbuf, "Brak zainstalowanych baterii!");
 	}
 
 	//puts(textbuf);
@@ -240,10 +240,10 @@ BatTray::BatTray(FXApp* a) :
 		boldfont->create();
 	}
 
-    tray = new I2KTrayIcon(app, "No batteries installed!", ico_plug, 0, this, ID_BATTERY, TRAY_CMD_ON_LEFT|TRAY_MENU_ON_RIGHT);
+    tray = new I2KTrayIcon(app, "Brak zainstalowanych baterii!", ico_plug, 0, this, ID_BATTERY, TRAY_CMD_ON_LEFT|TRAY_MENU_ON_RIGHT);
     popup = new FXPopup(tray);
-	powercmd = new FXMenuCommand(popup, "&Adjust Power Properties", NULL, this, ID_POWERCFG);
-	metercmd = new FXMenuCommand(popup, "&Open Power Meter", NULL, this, ID_BATTERY);
+	powercmd = new FXMenuCommand(popup, "Ustaw właściwości zasilania", NULL, this, ID_POWERCFG);
+	metercmd = new FXMenuCommand(popup, "Otwórz Miernik Mocy", NULL, this, ID_BATTERY);
 	metercmd->setFont(boldfont);
 
 	tray->setMenu(popup);

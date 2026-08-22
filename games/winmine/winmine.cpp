@@ -140,13 +140,13 @@ AboutBox::AboutBox(FXWindow* owner): FXDialogBox(owner,"About Minesweeper",DECOR
 	new FXLabel(cont, "", ico_main_32);
 
 	new FXLabel(cont,
-	"Minesweeper 2.0.0\n"
-	"Clear the board, avoid mines and win.\n"
+	"Saper 2.0.0\n"
+	"Wyczyść planszę, uniknij min i wygraj.\n"
 	"\n"
-	"Written by xcomposite\n"
+	"Napisana przez xcomposite\n"
 	"\n"
-	"Thanks to Curt Johnson and Robert Donner\n"
-	"for the original game!",
+	"Podziękowania dla Curt Johnson i Robert Donner\n"
+	"za oryginalną grę!",
 	NULL, JUSTIFY_LEFT|LAYOUT_FILL_X);
 
 	FXButton* okbtn = new FXButton(this, "OK", NULL, this, ID_ACCEPT,
@@ -195,7 +195,7 @@ void initBoard(int w, int h) {
 
 	if (boardw > MAXWIDTH)  boardw = MAXWIDTH;
 	if (boardh > MAXHEIGHT) boardh = MAXHEIGHT;
-
+	
 	//printf("boardw: %d, boardh: %d\n", boardw, boardh);
 
 
@@ -305,30 +305,30 @@ FXDEFMAP(HighScoreBox) HighScoreBoxMap[] = {
 };
 FXIMPLEMENT(HighScoreBox, FXDialogBox, HighScoreBoxMap, ARRAYNUMBER(HighScoreBoxMap));
 
-HighScoreBox::HighScoreBox(FXWindow* owner): FXDialogBox(owner, "Fastest Mine Sweepers", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0, 16,0,23,13, 10,18) {
+HighScoreBox::HighScoreBox(FXWindow* owner): FXDialogBox(owner, "Najszybsi saperzy", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0, 16,0,23,13, 10,18) {
 	char timestr[24];
 
-	int   beginnerScore = getApp()->reg().readIntEntry   ("Scores", "Beginner", 999);
-	const char* beginnerName  = getApp()->reg().readStringEntry("Names",  "Beginner", "Anonymous");
+	int   beginnerScore = getApp()->reg().readIntEntry   ("Wyniki", "Początkujący", 999);
+	const char* beginnerName  = getApp()->reg().readStringEntry("Nazwy",  "Początkujący", "Anonim");
 
-	int   intermediateScore = getApp()->reg().readIntEntry   ("Scores", "Intermediate", 999);
-	const char* intermediateName  = getApp()->reg().readStringEntry("Names",  "Intermediate", "Anonymous");
+	int   intermediateScore = getApp()->reg().readIntEntry   ("Wyniki", "Średniozaawansowany", 999);
+	const char* intermediateName  = getApp()->reg().readStringEntry("Nazwy",  "Średniozaawansowany", "Anonim");
 
-	int   expertScore = getApp()->reg().readIntEntry   ("Scores", "Expert", 999);
-	const char* expertName  = getApp()->reg().readStringEntry("Names",  "Expert", "Anonymous");
+	int   expertScore = getApp()->reg().readIntEntry   ("Wyniki", "Ekspert", 999);
+	const char* expertName  = getApp()->reg().readStringEntry("Nazwy",  "Ekspert", "Anonim");
 
 	FXMatrix* scoregrid = new FXMatrix(this, 3, PACK_UNIFORM_HEIGHT, 0,0,0,0, 0,0,0,0, 0,3);
-	new FXLabel(scoregrid, "Beginner:", NULL, JUSTIFY_LEFT, 0,0,0,0, 0,0,00,0);
-	new FXLabel(scoregrid, "Intermediate:", NULL, JUSTIFY_LEFT, 0,0,0,0, 0,0,0,0);
-	new FXLabel(scoregrid, "Expert:", NULL, JUSTIFY_LEFT|LAYOUT_FIX_WIDTH, 0,0,75,0, 00,0,0,0);
+	new FXLabel(scoregrid, "Początkujący:", NULL, JUSTIFY_LEFT, 0,0,0,0, 0,0,00,0);
+	new FXLabel(scoregrid, "Średniozaawansowany:", NULL, JUSTIFY_LEFT, 0,0,0,0, 0,0,0,0);
+	new FXLabel(scoregrid, "Ekspert:", NULL, JUSTIFY_LEFT|LAYOUT_FIX_WIDTH, 0,0,75,0, 00,0,0,0);
 
-	snprintf(timestr, sizeof(timestr), "%d seconds", beginnerScore);
+	snprintf(timestr, sizeof(timestr), "%d sekund", beginnerScore);
 	begScoreLbl = new FXLabel(scoregrid, timestr, NULL, JUSTIFY_LEFT|LAYOUT_FIX_WIDTH, 0,0,82,0, 0,0,0,0);
 
-	snprintf(timestr, sizeof(timestr), "%d seconds", intermediateScore);
+	snprintf(timestr, sizeof(timestr), "%d sekund", intermediateScore);
 	intScoreLbl = new FXLabel(scoregrid, timestr, NULL, JUSTIFY_LEFT, 0,0,0,0, 0,0,0,0);
 
-	snprintf(timestr, sizeof(timestr), "%d seconds", expertScore);
+	snprintf(timestr, sizeof(timestr), "%d sekund", expertScore);
 	expScoreLbl = new FXLabel(scoregrid, timestr, NULL, JUSTIFY_LEFT, 0,0,0,0, 0,0,0,0);
 
 	begNameLbl = new FXLabel(scoregrid, beginnerName, NULL, JUSTIFY_LEFT|LAYOUT_FIX_WIDTH, 0,0,82,0, 0,0,0,0);
@@ -337,7 +337,7 @@ HighScoreBox::HighScoreBox(FXWindow* owner): FXDialogBox(owner, "Fastest Mine Sw
 
 	FXHorizontalFrame* btncont = new FXHorizontalFrame(this, LAYOUT_SIDE_BOTTOM|LAYOUT_FILL_X, 0,0,0,0, 22,37,0,0, 0,0);
 
-	new FXButton(btncont, "&Reset Scores", NULL, this, ID_CLEAR, LAYOUT_LEFT|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 4,4,1,1);
+	new FXButton(btncont, "&Resetuj wyniki", NULL, this, ID_CLEAR, LAYOUT_LEFT|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 4,4,1,1);
 	FXButton* okbtn = new FXButton(btncont, "OK", NULL, this, ID_ACCEPT, LAYOUT_RIGHT|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 13,14,1,1);
 	this->show();
 	this->setFocus();
@@ -345,22 +345,22 @@ HighScoreBox::HighScoreBox(FXWindow* owner): FXDialogBox(owner, "Fastest Mine Sw
 }
 
 long HighScoreBox::clearScores(FXObject* sender, FXSelector sel, void* ptr) {
-	getApp()->reg().writeStringEntry("Names", "Beginner", "Anonymous");
-	getApp()->reg().writeIntEntry("Scores", "Beginner", 999);
+	getApp()->reg().writeStringEntry("Nazwy", "Początkujący", "Anonim");
+	getApp()->reg().writeIntEntry("Wyniki", "Beginner", 999);
 	
-	getApp()->reg().writeStringEntry("Names", "Intermediate", "Anonymous");
-	getApp()->reg().writeIntEntry("Scores", "Intermediate", 999);
+	getApp()->reg().writeStringEntry("Nazwy", "Średniozaawansowany", "Anonim");
+	getApp()->reg().writeIntEntry("Wyniki", "Średniozaawansowany", 999);
 
-	getApp()->reg().writeStringEntry("Names", "Expert", "Anonymous");
-	getApp()->reg().writeIntEntry("Scores", "Expert", 999);
+	getApp()->reg().writeStringEntry("Nazwy", "Ekspert", "Anonim");
+	getApp()->reg().writeIntEntry("Wyniki", "Ekspert", 999);
 
-	begNameLbl->setText("Anonymous");
-	intNameLbl->setText("Anonymous");
-	expNameLbl->setText("Anonymous");
+	begNameLbl->setText("Anonim");
+	intNameLbl->setText("Anonim");
+	expNameLbl->setText("Anonim");
 
-	begScoreLbl->setText("999 seconds");
-	intScoreLbl->setText("999 seconds");
-	expScoreLbl->setText("999 seconds");
+	begScoreLbl->setText("999 s");
+	intScoreLbl->setText("999 s");
+	expScoreLbl->setText("999 s");
 
 	return 1;
 }
@@ -444,13 +444,13 @@ long CustomGameBox::onCmdAccept(FXObject* obj, FXSelector sel, void* ptr) {
 
 FXIMPLEMENT(CustomGameBox, FXDialogBox, CustomGameBoxMap, ARRAYNUMBER(CustomGameBoxMap));
 
-CustomGameBox::CustomGameBox(FXWindow* owner): FXDialogBox(owner, "Custom Field", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0, 10,10,10,10, 20,10) {
+CustomGameBox::CustomGameBox(FXWindow* owner): FXDialogBox(owner, "Pole niestandardowe", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0, 10,10,10,10, 20,10) {
 	char fieldstr[4];
 
 	FXMatrix* scoregrid = new FXMatrix(this, 3, LAYOUT_SIDE_LEFT|PACK_UNIFORM_HEIGHT, 0,0,0,0, 0,0,0,0, 0,2);
-	new FXLabel(scoregrid, "Height:", NULL, JUSTIFY_LEFT, 0,0,0,0, 0,16,0,0);
-	new FXLabel(scoregrid, "Width:", NULL, JUSTIFY_LEFT, 0,0,0,0,   0,16,0,0);
-	new FXLabel(scoregrid, "Mines:", NULL, JUSTIFY_LEFT, 0,0,0,0,   0,16,0,0);
+	new FXLabel(scoregrid, "Wysokość:", NULL, JUSTIFY_LEFT, 0,0,0,0, 0,16,0,0);
+	new FXLabel(scoregrid, "Szerokość:", NULL, JUSTIFY_LEFT, 0,0,0,0,   0,16,0,0);
+	new FXLabel(scoregrid, "Miny:", NULL, JUSTIFY_LEFT, 0,0,0,0,   0,16,0,0);
 
 
 	heighttfield = new FXTextField(scoregrid, 5,this,ID_ACCEPT,TEXTFIELD_INTEGER|TEXTFIELD_LIMITED|TEXTFIELD_ENTER_ONLY|FRAME_SUNKEN|FRAME_THICK, 0,0,0,0, 1,1,1,1);
@@ -468,7 +468,7 @@ CustomGameBox::CustomGameBox(FXWindow* owner): FXDialogBox(owner, "Custom Field"
 	FXVerticalFrame* btncont = new FXVerticalFrame(this, LAYOUT_SIDE_RIGHT|LAYOUT_FILL_Y|PACK_UNIFORM_WIDTH, 0,0,0,0, 0,0,0,0, 0,0);
 
 	new FXButton(btncont, "OK", NULL, this, ID_ACCEPT, LAYOUT_TOP|BUTTON_NORMAL|BUTTON_INITIAL|BUTTON_DEFAULT, 0,0,0,0, 12,12,2,3);
-	new FXButton(btncont, "Cancel", NULL, this, ID_CANCEL, LAYOUT_BOTTOM|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 12,12,2,3);
+	new FXButton(btncont, "Anuluj", NULL, this, ID_CANCEL, LAYOUT_BOTTOM|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 12,12,2,3);
 	this->show();
 	//this->setFocus();
 }
@@ -501,14 +501,14 @@ long NewScoreBox::onCmdAccept(FXObject* obj, FXSelector sel, void* ptr) {
 	name = strndup(textfield->getText().text(), 12);
 
 	if (gf.difficulty == DIFF_BEGINNER) {
-		getApp()->reg().writeStringEntry("Names", "Beginner", name);
-		getApp()->reg().writeIntEntry("Scores", "Beginner", seconds);
+		getApp()->reg().writeStringEntry("Nazwy", "Początkujący", name);
+		getApp()->reg().writeIntEntry("Wyniki", "Początkujący", seconds);
 	} else if (gf.difficulty == DIFF_INTERMEDIATE) {
-		getApp()->reg().writeStringEntry("Names", "Intermediate", name);
-		getApp()->reg().writeIntEntry("Scores", "Intermediate", seconds);
+		getApp()->reg().writeStringEntry("Nazwy", "Średniozaawansowany", name);
+		getApp()->reg().writeIntEntry("Wyniki", "Średniozaawansowany", seconds);
 	} else {
-		getApp()->reg().writeStringEntry("Names", "Expert", name);
-		getApp()->reg().writeIntEntry("Scores", "Expert", seconds);
+		getApp()->reg().writeStringEntry("Nazwy", "Ekspert", name);
+		getApp()->reg().writeIntEntry("Wyniki", "Ekspert", seconds);
 	}
 
 	HighScoreBox highscorebox(mainwin);
@@ -524,20 +524,20 @@ FXDEFMAP(NewScoreBox) NewScoreBoxMap[] = {
 
 FXIMPLEMENT(NewScoreBox, FXDialogBox, NewScoreBoxMap, ARRAYNUMBER(NewScoreBoxMap));
 
-NewScoreBox::NewScoreBox(FXWindow* owner): FXDialogBox(owner, "Fastest Time", DECOR_BORDER, 0,0,0,0, 9,9,6,22, 0,0) {
-	new FXLabel(this, "You have the fastest time", NULL, LAYOUT_CENTER_X, 0,0,0,0, 0,0,0,0);
+NewScoreBox::NewScoreBox(FXWindow* owner): FXDialogBox(owner, "Najszybszy czas", DECOR_BORDER, 0,0,0,0, 9,9,6,22, 0,0) {
+	new FXLabel(this, "Masz najszybszy czas", NULL, LAYOUT_CENTER_X, 0,0,0,0, 0,0,0,0);
 	if (gf.difficulty == DIFF_BEGINNER) {
-		name = strdup(getApp()->reg().readStringEntry("Names", "Beginner", "Anonymous"));
-		new FXLabel(this, "for beginner level.", NULL, LAYOUT_CENTER_X, 0,0,0,0, 0,0,0,0);
+		name = strdup(getApp()->reg().readStringEntry("Nazwy", "Początkujący", "Anonim"));
+		new FXLabel(this, "dla poziomu początkującego.", NULL, LAYOUT_CENTER_X, 0,0,0,0, 0,0,0,0);
 	} else if (gf.difficulty == DIFF_INTERMEDIATE) {
-		name = strdup(getApp()->reg().readStringEntry("Names", "Intermediate", "Anonymous"));
-		new FXLabel(this, "for intermediate level.", NULL, LAYOUT_CENTER_X, 0,0,0,0, 0,0,0,0);
+		name = strdup(getApp()->reg().readStringEntry("Nazwy", "Średniozaawansowany", "Anonim"));
+		new FXLabel(this, "dla poziomu średniozaawansowanego.", NULL, LAYOUT_CENTER_X, 0,0,0,0, 0,0,0,0);
 	} else {
-		name = strdup(getApp()->reg().readStringEntry("Names", "Expert", "Anonymous"));
-		new FXLabel(this, "for expert level.", NULL, LAYOUT_CENTER_X, 0,0,0,0, 0,0,0,0);
+		name = strdup(getApp()->reg().readStringEntry("Nazwy", "Ekspert", "Anonim"));
+		new FXLabel(this, "dla poziomu ekspert.", NULL, LAYOUT_CENTER_X, 0,0,0,0, 0,0,0,0);
 	}
 
-	new FXLabel(this, "Please enter your name.", NULL, LAYOUT_CENTER_X, 0,0,0,0, 0,0,0,0);
+	new FXLabel(this, "Wpisz swoje imię.", NULL, LAYOUT_CENTER_X, 0,0,0,0, 0,0,0,0);
 
 	new FXSeparator(this, SEPARATOR_NONE|LAYOUT_FIX_HEIGHT|LAYOUT_FIX_WIDTH, 0,0,132,37);	
 	textfield = new FXTextField(this, 18,this,ID_ACCEPT,TEXTFIELD_ENTER_ONLY|LAYOUT_CENTER_X|FRAME_SUNKEN|FRAME_THICK, 0,0,0,0, 1,1,1,1);
@@ -807,33 +807,33 @@ long Minesweeper::onUpdMarks(FXObject* obj, FXSelector sel, void* ptr) {
 }
 
 
-Minesweeper::Minesweeper(FXApp *a) : FXMainWindow(a, "Minesweeper", ico_main_16, NULL, DECOR_MENU|DECOR_BORDER|DECOR_MINIMIZE|DECOR_CLOSE|DECOR_TITLE, 0,0,0,0) {
+Minesweeper::Minesweeper(FXApp *a) : FXMainWindow(a, "Saper", ico_main_16, NULL, DECOR_MENU|DECOR_BORDER|DECOR_MINIMIZE|DECOR_CLOSE|DECOR_TITLE, 0,0,0,0) {
 	menubar = new FXMenuBar(this, this, LAYOUT_SIDE_TOP|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,1, 0,0);
 	gamemenu = new FXMenuPane(this);
 	helpmenu = new FXMenuPane(this);
-	new FXMenuTitle(menubar,"&Game", NULL, gamemenu);
-	new FXMenuTitle(menubar,"&Help", NULL, helpmenu);
+	new FXMenuTitle(menubar,"Gra", NULL, gamemenu);
+	new FXMenuTitle(menubar,"Pomoc", NULL, helpmenu);
 
 	//new FXMenuRadio(gamemenu, "&Beginner");
 
-	new FXMenuCommand(gamemenu, "&New\tF2",NULL,this,ID_NEW);
+	new FXMenuCommand(gamemenu, "&Nowa\tF2",NULL,this,ID_NEW);
 	new FXMenuSeparator(gamemenu);
-	begradio = new FXMenuRadio(gamemenu, "&Beginner",this,ID_DIFFICULTY_BEGINNER);
+	begradio = new FXMenuRadio(gamemenu, "Początkujący",this,ID_DIFFICULTY_BEGINNER);
 	begradio->setCheck(TRUE);
 
-	intradio = new FXMenuRadio(gamemenu, "&Intermediate",this,ID_DIFFICULTY_INTERMEDIATE);
-	expradio = new FXMenuRadio(gamemenu, "&Expert",this,ID_DIFFICULTY_EXPERT);
-	cusradio = new FXMenuRadio(gamemenu, "&Custom...",this,ID_DIFFICULTY_CUSTOM);
+	intradio = new FXMenuRadio(gamemenu, "Średniozaawansowany",this,ID_DIFFICULTY_INTERMEDIATE);
+	expradio = new FXMenuRadio(gamemenu, "Ekspert",this,ID_DIFFICULTY_EXPERT);
+	cusradio = new FXMenuRadio(gamemenu, "Niestandardowy...",this,ID_DIFFICULTY_CUSTOM);
 	new FXMenuSeparator(gamemenu);
 	
-	new FXMenuCheck(gamemenu, "&Color", this, ID_COLOR);
-	new FXMenuCheck(gamemenu, "&Marks (?)", this, ID_MARKS);
+	new FXMenuCheck(gamemenu, "Kolor", this, ID_COLOR);
+	new FXMenuCheck(gamemenu, "Znaczniki (?)", this, ID_MARKS);
 	new FXMenuSeparator(gamemenu);
-	new FXMenuCommand(gamemenu, "Best &Times", NULL, this, ID_BESTSCORE);
+	new FXMenuCommand(gamemenu, "Najlepsze wyniki...", NULL, this, ID_BESTSCORE);
 	new FXMenuSeparator(gamemenu);
-	new FXMenuCommand(gamemenu,"E&xit",NULL,getApp(),FXApp::ID_QUIT);
+	new FXMenuCommand(gamemenu,"Zakończ",NULL,getApp(),FXApp::ID_QUIT);
 
-	new FXMenuCommand(helpmenu, "&About Minesweeper...",NULL,this,ID_ABOUT);
+	new FXMenuCommand(helpmenu, "Saper - informacje...",NULL,this,ID_ABOUT);
 
 
 	mscanvas = new FXCanvas(this, this, ID_CANVAS, LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT);
@@ -847,14 +847,14 @@ Minesweeper::Minesweeper(FXApp *a) : FXMainWindow(a, "Minesweeper", ico_main_16,
 
 Minesweeper::~Minesweeper() {
 	int writesettings = 0;
-	if (getApp()->reg().readIntEntry("Settings", "Color", 1) != gf.color) {
+	if (getApp()->reg().readIntEntry("", "Kolor", 1) != gf.color) {
 		writesettings = 1;
-		getApp()->reg().writeIntEntry("Settings", "Color", gf.color);
+		getApp()->reg().writeIntEntry("Settings", "Kolor", gf.color);
 	}
 
-	if (getApp()->reg().readIntEntry("Settings", "Marks", 1) != gf.marks) {
+	if (getApp()->reg().readIntEntry("Settings", "Znaczniki", 1) != gf.marks) {
 		writesettings = 1;
-		getApp()->reg().writeIntEntry("Settings", "Marks", gf.marks);
+		getApp()->reg().writeIntEntry("Settings", "Znaczniki", gf.marks);
 	}
 
 
@@ -1033,11 +1033,11 @@ void Minesweeper::revealCell(int col, int row, int click) {
 			int oldscore = 999;
 
 			if (gf.difficulty == DIFF_BEGINNER) {
-				oldscore = getApp()->reg().readIntEntry("Scores", "Beginner", 999);
+				oldscore = getApp()->reg().readIntEntry("Wyniki", "Początkujący", 999);
 			} else if (gf.difficulty == DIFF_INTERMEDIATE) {
-				oldscore = getApp()->reg().readIntEntry("Scores", "Intermediate", 999);
+				oldscore = getApp()->reg().readIntEntry("Wyniki", "Średniozaawansowany", 999);
 			} else if (gf.difficulty == DIFF_EXPERT) {
-				oldscore = getApp()->reg().readIntEntry("Scores", "Expert", 999);
+				oldscore = getApp()->reg().readIntEntry("Wyniki", "Ekspert", 999);
 			}
 
 			if (oldscore > seconds) {
@@ -1654,7 +1654,7 @@ int main(int argc, char *argv[]) {
 	img_monomine = new FXGIFImage(&application, res_img_monomine);
 	img_monomine->create();
 
-	if (application.reg().readIntEntry("Settings", "Color", 1)) {
+	if (application.reg().readIntEntry("Settings", "Kolor", 1)) {
 		gf.color = 1;
 		img_seg  = img_coolseg;
 		img_smil = img_coolsmil;
@@ -1666,10 +1666,9 @@ int main(int argc, char *argv[]) {
 		img_mine = img_monomine;
 	}
 
-	if (application.reg().readIntEntry("Settings", "Marks", 1) == 0) {
+	if (application.reg().readIntEntry("Settings", "Znaczniki", 1) == 0) {
 		gf.marks = 0;
 	}
-
 
 	initBoard(9,9);
 

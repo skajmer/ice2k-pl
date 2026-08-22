@@ -936,7 +936,7 @@ XFileExplorer::XFileExplorer(FXApp* app, vector_FXString URIs, const FXbool icon
 
 
     // Show folders pane
-    foldersbtn = new FXButton(generaltoolbar, "Folders", tbtreeonepanelicon, this, XFileExplorer::ID_SWITCH_TREE, BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT|ICON_BEFORE_TEXT|LAYOUT_FILL_Y,0,0,0,0,3,3,0,0);
+    foldersbtn = new FXButton(generaltoolbar, "Foldery", tbtreeonepanelicon, this, XFileExplorer::ID_SWITCH_TREE, BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT|ICON_BEFORE_TEXT|LAYOUT_FILL_Y,0,0,0,0,3,3,0,0);
 
 
     key = getApp()->reg().readStringEntry("KEYBINDINGS", "new_file", "Ctrl-N");

@@ -275,14 +275,14 @@ NetTray::NetTray(FXApp* a) :
 
     popup = new FXPopup(tray);
 
-    new FXMenuCommand(popup, "Enable", NULL, this, NetTray::ID_ENABLE);
-    new FXMenuCommand(popup, "Disable", NULL, this, NetTray::ID_DISABLE);
+    new FXMenuCommand(popup, "Włącz", NULL, this, NetTray::ID_ENABLE);
+    new FXMenuCommand(popup, "Wyłącz", NULL, this, NetTray::ID_DISABLE);
 
 	if (wireless) {
 	    new FXMenuSeparator(popup);
 
-		new FXMenuCommand(popup, "Connect", NULL, this, NetTray::ID_CONNECT);
-		new FXMenuCommand(popup, "Forget", NULL, this, NetTray::ID_FORGET);
+		new FXMenuCommand(popup, "Połącz", NULL, this, NetTray::ID_CONNECT);
+		new FXMenuCommand(popup, "Zapomnij", NULL, this, NetTray::ID_FORGET);
 	}
 		
 
@@ -332,12 +332,12 @@ long NetTray::onTimeout(FXObject*, FXSelector, void*) {
 
 int main(int argc, char* argv[]) {
 	if (argv[1] == NULL) {
-		fputs("Please specify interface name in argument!\n", stderr);
+		fputs("Podaj nazwę interfejsu w argumencie!\n", stderr);
 		return 1;
 	}
 
 	if (ifexist(&nifvalues, argv[1]) == 0) {
-		fputs("The interface does not exist!\n", stderr);
+		fputs("Interfejs nie istnieje!\n", stderr);
 		return 1;
 	}
 

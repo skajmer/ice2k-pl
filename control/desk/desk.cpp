@@ -206,22 +206,22 @@ typedef struct {
 int inihandle(void* udata, const char* section, const char* name, const char* value) {
 	wallConfiguration* wallcfg = (wallConfiguration*)udata;
 
-	if (!strcmp(section, "Wallpaper")) {
-		if (!strcmp(name, "Mode")) {
-			if (!strcasecmp(value, "Tiled")) {
+	if (!strcmp(section, "Tło:")) {
+		if (!strcmp(name, "Położenie:")) {
+			if (!strcasecmp(value, "Sąsiadująco")) {
 				wallcfg->mode = _IMGMODE_TILED;
-			} else if (!strcasecmp(value, "Center")) {
+			} else if (!strcasecmp(value, "Do środka")) {
 				wallcfg->mode = _IMGMODE_CENTER;
-			} else if (!strcasecmp(value, "Stretch")) {
+			} else if (!strcasecmp(value, "Rozciągnięcie")) {
 				wallcfg->mode = _IMGMODE_STRETCH;
 			} else {
 				wallcfg->mode = _IMGMODE_FILL;
 			}
-		} else if (!strcmp(name, "Color")) {
+		} else if (!strcmp(name, "Kolor:")) {
 			if (value[0] == '#' && strlen(value) == 7) {
 				wallcfg->color = strdup(value);
 			}
-		} else if (!strcmp(name, "Image")) {
+		} else if (!strcmp(name, "Obraz")) {
 			wallcfg->image = strdup(value);
 		} else {
 			return 0;
@@ -565,16 +565,16 @@ long DesktopProperties::onColorChangeCmd(FXObject* obj,FXSelector sel,void* ptr)
 // Patterns
 // from fox imageviewer example
 const FXchar patterns[] =
-"All Images (*.bmp,*.png,*.jpg,*.jpeg,*.gif,*.tga,*.ppm,*.pbm,*.pgm,*.tif,*.tiff)"
-"All Images (*.bmp,*.png,*.jpg,*.jpeg,*.gif,*.tga,*.ppm,*.pbm,*.pgm,*.tif,*.tiff)"
-"\nBitmap Image (*.bmp)"
-"\nPNG Image  (*.png)"
-"\nJPEG Image (*.jpg,*.jpeg)"
-"\nGIF Image (*.gif)"
-"\nTARGA Image  (*.tga)"
-"\nPPM/PBM/PGM Image  (*.ppm,*.pbm,*.pgm)"
-"\nTIFF Image (*.tif,*.tiff)"
-"\nAll Files (*)"
+"Wszystkie pliki obrazów (*.bmp,*.png,*.jpg,*.jpeg,*.gif,*.tga,*.ppm,*.pbm,*.pgm,*.tif,*.tiff)"
+"Wszystkie pliki obrazów (*.bmp,*.png,*.jpg,*.jpeg,*.gif,*.tga,*.ppm,*.pbm,*.pgm,*.tif,*.tiff)"
+"\nMapa bitowa (*.bmp)"
+"\nPNG  (*.png)"
+"\nJPEG (*.jpg,*.jpeg)"
+"\nGIF (*.gif)"
+"\nTARGA  (*.tga)"
+"\nPPM/PBM/PGM  (*.ppm,*.pbm,*.pgm)"
+"\nTIFF (*.tif,*.tiff)"
+"\nWszystie pliki (*)"
 ;
 
 const char* imageExtensions[] = {
@@ -695,7 +695,7 @@ const char* getHomeDir() {
 long DesktopProperties::onCmdBrowse(FXObject*,FXSelector,void*){
 	char* filepath = (char*)tree->getCurrentItem()->getData();
 
-	FXFileDialog open(this,"Open Image");
+	FXFileDialog open(this,"Przeglądanie");
 	const char* home = getHomeDir();
 
 	open.setFilename(filepath);
@@ -740,8 +740,8 @@ long DesktopProperties::onCmdBrowse(FXObject*,FXSelector,void*){
 
 			delete img;
 		} else {
-			FXMessageBox::error(getApp(),MBOX_OK,"Error",
-					"Could not load image!");
+			FXMessageBox::error(getApp(),MBOX_OK,"Błąd",
+					"Nie udało się załadować obrazu!");
 
 			return 1;
 		}
@@ -946,12 +946,12 @@ int writeWallpaperConfig(char* image, int imgmode, FXColor color, void* pattern=
 
 	snprintf(hex, sizeof(hex), "#%02X%02X%02X", r, g, b);
 
-	fprintf(fp, "Color=%s\n", hex);
+	fprintf(fp, "Kolor=%s\n", hex);
 
 	char* img = (char*)image;
 	if (img)
 		//	fprintf(fp, "Image=\n")else
-		fprintf(fp, "Image=%s\n", image);
+		fprintf(fp, "Obraz=%s\n", image);
 
 	//fprintf(stdout, 
 
@@ -1113,7 +1113,7 @@ FXColor hex2FXColor(const char* hex) {
 
 wallConfiguration wallcfg;
 
-DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Properties", ico_mainico, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,398,423,  0,0,0,0,  0,0) {
+DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Właściwości: Ekran", ico_mainico, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,398,423,  0,0,0,0,  0,0) {
 	int xp = 0;
 	//writeWallpaperConfig("/home/tf/image.png", _IMGMODE_TILED, app->getBaseColor());
 
@@ -1180,11 +1180,11 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 	FXVerticalFrame* tabframe = new FXVerticalFrame(this,LAYOUT_FILL_X|LAYOUT_FILL_Y|FRAME_NONE, 0,0,0,0, 0,0,0,0, 0,0);
 	FXTabBook* tabbook = new FXTabBook(tabframe,this,ID_TABBOOK,LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_RIGHT, 0,0,0,0, 6,6,7,6);
 
-	new FXTabItem(tabbook,"Background",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
+	new FXTabItem(tabbook,"Pulpit",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
 	FXVerticalFrame* bgframe = new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED, 0,0,0,0, 13,12,13,13, 0,0); 
 	prvlbl = new FXLabel(bgframe, "", prvimage, LABEL_NORMAL|LAYOUT_CENTER_X, 0,0,0,0,  0,0,0,30);
 
-	new FXLabel(bgframe, "&Select a background picture or HTML document as Wallpaper:", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  0,0,0,2);
+	new FXLabel(bgframe, "&Tło:", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  0,0,0,2);
 
 	FXHorizontalFrame* setbgframe = new FXHorizontalFrame(bgframe,LAYOUT_FILL_X|LAYOUT_FILL_Y|FRAME_NONE, 0,0,0,0, 0,0,0,0, 10,0); 
 
@@ -1199,7 +1199,7 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 	int count = 0;
 
 	char wallpaperpath[PATH_MAX] = "";
-	snprintf(wallpaperpath, sizeof(wallpaperpath), "%s/%s", getHomeDir(), "Pictures");
+	snprintf(wallpaperpath, sizeof(wallpaperpath), "%s/%s", getHomeDir(), "Obrazy");
 
 
 
@@ -1221,7 +1221,7 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 		genMonitorPreview(app, prvimage, NULL, deskcol);
 	}
 
-	noneitem = tree->appendItem(0,"(None)",ico_nobg,ico_nobg,NULL);
+	noneitem = tree->appendItem(0,"(Brak)",ico_nobg,ico_nobg,NULL);
 	tree->selectItem(noneitem);
 
 
@@ -1258,12 +1258,12 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 
 	FXVerticalFrame* setbgcontrols = new FXVerticalFrame(setbgframe,LAYOUT_FILL_Y|FRAME_NONE, 0,0,0,0, 0,0,2,0, 0,0); 
 	FXButton* btn;
-	new FXButton(setbgcontrols, "&Browse...", NULL, this, ID_BROWSE, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0,0,75,23,  0,0,0,0);
+	new FXButton(setbgcontrols, "&Przeglądaj...", NULL, this, ID_BROWSE, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0,0,75,23,  0,0,0,0);
 	new FXSeparator(setbgcontrols, SEPARATOR_NONE|LAYOUT_FIX_HEIGHT, 0,0,0,9); // i could use a fxframe, but semantics r cute
-	new FXLabel(setbgcontrols, "Picture &Display:", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  1,0,0,2);
+	new FXLabel(setbgcontrols, "Położenie:", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  1,0,0,2);
 	picdisplay = new I2KListBox(setbgcontrols,this,ID_CHANGE,COMBOBOX_INSERT_LAST|LAYOUT_FILL_X|COMBOBOX_STATIC|FRAME_SUNKEN|FRAME_THICK, 0, 0, 0, 0, 3, 0, 2, 1);
 	new FXSeparator(setbgcontrols, SEPARATOR_NONE|LAYOUT_FIX_HEIGHT, 0,0,0,9);
-	new FXLabel(setbgcontrols, "Color:", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  0,0,0,2);
+	new FXLabel(setbgcontrols, "Kolor:", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  0,0,0,2);
 
 	//btn = new FXButton(setbgcontrols, "&Pattern...", NULL, NULL, 0, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0,0,75,23,  0,0,0,0);
 	//btn->disable();
@@ -1276,10 +1276,10 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 	//colorwell->setRGBA(FXRGB(59, 110, 165));
 
 
-	picdisplay->insertItem(0, "Center", NULL, (void*)_IMGMODE_CENTER);
-	picdisplay->insertItem(1, "Tile", NULL, (void*)_IMGMODE_TILED);
-	picdisplay->insertItem(2, "Stretch", NULL, (void*)_IMGMODE_STRETCH);
-	picdisplay->insertItem(3, "Fill", NULL, (void*)_IMGMODE_FILL);
+	picdisplay->insertItem(0, "Do środka", NULL, (void*)_IMGMODE_CENTER);
+	picdisplay->insertItem(1, "Sąsiadująco", NULL, (void*)_IMGMODE_TILED);
+	picdisplay->insertItem(2, "Rozciągnięcie", NULL, (void*)_IMGMODE_STRETCH);
+	picdisplay->insertItem(3, "Wypełnienie", NULL, (void*)_IMGMODE_FILL);
 
 	picdisplay->setNumVisible(picdisplay->getNumItems());
 
@@ -1291,11 +1291,11 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 
 	// !! SCREENSAVER TAB
 	// i think it should be obvious but i somehow get confused on what is what sometimes
-	new FXTabItem(tabbook,"Screen Saver",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
+	new FXTabItem(tabbook,"Wygaszacz ekranu",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
 	FXVerticalFrame* scrframe = new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED, 0,0,0,0, 13,12,13,13, 0,0);
 	scrmonitor = new FXLabel(scrframe, "", monitornopimage, LABEL_NORMAL|LAYOUT_CENTER_X, 0,0,0,0,  0,0,0,0);
 
-	FXGroupBox* scrgrp = new FXGroupBox(scrframe, "Screen Saver", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 7,12,-1,5);
+	FXGroupBox* scrgrp = new FXGroupBox(scrframe, "Wygaszacz ekranu", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 7,12,-1,5);
 
 	FXHorizontalFrame* scrgrptop = new FXHorizontalFrame(scrgrp,LAYOUT_FILL_X|FRAME_NONE, 0,0,0,0, 0,0,0,0, 0,0); 
 
@@ -1309,7 +1309,7 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 		puts("whoops!");
 	} */
 
-	scrsel->insertItem(0, "(None)");
+	scrsel->insertItem(0, "(Brak)");
 
 	Display* dpy = (Display*)app->getDisplay();
 	char* resmgr = XResourceManagerString(dpy);
@@ -1368,11 +1368,11 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 
 	new FXSeparator(scrgrptop, SEPARATOR_NONE|LAYOUT_FIX_WIDTH, 0,0,5,0);
 
-	btn = new FXButton(scrgrptop, "Se&ttings...", NULL, NULL, 0, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0,0,75,23,  0,0,0,0);
+	btn = new FXButton(scrgrptop, "&Ustawienia", NULL, NULL, 0, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0,0,75,23,  0,0,0,0);
 	btn->disable();
 	new FXSeparator(scrgrptop, SEPARATOR_NONE|LAYOUT_FIX_WIDTH, 0,0,6,0);
 
-	previewbtn = new FXButton(scrgrptop, "Pre&view", NULL, this, ID_PREVIEW, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0,0,75,23,  0,0,0,0);
+	previewbtn = new FXButton(scrgrptop, "&Podgląd", NULL, this, ID_PREVIEW, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0,0,75,23,  0,0,0,0);
 	//btn->disable();
 
 
@@ -1381,33 +1381,33 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 	FXCheckButton* chk;
 	// fix checkbox paddings eventually
 	// too chopped to do comctl jawn
-	passchk = new FXCheckButton(scrgrpbot, "&Password protected", this, ID_CHANGE, CHECKBUTTON_NORMAL,0,0,0,0,  0,1,1,1);
+	passchk = new FXCheckButton(scrgrpbot, "Po wznowieniu chroń &hasłem", this, ID_CHANGE, CHECKBUTTON_NORMAL,0,0,0,0,  0,1,1,1);
 
 	passchk->setCheck(scrpassword);
 
 	FXHorizontalFrame* waitcont = new FXHorizontalFrame(scrgrpbot,LAYOUT_RIGHT|FRAME_NONE, 0,0,0,0, 0,0,0,0, 0,0); 
 
-	new FXLabel(waitcont, "Wait  ", NULL, LABEL_NORMAL|LAYOUT_CENTER_Y, 0,0,0,0,  0,0,0,0);
+	new FXLabel(waitcont, "&Czekaj:  ", NULL, LABEL_NORMAL|LAYOUT_CENTER_Y, 0,0,0,0,  0,0,0,0);
 	waitspin = new FXSpinner(waitcont,4,this,ID_CHANGE,SPIN_NORMAL|LAYOUT_CENTER_Y|FRAME_SUNKEN|FRAME_THICK, 0,0,0,0, 0,0,1,1);
 	waitspin->setValue(scrdelay);
-	new FXLabel(waitcont, "  minutes", NULL, LABEL_NORMAL|LAYOUT_CENTER_Y, 0,0,0,0,  0,0,0,0);
+	new FXLabel(waitcont, "  min", NULL, LABEL_NORMAL|LAYOUT_CENTER_Y, 0,0,0,0,  0,0,0,0);
 
 
 	// !! EFFECTS TAB
-	new FXTabItem(tabbook,"Effects",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
+	new FXTabItem(tabbook,"Efekty",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
 
-	// coffee spelt backwards is eeffoc
+	// effects is a 2k exclusive 
 	// because when i dont have my morning coffee
 	// i dont give eeffoc
 
 	FXVerticalFrame* effxframe = new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED, 0,0,0,0, 13,12,13,13, 0,0); 
 
-	FXGroupBox* effxbotgrp = new FXGroupBox(effxframe, "Visual effects", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 8,8,4,6);
+	FXGroupBox* effxbotgrp = new FXGroupBox(effxframe, "Efekty wizualne", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 8,8,4,6);
 	//FXHorizontalFrame* fxbotgrp = new FXHorizontalFrame(effxbotgrp,LAYOUT_FILL_X|FRAME_NONE, 0,0,0,0, 0,0,0,0, 0,0); 
 
-	chk = new FXCheckButton(effxbotgrp, "&Smooth edges of screen fonts", NULL, 0, CHECKBUTTON_NORMAL,0,0,0,0,  0,1,1,1);
+	chk = new FXCheckButton(effxbotgrp, "Wygładź krawędzie &czcionek ekranowych", NULL, 0, CHECKBUTTON_NORMAL,0,0,0,0,  0,1,1,1);
 	chk->disable();
-	chk = new FXCheckButton(effxbotgrp, "Show &window contents while dragging", NULL, 0, CHECKBUTTON_NORMAL,0,0,0,0,  0,1,1,1);
+	chk = new FXCheckButton(effxbotgrp, "&Pokaż zawartość okna podczas przeciągania", NULL, 0, CHECKBUTTON_NORMAL,0,0,0,0,  0,1,1,1);
 	chk->disable();
 
 
@@ -1430,19 +1430,19 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 	}
 
 
-	new FXTabItem(tabbook,"Settings",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
+	new FXTabItem(tabbook,"Ustawienia",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
 	FXVerticalFrame* settingsframe = new FXVerticalFrame(tabbook,LAYOUT_FILL_X|LAYOUT_FILL_Y|FRAME_THICK|FRAME_RAISED, 0,0,0,0, 13,12,13,13, 0,0); 
 	new FXLabel(settingsframe, "", monitorimage, LABEL_NORMAL|LAYOUT_CENTER_X, 0,0,0,0,  0,0,0,18);
 
-	new FXLabel(settingsframe, "Display:", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  1,0,0,2);
-	new FXLabel(settingsframe, "Default Monitor on Cirrus Logic 5446 Compatible Graphics Adapter", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  1,0,0,13);
+	new FXLabel(settingsframe, "Ekran:", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  1,0,0,2);
+	new FXLabel(settingsframe, "(Monitor domyślny) na Cirrus Logic 5446 Compatible Graphics Adapter", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  1,0,0,13);
 
 	// bottom groupboxes
 	//FXHorizontalFrame* settingsgrpc = new FXHorizontalFrame(settingsframe,LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 0,0);
 	FXHorizontalFrame* settingsgrpc = new FXHorizontalFrame(settingsframe,PACK_UNIFORM_WIDTH|PACK_UNIFORM_HEIGHT|LAYOUT_FILL_X, 0,0,0,0, 0,1,0,0, 10,0);
 
 
-	FXGroupBox* settingsgrpcol = new FXGroupBox(settingsgrpc, "Colors", LAYOUT_FILL_X|FRAME_THICK, 0,0,0,0, 7,7,0,7, 8,8);
+	FXGroupBox* settingsgrpcol = new FXGroupBox(settingsgrpc, "Jakość kolorów", LAYOUT_FILL_X|FRAME_THICK, 0,0,0,0, 7,7,0,7, 8,8);
 	I2KListBox* moncolsel = new I2KListBox(settingsgrpcol,NULL,0,LAYOUT_FILL_X|FRAME_SUNKEN|FRAME_THICK, 0, 0, 0, 0, 3, 0, 2, 1);
 
 
@@ -1450,13 +1450,13 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 	FXImage* img_medcolor = new FXGIFImage(app, resico_medcolor, IMAGE_OPAQUE);
 
 	if (attr.depth <= 4) {
-		moncolsel->appendItem("16 Color", NULL, (void*)4);
+		moncolsel->appendItem("16 kolorów", NULL, (void*)4);
 		new FXImageFrame(settingsgrpcol, img_medcolor, FRAME_SUNKEN);
 	} else if (attr.depth <= 8) {
-		moncolsel->appendItem("256 Colors", NULL, (void*)8);
+		moncolsel->appendItem("256 kolorów", NULL, (void*)8);
 		new FXImageFrame(settingsgrpcol, img_medcolor, FRAME_SUNKEN);
 	} else if (attr.depth <= 16) {
-		moncolsel->appendItem("High Color (16 bit)", NULL, (void*)16);
+		moncolsel->appendItem("Średnia (16 bitów)", NULL, (void*)16);
 		new FXImageFrame(settingsgrpcol, img_hicolor, FRAME_SUNKEN);
 	} else if (attr.depth <= 24) {
 		// there isnt really a concept of 32 bit color in X
@@ -1464,8 +1464,8 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 		// the x server is 24 bit color and checking if xcomposite
 		// is supported
 
-		if (xcomposite) moncolsel->appendItem("True Color (32 bit)", NULL, (void*)32);
-		else moncolsel->appendItem("True Color (24 bit)", NULL, (void*)24);
+		if (xcomposite) moncolsel->appendItem("Najwyższa (32 bity)", NULL, (void*)32);
+		else moncolsel->appendItem("Najwyższa (24 bity)", NULL, (void*)24);
 
 		new FXImageFrame(settingsgrpcol, img_hicolor, FRAME_SUNKEN);
 	}
@@ -1474,14 +1474,14 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 	moncolsel->disable();
 
 
-	FXGroupBox* settingsgrpcr = new FXGroupBox(settingsgrpc, "Screen area", LAYOUT_FILL_X|FRAME_THICK, 0,0,0,0, 7,12,-1,5);
+	FXGroupBox* settingsgrpcr = new FXGroupBox(settingsgrpc, "Rozdzielczość ekranu", LAYOUT_FILL_X|FRAME_THICK, 0,0,0,0, 7,12,-1,5);
 	FXHorizontalFrame* settingsgrpres = new FXHorizontalFrame(settingsgrpcr,LAYOUT_FILL_X|FRAME_NONE, 0,0,0,0, 0,0,0,0, 0,0); 
 
 
 	//I2KListBox* reslistbox = new I2KListBox(settingsgrpcr,NULL,NULL,LAYOUT_BOTTOM|COMBOBOX_INSERT_LAST|LAYOUT_FILL_X|COMBOBOX_STATIC|FRAME_SUNKEN|FRAME_THICK, 0, 0, 0, 0, 3, 0, 2, 1);
 
 	FXLabel* lbl;
-	lbl = new FXLabel(settingsgrpres, "Less", NULL, LABEL_NORMAL, 0,0,0,0, 1,0,1,0);
+	lbl = new FXLabel(settingsgrpres, "Mniej", NULL, LABEL_NORMAL, 0,0,0,0, 1,0,1,0);
 	lbl->disable();
 
 	FXSlider* resslider = new FXSlider(settingsgrpres, this, ID_RESSLIDER, SLIDER_TICKS_BOTTOM|SLIDER_ARROW_DOWN|LAYOUT_FIX_HEIGHT|SLIDER_NORMAL|LAYOUT_FILL_X, 0,0,0,29,  16,15,3,0);
@@ -1491,7 +1491,7 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 
 	//resslider->setTickDelta(4);
 
-	lbl = new FXLabel(settingsgrpres, "More", NULL, LABEL_NORMAL, 0,0,0,0, 1,0,1,0);
+	lbl = new FXLabel(settingsgrpres, "Więcej", NULL, LABEL_NORMAL, 0,0,0,0, 1,0,1,0);
 	lbl->disable();
 
 	/* FXWindow* fxroot = app->getRootWindow();
@@ -1501,7 +1501,7 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 
 	char restext[32];
 
-	snprintf(restext, sizeof(restext), "%d by %d pixels", attr.width, attr.height);
+	snprintf(restext, sizeof(restext), "%d na %d pikseli", attr.width, attr.height);
 
 	lbl = new FXLabel(settingsgrpcr, restext, NULL, LAYOUT_CENTER_X|LABEL_NORMAL, 0,0,0,0, 2,0,0,0);
 	lbl->disable();
@@ -1515,8 +1515,8 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Desktop Prop
 	FXHorizontalFrame* btncont = new FXHorizontalFrame(tabframe, LAYOUT_RIGHT, 0, 0, 0, 0, 0, 6, 0, 7, 6, 0);
 
 	new FXButton(btncont, "OK", NULL, this, ID_DLG_OK, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
-	new FXButton(btncont, "Cancel", NULL, this, ID_DLG_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
-	applybtn = new FXButton(btncont, "&Apply", NULL, this, ID_DLG_APPLY, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
+	new FXButton(btncont, "Anuluj", NULL, this, ID_DLG_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
+	applybtn = new FXButton(btncont, "&Zastosuj", NULL, this, ID_DLG_APPLY, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
 
 
 	applybtn->disable();

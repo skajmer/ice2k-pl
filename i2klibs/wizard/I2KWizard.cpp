@@ -28,15 +28,15 @@ I2KWizard::I2KWizard(FXComposite* p,
 	bottom = new FXHorizontalFrame(this, FRAME_NONE|LAYOUT_FILL_X,    0,0,0,0, 10,10,12,10, 0,0);
 	rbuttons = new FXHorizontalFrame(bottom, FRAME_NONE|LAYOUT_RIGHT, 0,0,0,0, 0,0,0,0,     0,0);
 
-	backbtn = new FXButton(rbuttons, "< &Back", NULL, this, ID_BACK, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_SIZE, 0,0,75,23, 0,0,0,0);
+	backbtn = new FXButton(rbuttons, "< &Wstecz", NULL, this, ID_BACK, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_SIZE, 0,0,75,23, 0,0,0,0);
 	backbtn->disable();
 
-	nextbtn = new FXButton(rbuttons, "&Next >", NULL, this, ID_NEXT, BUTTON_NORMAL|BUTTON_INITIAL|BUTTON_DEFAULT|LAYOUT_FIX_SIZE, 0,0,75,23, 0,0,0,0);
+	nextbtn = new FXButton(rbuttons, "&Dalej >", NULL, this, ID_NEXT, BUTTON_NORMAL|BUTTON_INITIAL|BUTTON_DEFAULT|LAYOUT_FIX_SIZE, 0,0,75,23, 0,0,0,0);
 	nextbtn->setFocus();
 
 	new FXVerticalSeparator(rbuttons, LAYOUT_FILL_Y|LAYOUT_FIX_WIDTH, 0,0,10,0, 0,0,0,0);
 
-	cancelbtn = new FXButton(rbuttons, "Cancel", NULL, this, ID_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_SIZE, 0,0,75,23, 0,0,0,0);
+	cancelbtn = new FXButton(rbuttons, "Anuluj", NULL, this, ID_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_SIZE, 0,0,75,23, 0,0,0,0);
 }
 
 
@@ -62,8 +62,8 @@ void I2KWizard::setFinish(FXbool finish) {
 	//
 	// there's no translation system in ice2k yet but i'll make one at one
 	// point
-	if (finish) nextbtn->setText("Finish");
-	else nextbtn->setText("&Next >");
+	if (finish) nextbtn->setText("Zakończ");
+	else nextbtn->setText("Dalej >");
 }
 
 void I2KWizard::enable() {

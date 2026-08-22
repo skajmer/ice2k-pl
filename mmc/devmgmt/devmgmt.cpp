@@ -66,17 +66,18 @@ class AboutBox : public FXDialogBox {
 
 	public:
 		AboutBox(FXWindow* owner) :
-		FXDialogBox(owner, "About Device Manager", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0,
+		FXDialogBox(owner, "Menedżer urządzeń - informacje", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0,
 				10,10,10,10, 8,12) {
 			cont = new FXHorizontalFrame(this, LAYOUT_SIDE_TOP, 0,0,0,0, 4,4,4,4, 10,10);
 			icon = new FXLabel(cont, "", ico_devmgmt_32);
 
 			text = new FXLabel(cont,
-					"Device Manager\n"
-					"Written by xcomposite\n"
+					"Menedżer urządzeń\n"
+					"Napisany przez xcomposite\n"
 					"\n"
-					"You can use Device Manager to view a list of\n"
-					"hardware devices installed on your computer.",
+					"Za pomocą Menedżera urządzeń możesz wyświetlić listę urządzeń\n"
+					"sprzętowych zainstalowanych w komputerze i ustawić właściwości\n"
+					"każdego z urządzeń.",
 					NULL, JUSTIFY_LEFT);
 
 			okbtn = new FXButton(this, "OK", NULL, this, ID_ACCEPT,
@@ -476,18 +477,18 @@ void getComputerName(char* computerType, int size) {
 	if (get_nprocs_conf() > 1)
 		multiProcessor = 1;
 
-	const char* arch = amd64Cpu ? "" : " x64-based";
+	const char* arch = amd64Cpu ? "" : " x64";
 	const char* biosType;
 
 	if (!acpiSupport) {
-		biosType = multiProcessor ? "ACPI Multiprocessor"
-			: "Advanced Configuration and Power Interface (ACPI)";
+		biosType = multiProcessor ? "Wieloprocesorowy komputer PC z interejsem ACPI"
+			: "Zaawansowany interfjes konfiguracji i zasilania (ACPI)";
 	} else {
-		biosType = multiProcessor ? "MPS Multiprocessor"
+		biosType = multiProcessor ? "Wieloprocesor MPS"
 			: "Standard";
 	}
 
-	snprintf(computerType, size, "%s%s PC", biosType, arch);
+	snprintf(computerType, size, "%s%s", biosType, arch);
 }
 
 long DeviceManager::addDevices(FXObject* sender, FXSelector sel, void* ptr) {
@@ -527,7 +528,7 @@ long DeviceManager::addDevices(FXObject* sender, FXSelector sel, void* ptr) {
 	char computerType[64];
 	getComputerName(computerType, sizeof(computerType));
 
-	branch = tree->appendItem(top,"Computer",ico_dev_computer,ico_dev_computer);    
+	branch = tree->appendItem(top,"Komputer",ico_dev_computer,ico_dev_computer);    
 	tree->appendItem(branch,computerType,ico_dev_computer,ico_dev_computer);
 
 	char drives[256];
@@ -537,7 +538,7 @@ long DeviceManager::addDevices(FXObject* sender, FXSelector sel, void* ptr) {
 
 	drive = strtok(drives, ",");
 
-	branch = tree->appendItem(top,"Disk drives",ico_dev_disk,ico_dev_disk);
+	branch = tree->appendItem(top,"Stacje dysków",ico_dev_disk,ico_dev_disk);
 
 	while (drive) {
 		getHddInfo(drive, "device/model", driveModel, sizeof(driveModel));
@@ -545,25 +546,25 @@ long DeviceManager::addDevices(FXObject* sender, FXSelector sel, void* ptr) {
 		drive = strtok(NULL, ",");
 	}
 
-	devVga = tree->appendItem(top,"Display adapters",ico_dev_disp,ico_dev_disp);
-	devCdRom = tree->appendItem(top,"DVD/CD-ROM drives",ico_dev_cdrom,ico_dev_cdrom);
-	devFloppyCon = tree->appendItem(top,"Floppy disk controllers",ico_dev_ide,ico_dev_ide);
-	devFloppyDrive = tree->appendItem(top,"Floppy disk drives",ico_dev_floppy,ico_dev_floppy);
-	devStorage = tree->appendItem(top,"IDE ATA/ATAPI controllers",ico_dev_ide,ico_dev_ide);
-	devFirewire = tree->appendItem(top,"IEEE 1394 Bus host controllers",ico_dev_firewire,ico_dev_firewire);
-	devKeyboards = tree->appendItem(top,"Keyboards",ico_dev_keyb,ico_dev_keyb);
-	devMice = tree->appendItem(top,"Mice and other pointing devices",ico_dev_mice,ico_dev_mice);
-	devMonitors = tree->appendItem(top,"Monitors",ico_dev_disp,ico_dev_disp);
-	devNetwork = tree->appendItem(top,"Network adapters",ico_dev_network,ico_dev_network);
-	devUnknown = tree->appendItem(top,"Other devices",ico_dev_unknown,ico_dev_unknown);
+	devVga = tree->appendItem(top,"Karty graficzne",ico_dev_disp,ico_dev_disp);
+	devCdRom = tree->appendItem(top,"Stacje dysków CD-ROM/DVD",ico_dev_cdrom,ico_dev_cdrom);
+	devFloppyCon = tree->appendItem(top,"Kontrolery stacji dyskietek",ico_dev_ide,ico_dev_ide);
+	devFloppyDrive = tree->appendItem(top,"Stacje dyskietek",ico_dev_floppy,ico_dev_floppy);
+	devStorage = tree->appendItem(top,"Kontrolery IDE ATA/ATAPI",ico_dev_ide,ico_dev_ide);
+	devFirewire = tree->appendItem(top,"Kontrolery IEEE 1394",ico_dev_firewire,ico_dev_firewire);
+	devKeyboards = tree->appendItem(top,"Klawiatury",ico_dev_keyb,ico_dev_keyb);
+	devMice = tree->appendItem(top,"Myszy i inne urządzenia wskazujące",ico_dev_mice,ico_dev_mice);
+	devMonitors = tree->appendItem(top,"Monitory",ico_dev_disp,ico_dev_disp);
+	devNetwork = tree->appendItem(top,"Karty sieciowe",ico_dev_network,ico_dev_network);
+	devUnknown = tree->appendItem(top,"Inne urządzenia",ico_dev_unknown,ico_dev_unknown);
 
-	devSerial = tree->appendItem(top,"Ports (COM & LPT)",ico_dev_serial,ico_dev_serial);
-	devPrinters = tree->appendItem(top,"Printers",ico_dev_printer,ico_dev_printer);
-	devSound = tree->appendItem(top,"Sound, video and game controllers",ico_dev_sound,ico_dev_sound);
+	devSerial = tree->appendItem(top,"Porty (COM i LPT)",ico_dev_serial,ico_dev_serial);
+	devPrinters = tree->appendItem(top,"Drukarki",ico_dev_printer,ico_dev_printer);
+	devSound = tree->appendItem(top,"Kontrolery dźwięku, wideo i gier",ico_dev_sound,ico_dev_sound);
 	//branch = tree->appendItem(top,"Storage volumes",ico_dev_disk,ico_dev_disk);
 
-	devSystem = tree->appendItem(top,"System devices",ico_dev_computer,ico_dev_computer);
-	devUsbCon = tree->appendItem(top,"Universal Serial Bus controllers",ico_dev_usb,ico_dev_usb);
+	devSystem = tree->appendItem(top,"Urządzenia systemowe",ico_dev_computer,ico_dev_computer);
+	devUsbCon = tree->appendItem(top,"Kontrolery uniwersalnej magistrali szeregowej",ico_dev_usb,ico_dev_usb);
 
 	tree->update();
 	tree->recalc();
@@ -603,7 +604,7 @@ long DeviceManager::addDevices(FXObject* sender, FXSelector sel, void* ptr) {
 			monitortok = strtok(NULL, ",");
 		}
 	} else { 
-		tree->appendItem(devMonitors,"Default Monitor",ico_dev_disp,ico_dev_disp);
+		tree->appendItem(devMonitors,"Domyślny monitor",ico_dev_disp,ico_dev_disp);
 
 	}
 	//puts(monitors);
@@ -666,8 +667,8 @@ long DeviceManager::addDevices(FXObject* sender, FXSelector sel, void* ptr) {
 				curDev = devList + inputDevice;
 
 				if (strncmp(curDev->name, "Virtual core ", sizeof("Virtual core ")-1) &&         // we only want true keyboards...
-						strcmp(curDev->name, "Power Button") && strcmp(curDev->name, "Video Bus") && // none of that filler crap acpi bullshit
-						strcmp(curDev->name, "Sleep Button") ) {
+						strcmp(curDev->name, "Przycisk zasilania") && strcmp(curDev->name, "Magistrala Wideo") && // none of that filler crap acpi bullshit
+						strcmp(curDev->name, "Przycisk uśpienia") ) {
 					if (!(curDev->use == XIMasterPointer || curDev->use == XISlavePointer))
 						tree->appendItem(devMice, curDev->name, ico_dev_mice, ico_dev_mice);
 					else
@@ -678,8 +679,8 @@ long DeviceManager::addDevices(FXObject* sender, FXSelector sel, void* ptr) {
 			}
 		}
 	} else {
-		tree->appendItem(devMice, "Microsoft PS/2 Mouse", ico_dev_mice, ico_dev_mice);
-		tree->appendItem(devKeyboards, "PC/AT Enhanced PS/2 Keyboard (101/102-Key)", ico_dev_keyb, ico_dev_keyb);
+		tree->appendItem(devMice, "Mysz zgodna z PS/2", ico_dev_mice, ico_dev_mice);
+		tree->appendItem(devKeyboards, "Standardowa klawiatura 101/102 klawisze lub Microsoft Natural Keyboard PS/2 ", ico_dev_keyb, ico_dev_keyb);
 	}
 
 	XFreeDeviceList(devList);
@@ -757,7 +758,7 @@ long DeviceManager::addDevices(FXObject* sender, FXSelector sel, void* ptr) {
 }
 
 //int main(int argc, char *argv[]) {
-DeviceManager::DeviceManager(FXApp *app):FXMainWindow(app, "Device Manager", ico_devmgmt, NULL, DECOR_ALL, 0,0,520,380,  0,0,0,0,  0,0) {
+DeviceManager::DeviceManager(FXApp *app):FXMainWindow(app, "Menedżer urządzeń", ico_devmgmt, NULL, DECOR_ALL, 0,0,520,380,  0,0,0,0,  0,0) {
 	int opts = 0;
 	topdock = new FXDockSite(this, FRAME_SUNKEN|DOCKSITE_NO_WRAP|LAYOUT_SIDE_TOP|LAYOUT_FILL_X);
 
@@ -780,36 +781,36 @@ DeviceManager::DeviceManager(FXApp *app):FXMainWindow(app, "Device Manager", ico
 	FXMenuCommand* menucmd; FXMenuRadio* menurad; FXMenuCheck* menuchk;
 	if (xpmode) { 
 		filemenu = new FXMenuPane(this);
-		new FXMenuTitle(menubar, "&File", NULL, filemenu);
-		new FXMenuCommand(filemenu, "E&xit", NULL, getApp(), FXApp::ID_QUIT);
+		new FXMenuTitle(menubar, "&Plik", NULL, filemenu);
+		new FXMenuCommand(filemenu, "Zakończ", NULL, getApp(), FXApp::ID_QUIT);
 	}
-	new FXMenuTitle(menubar, "&Action", NULL, actionmenu);
-	menucmd = new FXMenuCommand(actionmenu, "&Help"); menucmd->disable();
+	new FXMenuTitle(menubar, "&Akcja", NULL, actionmenu);
+	menucmd = new FXMenuCommand(actionmenu, "Pomo&c"); menucmd->disable();
 	new FXMenuSeparator(actionmenu);
-	menucmd = new FXMenuCommand(actionmenu, "&Sc&an for hardware changes", NULL, this, ID_ADDDEV);
+	menucmd = new FXMenuCommand(actionmenu, "Skanuj w poszukiwaniu zmian sprzętu", NULL, this, ID_ADDDEV);
 
-	new FXMenuTitle(menubar, "&View", NULL, viewmenu);
+	new FXMenuTitle(menubar, "&Widok", NULL, viewmenu);
 	if (xpmode) { 
 		helpmenu = new FXMenuPane(this);
-		new FXMenuTitle(menubar, "&Help", NULL, helpmenu);
-		menucmd = new FXMenuCommand(helpmenu, "A&bout Device Manager...", NULL, this, ID_ABOUT);
+		new FXMenuTitle(menubar, "Pomo&c", NULL, helpmenu);
+		menucmd = new FXMenuCommand(helpmenu, "Menedżer urządzeń - informacje...", NULL, this, ID_ABOUT);
 	}
 
 	//menucmd = new FXMenuCommand(viewmenu, "D&evices by type\t\tDisplays devices by hardware type."); menucmd->disable();
-	menurad = new FXMenuRadio(viewmenu, "D&evices by type\t\tDisplays devices by hardware type."); menurad->disable();
+	menurad = new FXMenuRadio(viewmenu, "Urządzenia według typów\t\tWyświetla urządzenia według typów sprzetu."); menurad->disable();
 	menurad->setCheck(TRUE);
-	menurad = new FXMenuRadio(viewmenu, "De&vices by connection\t\tDisplays devices by connection."); menurad->disable();
-	menurad = new FXMenuRadio(viewmenu, "Resources by t&ype\t\tDisplays resources by type."); menurad->disable();
-	menurad = new FXMenuRadio(viewmenu, "Resources by co&nnection\t\tDisplays resources by connection"); menurad->disable();
+	menurad = new FXMenuRadio(viewmenu, "Urządzenia według połączeń\t\tWyświetla urządzenia według połączeń."); menurad->disable();
+	menurad = new FXMenuRadio(viewmenu, "Zasoby według typów\t\tWyświetla zasoby według typow."); menurad->disable();
+	menurad = new FXMenuRadio(viewmenu, "Zasoby według połączeń\t\tWyświetla zasoby według połączeń"); menurad->disable();
 
 	new FXMenuSeparator(viewmenu);
 
-	menuchk = new FXMenuCheck(viewmenu, "Sho&w hidden devices\t\tDisplays legacy devices and devices that are no longer installed."); menuchk->disable();
+	menuchk = new FXMenuCheck(viewmenu, "Pokaż ukryte urządzenia\t\tWyświetla starsze urządzenia i urządzenia, które nie są już zainstalowane."); menuchk->disable();
 
 	new FXMenuSeparator(viewmenu);
-	menucmd = new FXMenuCommand(viewmenu, "&Print\t\tPrints a report of the devices that are installed."); menucmd->disable();
+	menucmd = new FXMenuCommand(viewmenu, "Drukuj\t\tDrukuje raport o zainstalowanych urządzeniach."); menucmd->disable();
 	new FXMenuSeparator(viewmenu);
-	menucmd = new FXMenuCommand(viewmenu, "C&ustomize...\t\tCustomizes the view"); menucmd->disable();
+	menucmd = new FXMenuCommand(viewmenu, "Dostosuj...\t\tZmienia opcje widoku"); menucmd->disable();
 
 	tbshell = new FXToolBarShell(this,FRAME_SUNKEN);
 
@@ -834,20 +835,20 @@ DeviceManager::DeviceManager(FXApp *app):FXMainWindow(app, "Device Manager", ico
 	//FXIcon* ico_hist_up = new FXGIFIcon(app, resico_hist_up);
 	FXButton* btn;
 
-	btn = new FXButton(toolbar,"\tBack",ico_back,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
+	btn = new FXButton(toolbar,"\tWstecz",ico_back,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
 	btn->disable();
-	btn = new FXButton(toolbar,"\tForward",ico_forward,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
+	btn = new FXButton(toolbar,"\tDalej",ico_forward,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
 	btn->disable();
 	new FXVerticalSeparator(toolbar, SEPARATOR_GROOVE|LAYOUT_FILL_Y, 0,0,0,0,  3,2,2,2);
-	btn = new FXButton(toolbar,"\tUp one level",ico_up,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
+	btn = new FXButton(toolbar,"\tDo góry o jeden poziom",ico_up,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
 	btn->disable();
-	btn = new FXButton(toolbar,"\tShow/Hide Console Tree/Favorites",ico_contree,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
+	btn = new FXButton(toolbar,"\tPokazuje/ukrywa drzewo konsoli/Ulubione.",ico_contree,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
 	new FXVerticalSeparator(toolbar, SEPARATOR_GROOVE|LAYOUT_FILL_Y, 0,0,0,0,  3,2,2,2);
 
-	propbtn = new FXButton(toolbar,"\tProperties",ico_properties,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
+	propbtn = new FXButton(toolbar,"\tWłaściwości",ico_properties,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
 	propsep = new FXVerticalSeparator(toolbar, SEPARATOR_GROOVE|LAYOUT_FILL_Y, 0,0,0,0,  3,2,2,2);
 
-	btn = new FXButton(toolbar,"\tHelp",ico_help,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
+	btn = new FXButton(toolbar,"\tPomoc",ico_help,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
 
 	tb2shell = new FXToolBarShell(this,FRAME_SUNKEN);
 
@@ -862,7 +863,7 @@ DeviceManager::DeviceManager(FXApp *app):FXMainWindow(app, "Device Manager", ico
 		new FXVerticalSeparator(toolbar, SEPARATOR_GROOVE|LAYOUT_FILL_Y, 0,0,0,0,  3,2,2,2);
 	}
 
-	btn = new FXButton(scantb,"\tScan for hardware changes",ico_scan,this,ID_ADDDEV,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
+	btn = new FXButton(scantb,"\tSkanuj w poszukiwaniu zmian sprzętu",ico_scan,this,ID_ADDDEV,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
 
 	new FXSeparator(this, SEPARATOR_NONE|LAYOUT_FIX_HEIGHT, 0,0,0,2); // semantics r cute  
 

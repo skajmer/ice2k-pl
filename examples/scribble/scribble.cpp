@@ -88,7 +88,7 @@ FXIMPLEMENT(ScribbleWindow, FXMainWindow, ScribbleWindowMap, ARRAYNUMBER(Scribbl
 
 
 // Construct a ScribbleWindow
-ScribbleWindow::ScribbleWindow(FXApp *a) : FXMainWindow(a, "Scribble Application", mainIcon, NULL, DECOR_ALL, 0,0,800,600) {
+ScribbleWindow::ScribbleWindow(FXApp *a) : FXMainWindow(a, "Aplikacja do gryzmołów", mainIcon, NULL, DECOR_ALL, 0,0,800,600) {
 
 	// its a good idea to space numbers like this
 	contents = new FXHorizontalFrame(this, LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 0,0,0,0);
@@ -97,7 +97,7 @@ ScribbleWindow::ScribbleWindow(FXApp *a) : FXMainWindow(a, "Scribble Application
 	canvasFrame = new FXVerticalFrame(contents, FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_TOP|LAYOUT_LEFT, 0,0,0,0, 10,10,10,10);
 
 	// Label above the canvas
-	new FXLabel(canvasFrame, "Canvas Frame", NULL, JUSTIFY_CENTER_X|LAYOUT_FILL_X);
+	new FXLabel(canvasFrame, "Ramka płótna", NULL, JUSTIFY_CENTER_X|LAYOUT_FILL_X);
 
 	// Horizontal divider line
 	new FXHorizontalSeparator(canvasFrame, SEPARATOR_GROOVE|LAYOUT_FILL_X);
@@ -109,16 +109,16 @@ ScribbleWindow::ScribbleWindow(FXApp *a) : FXMainWindow(a, "Scribble Application
 	buttonFrame = new FXVerticalFrame(contents, FRAME_SUNKEN|LAYOUT_FILL_Y|LAYOUT_TOP|LAYOUT_LEFT, 0,0,0,0, 10,10,10,10);
 
 	// Label above the buttons
-	new FXLabel(buttonFrame, "Button Frame", NULL, JUSTIFY_CENTER_X|LAYOUT_FILL_X);
+	new FXLabel(buttonFrame, "Ramka przycisku", NULL, JUSTIFY_CENTER_X|LAYOUT_FILL_X);
 
 	// Horizontal divider line
 	new FXHorizontalSeparator(buttonFrame, SEPARATOR_RIDGE|LAYOUT_FILL_X);
 
 	// Button to clear
-	new FXButton(buttonFrame, "&Clear", NULL, this, ID_CLEAR, FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT, 0,0,0,0, 10,10,5,5);
+	new FXButton(buttonFrame, "Wyczyść", NULL, this, ID_CLEAR, FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT, 0,0,0,0, 10,10,5,5);
 
 	// Exit button
-	new FXButton(buttonFrame, "&Exit", NULL, getApp(), FXApp::ID_QUIT, FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT, 0,0,0,0, 10,10,5,5);
+	new FXButton(buttonFrame, "Wyjdź", NULL, getApp(), FXApp::ID_QUIT, FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT, 0,0,0,0, 10,10,5,5);
 
 	// Initialize private variables
 	drawColor = FXRGB(255, 0, 0);

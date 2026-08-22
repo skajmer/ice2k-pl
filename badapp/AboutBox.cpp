@@ -7,7 +7,7 @@ typedef const char const_char;
 
 FXIMPLEMENT(AboutBox, FXDialogBox, NULL, 0);
 
-AboutBox::AboutBox(FXWindow* owner): FXDialogBox(owner,"About xtransfer",DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0,10,10,10,10,8,12) {
+AboutBox::AboutBox(FXWindow* owner): FXDialogBox(owner,"Xtransfer - informacje",DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0,10,10,10,10,8,12) {
 	ico_main32 = new FXXPMIcon(getApp(), icon32_xpm);
 	ico_main32->create();
 
@@ -17,9 +17,9 @@ AboutBox::AboutBox(FXWindow* owner): FXDialogBox(owner,"About xtransfer",DECOR_T
 
 	new FXLabel(cont,
 	"xtransfer 0.0.1\n"
-	"Transfer files on Android devices.\n"
+	"Kopiuj pliki z urządzeń z Androidem.\n"
 	"\n"
-	"Written by xcomposite",
+	"Napisany przez xcomposite",
 	NULL, JUSTIFY_LEFT);
 
 	FXButton* okbtn = new FXButton(this, "OK", NULL, this, ID_ACCEPT,

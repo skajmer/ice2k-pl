@@ -66,7 +66,7 @@ proc createBorders {} {
 	.container.borders create line 79 1 79 135 -fill $lightShadowColorCont
 	.container.borders create line 80 134 1 134 -fill $lightShadowColorCont
 
-	.container.borders create text 40 17 -text "Brightness" -font mainfont -fill $foregroundColorCont
+	.container.borders create text 40 17 -text "Jasność" -font mainfont -fill $foregroundColorCont
 
 	.container.borders create line 11 34 21 117 -fill $lightColorCont
 	.container.borders create line 11 34 21 34 -fill $lightColorCont

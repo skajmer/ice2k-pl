@@ -183,7 +183,7 @@ proc createBorders {} {
 	.container.borders create line 79 1 79 135 -fill $lightShadowColorCont
 	.container.borders create line 80 134 1 134 -fill $lightShadowColorCont
 
-	.container.borders create text 40 17 -text "Volume" -font mainfont -fill $foregroundColorCont
+	.container.borders create text 40 17 -text "Głośność" -font mainfont -fill $foregroundColorCont
 
 	.container.borders create line 11 34 21 97 -fill $lightColorCont
 	.container.borders create line 11 34 21 34 -fill $lightColorCont
@@ -315,7 +315,7 @@ proc createBorders {} {
 
 	.container.mute create rectangle 2 2 10 10 -fill $windowColorCont -outline $windowColorCont -tags cbBox
 
-	.container.mute create text 18 7 -anchor w -text {Mute} -font mainfont -underline 0 -fill $foregroundColorCont
+	.container.mute create text 18 7 -anchor w -text {Wycisz} -font mainfont -underline 0 -fill $foregroundColorCont
 
 #	image create bitmap checkbox -file [file dirname [file normalize [info script]]]/checkbox.xbm
 

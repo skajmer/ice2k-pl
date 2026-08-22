@@ -128,7 +128,7 @@ FXDEFMAP(WelcomeWindow) WelcomeWindowMap[] = {
 
 FXIMPLEMENT(WelcomeWindow, FXMainWindow, WelcomeWindowMap, ARRAYNUMBER(WelcomeWindowMap));
 
-WelcomeWindow::WelcomeWindow(FXApp *a) : FXMainWindow(a, "Getting Started with Windows 2000", ico_mainicon, NULL, DECOR_MENU|DECOR_BORDER|DECOR_CLOSE|DECOR_TITLE|DECOR_MINIMIZE, 0,0,0,0) {
+WelcomeWindow::WelcomeWindow(FXApp *a) : FXMainWindow(a, "Wprowadzenie do systemu Windows 2000", ico_mainicon, NULL, DECOR_MENU|DECOR_BORDER|DECOR_CLOSE|DECOR_TITLE|DECOR_MINIMIZE, 0,0,0,0) {
 	btnhover = 0;
 	titlefont = new FXFont(getApp(), "Tahoma", 12, FXFont::Bold);
 	boldfont = new FXFont(getApp(), "Tahoma", 8, FXFont::Bold);
@@ -141,7 +141,7 @@ WelcomeWindow::WelcomeWindow(FXApp *a) : FXMainWindow(a, "Getting Started with W
 	FXVerticalFrame* cont2 = new FXVerticalFrame(cont, LAYOUT_FILL_Y, 0,0, 0,0, 0,0,0,0, 0,0);
 
 	leftcanvas = new FXCanvas(cont2, this, ID_LEFTCANVAS, LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0,0,179,0);
-	chk = new FXCheckButton(cont2, "&Show this screen at startup.", NULL, 0,
+	chk = new FXCheckButton(cont2, "Pokaż ten ekran podczas\n uruchamiania.", NULL, 0,
 		CHECKBUTTON_NORMAL|LAYOUT_FILL_X|JUSTIFY_LEFT|LAYOUT_BOTTOM, 0,0,0,0, 8,8,4,6);
 	cont2->setBackColor(SIDECOLOR);
 	chk->setBackColor(SIDECOLOR);
@@ -181,9 +181,9 @@ void WelcomeWindow::create() {
 
 	FXMainWindow::create();
 
-	btntextwidth = boldfont->getTextWidth("Exit");
+	btntextwidth = boldfont->getTextWidth("Zakończ");
 	btncanvas->setWidth(btntextwidth+(11*2));
-	btntextheight = boldfont->getTextHeight("Exit");
+	btntextheight = boldfont->getTextHeight("Zakończ");
 	btncanvas->setHeight(btntextheight+4+3);
 
 	leftcanvas->setHeight((10+boldfont->getFontHeight()+1)*(AMOUNTBARS));
@@ -342,9 +342,9 @@ long WelcomeWindow::onPaintLeft(FXObject* obj, FXSelector, void* ptr) {
 	dc.setForeground(SIDECOLOR);
 	dc.fillRectangle(0, 0, width, height);
 
-	drawBar(ev, &dc, width, 0, (hoveredbar == (0+1)), "Register Now");
-	drawBar(ev, &dc, width, 1, (hoveredbar == (1+1)), "Discover Windows");
-	drawBar(ev, &dc, width, 2, (hoveredbar == (2+1)), "Connect to the Internet");
+	drawBar(ev, &dc, width, 0, (hoveredbar == (0+1)), "Zarejestruj teraz");
+	drawBar(ev, &dc, width, 1, (hoveredbar == (1+1)), "Odkryj Windows");
+	drawBar(ev, &dc, width, 2, (hoveredbar == (2+1)), "Połącz z Internetem");
 
 	//puts("drawing");
 
@@ -366,7 +366,7 @@ long WelcomeWindow::onPaintBtn(FXObject* obj, FXSelector, void* ptr) {
 	dc.fillRectangle(0, 0, winwidth, winheight);
 	dc.setForeground(BTNCOLOR);
 	dc.drawRectangle(0, 0, winwidth-1, winheight-1);
-	drawText(&dc, (winwidth-btntextwidth)/2+1, (winheight-btntextheight)/2+1, boldfont, 1, "Exit");
+	drawText(&dc, (winwidth-btntextwidth)/2+1, (winheight-btntextheight)/2+1, boldfont, 1, "Zakończ");
 
 	if (btnhover) {
 		dc.setStipple(STIPPLE_GRAY, 0, 1);
@@ -438,44 +438,45 @@ long WelcomeWindow::onPaintRight(FXObject* obj, FXSelector, void* ptr) {
 			dc.drawImage(img_register, 
 					(rightcanvas->getWidth())-(img_register->getWidth()),
 					(rightcanvas->getHeight())-(img_register->getHeight()));
-			drawText(&dc, 16, 11, titlefont, 0, "Register Windows 2000");
+			drawText(&dc, 16, 11, titlefont, 0, "Zarejestruj system Windows 2000");
 			dc.setForeground(TEXTCOLOR);
 			drawTextWrap(&dc, 16, 37, normalfont, 260,
-					"Register your copy of Windows 2000 Professional and help Microsoft give you:\n"
+					"Zarejestruj swoją kopię systemu Windows 2000 Professional, aby firma Microsoft mogła:\n"
 					"\n"
-					"• The best possible product support\n"
-					"• The right software upgrades\n"
-					"• The most relevant new product information");
+					"• zapewnić najlepszą możliwą pomoc dla produktu\n"
+					"• dostarczyć odpowiednie uaktualnienia oprogramowania\n"
+					"• dostarczyć najistotniejsze informacje na temat nowych produktów");
 			break;
 		case 2:
 			dc.drawImage(img_discover, 
 					(rightcanvas->getWidth())-(img_discover->getWidth()),
 					(rightcanvas->getHeight())-(img_discover->getHeight()));
-			drawText(&dc, 16, 11, titlefont, 0, "Discover Windows 2000");
+			drawText(&dc, 16, 11, titlefont, 0, "Odkryj system Windows 2000");
 			dc.setForeground(TEXTCOLOR);
 			drawTextWrap(&dc, 16, 37, normalfont, 260,
-					"Windows 2000 Professional is easier to use, easier to manage, more compatible, "
-					"and more powerful. The Discover Windows 2000 Professional tour highlights all "
-					"the newest and coolest features.");
+					"System Windows 2000 Professional jest łatwiejszy w "
+					"użyciu i zarządzaniu, bardziej zgodny i wydajniejszy. "
+					"Pomoc systemu Windows 2000 zawiera informacje o "
+					"najnowszych i najfajniejszych funkcjach.");
 			break;
 		case 3:
 			dc.drawImage(img_connect, 
 					(rightcanvas->getWidth())-(img_connect->getWidth()),
 					(rightcanvas->getHeight())-(img_connect->getHeight()));
-			drawText(&dc, 16, 11, titlefont, 0, "Connect to the Internet");
+			drawText(&dc, 16, 11, titlefont, 0, "Połącz z Internetem");
 			dc.setForeground(TEXTCOLOR);
 			drawTextWrap(&dc, 16, 37, normalfont, 260,
-					"• Read the latest news and financial information\n"
-					"• Visit Web sites around the world\n"
-					"• Get e-mail\n"
+					"• Przeczytaj najnowsze wiadomości i informacje finansowe\n"
+					"• Odwiedź witryny sieci Web na całym świecie\n"
+					"• Odbieraj pocztę\n"
 					"\n"
-					"We make it quick and simple for you to connect to the internet.");
+					"Sprawiamy, że połączenie z Internetem jest szybkie i łatwe.");
 			break;
 		default:
-			drawText(&dc, 16, 11, titlefont, 0, "Getting Started");
+			drawText(&dc, 16, 11, titlefont, 0, "Pierwsze kroki");
 			dc.setForeground(TEXTCOLOR);
-			drawTextWrap(&dc, 16, 37, normalfont, 260, "You can access all your documents, "
-					"programs and settings from the start button.");
+			drawTextWrap(&dc, 16, 37, normalfont, 260, "Możesz uzyskać dostęp do wszystkich dokumentów, "
+					"programów i ustawień z przycisku Start.");
 
 			dc.drawImage(img_welcome, 17, 71);
 	}

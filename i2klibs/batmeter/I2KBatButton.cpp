@@ -32,7 +32,7 @@ I2KBatButton::I2KBatButton(FXComposite* p, const FXString& text, FXIcon* ic, FXO
 
 	caplbl = new FXLabel(horcont, "100%", NULL, LAYOUT_FILL_Y|JUSTIFY_BOTTOM, 0,0,0,0, 2,0,0,4);
 	//new FXButton(
-	botlbl = new FXLabel(maincont, "Not Present", NULL, LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0);
+	botlbl = new FXLabel(maincont, "Brak baterii", NULL, LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0);
 
 	new FXFrame(this, FRAME_NONE, 0,0,0,0, 0,0,0,0);
 }

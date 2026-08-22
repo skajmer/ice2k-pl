@@ -164,16 +164,16 @@ long LogoffDialog::onRealUnfocus(FXObject* sender,FXSelector sel,void* ptr) {
 FXIMPLEMENT(LogoffDialog,FXDialogBox,LogoffDialogMap,ARRAYNUMBER(LogoffDialogMap));
 
 // Construct a LogoffDialog
-LogoffDialog::LogoffDialog(FXWindow* owner):FXDialogBox(owner, "Log Off Windows", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,0,0, 12,12,10,13, 20,20) {
+LogoffDialog::LogoffDialog(FXWindow* owner):FXDialogBox(owner, "Wylogowywanie z systemu Windows", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,0,0, 12,12,10,13, 20,20) {
 	cont = new FXHorizontalFrame(this, LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 8,8);
 	new FXLabel(cont, "", logoffIcon, LAYOUT_CENTER_Y, 0,0,0,0, 0,0,0,0);
-	new FXLabel(cont, "Are you sure you want to log off?", NULL, LAYOUT_BOTTOM, 0,0,0,0, 22,34,0,4);
+	new FXLabel(cont, "Czy napewno chcesz się wylogować?", NULL, LAYOUT_BOTTOM, 0,0,0,0, 22,34,0,4);
 
 	buttoncont = new FXHorizontalFrame(this, LAYOUT_CENTER_X|PACK_UNIFORM_WIDTH, 0,0,0,0, 6,0,0,0, 10,10);
 
-	FXButton* logoffbtn = new FXButton(buttoncont, "&Log Off", NULL, this, ID_ACCEPT, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 12,13,2,3);
+	FXButton* logoffbtn = new FXButton(buttoncont, "Wyloguj", NULL, this, ID_ACCEPT, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 12,13,2,3);
 	logoffbtn->setFocus();
-	new FXButton(buttoncont, "&Cancel", NULL, this, ID_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 12,13,2,3);
+	new FXButton(buttoncont, "Anuluj", NULL, this, ID_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 12,13,2,3);
 }
 
 
@@ -259,7 +259,7 @@ class FadeWindow : public FXMainWindow {
 };
 
 
-FadeWindow::FadeWindow(FXApp* a):FXMainWindow(a, "Log Off Windows", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0, 0, 0, 0, 0, 0, 0, 0) {
+FadeWindow::FadeWindow(FXApp* a):FXMainWindow(a, "Wylogowywanie z sytemu Windows", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0, 0, 0, 0, 0, 0, 0, 0) {
 }
 
 FadeWindow::~FadeWindow() {
@@ -385,7 +385,6 @@ int main(int argc,char *argv[]) {
 		logoffIcon = new FXPNGIcon(ptrapp, resico_2k_logoff);
 	} else {
 		logoffIcon = new FXPNGIcon(ptrapp, resico_xp_logoff);
-	}
 	logoffIcon->blend(ptrapp->getBaseColor());
 
 	xdisplay = (Display*)ptrapp->getDisplay();

@@ -18,8 +18,8 @@ void I2KBatDialog::refreshInfo() {
 	
 	buf[0] = '\0';
 
-	strcpy(buf, "Battery name:   ");
-	lblsize = sizeof("Battery name:   ")-1;
+	strcpy(buf, "Nazwa baterii:   ");
+	lblsize = sizeof("Nazwa baterii:   ")-1;
 	ret = getPsuInfoStr(battery, "model_name", buf+lblsize, sizeof(buf)-lblsize);
 
 	if (!ret) {
@@ -31,8 +31,8 @@ void I2KBatDialog::refreshInfo() {
 	
 	buf[0] = '\0';
 
-	strcpy(buf, "Unique ID:   ");
-	lblsize = sizeof("Unique ID:   ")-1;
+	strcpy(buf, "Unikatowy indentyfikator:   ");
+	lblsize = sizeof("Unikatowy identyfikator:   ")-1;
 	ret = getPsuInfoStr(battery, "serial_number", buf+lblsize, sizeof(buf)-lblsize);
 	if (!ret) {
 		seriallbl->setText(" ");
@@ -42,8 +42,8 @@ void I2KBatDialog::refreshInfo() {
 	}
 	buf[0] = '\0';
 
-	strcpy(buf, "Chemistry:   ");
-	lblsize = sizeof("Chemistry:   ")-1;
+	strcpy(buf, "Skład chemiczny:   ");
+	lblsize = sizeof("Skład chemiczny:   ")-1;
 	ret = getPsuInfoStr(battery, "technology", buf+lblsize, sizeof(buf)-lblsize);
 	if (!ret) {
 		chemlbl->setText(" ");
@@ -54,14 +54,14 @@ void I2KBatDialog::refreshInfo() {
 	buf[0] = '\0';
 
 
-	strcpy(buf, "Power state:   ");
-	lblsize = sizeof("Power state:   ")-1;
+	strcpy(buf, "Stan zasilania:   ");
+	lblsize = sizeof("Stan zasilania:   ")-1;
 
 	if (getBatteryPresent(battery)) {
-		strcpy(buf+lblsize, "On Line, ");
+		strcpy(buf+lblsize, "Online, ");
 		ret = getPsuInfoStr(battery, "status", buf+lblsize+onlinesize, sizeof(buf)-lblsize-onlinesize);
 	} else {
-		strcpy(buf+lblsize, "Off Line");
+		strcpy(buf+lblsize, "Offline");
 		ret = 1;
 	}
 
@@ -72,8 +72,8 @@ void I2KBatDialog::refreshInfo() {
 		statuslbl->setText(buf);
 	}
 
-	strcpy(buf, "Manufacturer:   ");
-	lblsize = sizeof("Manufacturer:   ")-1;
+	strcpy(buf, "Producent:   ");
+	lblsize = sizeof("Producent:   ")-1;
 	ret = getPsuInfoStr(battery, "manufacturer", buf+lblsize, sizeof(buf)-lblsize);
 	if (!ret) {
 		manufacturerlbl->setText(" ");
@@ -86,9 +86,9 @@ void I2KBatDialog::refreshInfo() {
 }
 
 I2KBatDialog::I2KBatDialog(FXComposite* p, int num, const char* bat)
-	: FXDialogBox(p, "Detailed Information", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0, 11,10,10,13, 12,12) {
+	: FXDialogBox(p, "Szczegółowe informacje o baterii", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0, 11,10,10,13, 12,12) {
 	sprintf(battery, "%.*s", (int)sizeof(battery)-1, bat);
-	grp = new FXGroupBox(this, "Battery status", FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 11,11,5,12);
+	grp = new FXGroupBox(this, "Stan baterii", FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 11,11,5,12);
 
 	batnamelbl = new FXLabel(grp, " ");
 	seriallbl = new FXLabel(grp, " ");
@@ -101,7 +101,7 @@ I2KBatDialog::I2KBatDialog(FXComposite* p, int num, const char* bat)
 			"                                                          ",
 			NULL, LAYOUT_FIX_HEIGHT, 0,0,0,1, 0,0,0,0);
 
-	new FXButton(grp, "&Refresh", NULL, this, ID_REFRESH,
+	new FXButton(grp, "Odśwież", NULL, this, ID_REFRESH,
 			BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 17,16,2,3);
 
 	FXButton* okbtn = new FXButton(this, "&OK", NULL, this, FXDialogBox::ID_ACCEPT,

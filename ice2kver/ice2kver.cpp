@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
 	FXIcon* bannericon = new FXGIFIcon(&application, banner,0,IMAGE_OPAQUE);
 
 	application.init(argc, argv);
-	FXMainWindow *main=new FXMainWindow(&application, "About Windows", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0, 0, 0, 0);
+	FXMainWindow *main=new FXMainWindow(&application, "Windows - informacje", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0, 0, 0, 0);
 
 	new FXLabel(main, "", bannericon, LAYOUT_CENTER_X, 0, 0, 0, 0, 0, 0, 0);
 	int windows = i2kBGetWinVersionInt();
@@ -140,23 +140,22 @@ int main(int argc, char *argv[]) {
 	if (windows >= ICE2K_BRAND_WINXP) {
 		new FXLabel(winverinfo, "Microsoft ® Windows", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 3);
 		if (windows == ICE2K_BRAND_WINSRV03) {
-			new FXLabel(winverinfo, "Version 5.2 (Build 3790.srv03_sp1_rtm.050324-1447 : Service Pack 1)", NULL, 0, 0, 0, 0, 0, 1, 0, 0, 2);
+			new FXLabel(winverinfo, "Wersja 5.2 (Build 3790.srv03_sp1_rtm.050324-1447 : Dodatek Service Pack 1)", NULL, 0, 0, 0, 0, 0, 1, 0, 0, 2);
 			new FXLabel(winverinfo, "Copyright © 1985-2005 Microsoft Corporation", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 3);
 		} else {
 #ifdef __x86_64__
-			new FXLabel(winverinfo, "Version 5.2 (Build 3790.srv03_sp1_rtm.050324-1447 : Service Pack 1)", NULL, 0, 0, 0, 0, 0, 1, 0, 0, 2);
-			new FXLabel(winverinfo, "Copyright © 1985-2005 Microsoft Corporation", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 3);
+		new FXLabel(winverinfo, "Wersja 5.2 (Kompilacja 3790.srv03_sp1_rtm.050324-1447 : Dodatek Service Pack 1)", NULL, 0, 0, 0, 0, 0, 1, 0, 0, 2);
+		new FXLabel(winverinfo, "Copyright © 1985-2005 Microsoft Corporation", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 3);
 #else
-			new FXLabel(winverinfo, "Version 5.1 (Build 2600.xpsp_sp2_gdr.050301-1519 : Service Pack 2)", NULL, 0, 0, 0, 0, 0, 1, 0, 0, 2);
-			new FXLabel(winverinfo, "Copyright © 1985-2001 Microsoft Corporation", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 3);
+		new FXLabel(winverinfo, "Wersja 5.1 (Kompilacja 2600.xpsp_sp2_gdr.050301-1519 : Dodatek Service Pack 2)", NULL, 0, 0, 0, 0, 0, 1, 0, 0, 2);
+		new FXLabel(winverinfo, "Copyright © 1985-2001 Microsoft Corporation", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 3);
 #endif
-		}
-		
+		}	
 		new FXLabel(winverinfo, " ", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 3);
 		new FXLabel(winverinfo, " ", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 	} else {
 		new FXLabel(winverinfo, "Microsoft (R) Windows", NULL, 0, 0,0,0,0, 0,0,0,3);
-		new FXLabel(winverinfo, "Version 5.0 (Build 2195: Service Pack 4)", NULL, 0, 0,0,0,0, 0,0,0,2);
+		new FXLabel(winverinfo, "Version 5.0 (Kompilacja 2195: Service Pack 4)", NULL, 0, 0,0,0,0, 0,0,0,2);
 		new FXLabel(winverinfo, "Copyright (C) 1981-1999 Microsoft Corp.", NULL, 0, 0,0,0,0, 0,0,0,3);
 		new FXLabel(winverinfo, " ", NULL, 0, 0,0,0,0, 0,0,0,3);
 		new FXLabel(winverinfo, " ", NULL, 0, 0,0,0,0, 0,0,0,1);
@@ -168,10 +167,11 @@ int main(int argc, char *argv[]) {
 	FXLabel* eulalink1;
 	FXLabel* eulalink2;
 
+	
 	if (windows >= ICE2K_BRAND_WINXP) {
 		FXHorizontalFrame* eulacont1 = new FXHorizontalFrame(winverinfo, LAYOUT_MIN_WIDTH, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1);
-		new FXLabel(eulacont1, "This product is licensed under the terms of the ", NULL, 0, 0, 0, 0, 0, 0, 0, 0, -1);
-		eulalink1 = new FXLabel(eulacont1, "End-User", NULL, 0, 0, 0, 0, 0, 0, 0, 0, -1);
+		new FXLabel(eulacont1, "Ten produkt jest licencjonowany zgodnie z warunkami", NULL, 0, 0, 0, 0, 0, 0, 0, 0, -1);
+		eulalink1 = new FXLabel(eulacont1, "", NULL, 0, 0, 0, 0, 0, 0, 0, 0, -1);
 
 		FXColor linkcolor;
 
@@ -186,8 +186,8 @@ int main(int argc, char *argv[]) {
 		eulaunderscore1->setBackColor(linkcolor);
 
 		FXHorizontalFrame* eulacont2 = new FXHorizontalFrame(winverinfo, LAYOUT_MIN_WIDTH, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1);
-		eulalink2 = new FXLabel(eulacont2, "License Agreement", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 5);
-		new FXLabel(eulacont2, " to:", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 5);
+		eulalink2 = new FXLabel(eulacont2, "Umowy licencyjnej użytkownika oprogramowania,", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 5);
+		new FXLabel(eulacont2, "którą posiada:", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 5);
 
 		eulaunderscore2 = new FXFrame(eulacont2, LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FIX_X|LAYOUT_FIX_Y, 0, 0, 1, 1, 0, 0, 0, 0);
 
@@ -195,7 +195,7 @@ int main(int argc, char *argv[]) {
 		eulaunderscore2->setBackColor(linkcolor);
 	} else {
 		FXHorizontalFrame* eulacont1 = new FXHorizontalFrame(winverinfo, LAYOUT_MIN_WIDTH, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1);
-		new FXLabel(eulacont1, "This product is licensed to:", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 2);
+		new FXLabel(eulacont1, "Licencję na ten produkt posiada:", NULL, 0, 0, 0, 0, 0, 0, 0, 0, 2);
 	}
 
 
@@ -228,7 +228,7 @@ int main(int argc, char *argv[]) {
 
 	char *tmp = strdup(physmemtext);
 
-	strcpy(physmemtext, "Physical memory available to Windows:    ");
+	strcpy(physmemtext, "Pamięć fizyczna dostępna dla systemu Windows:    ");
 	strcat(physmemtext, tmp);
 
 	free(tmp);
@@ -241,7 +241,6 @@ int main(int argc, char *argv[]) {
 	} else {
 		new FXLabel(winverinfo, physmemtext, NULL, 0, 0, 0, 0, 0, 0, 0, 5, 6);
 	}
-
 	FXPacker *okcont=new FXPacker(main,LAYOUT_SIDE_BOTTOM|LAYOUT_RIGHT, 0, 0, 0, 0, 10, 8, 22, 10);
 
 	FXButton* okbutton = new FXButton(okcont, "OK", NULL, &application, FXApp::ID_QUIT, BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|BUTTON_DEFAULT, 0, 0, 75, 23, 3, 3, 2, 3);
@@ -251,6 +250,7 @@ int main(int argc, char *argv[]) {
 
 
 	application.create();
+
 
 	if (windows >= ICE2K_BRAND_WINXP) {
 		eulaunderscore1->setX(eulalink1->getX());

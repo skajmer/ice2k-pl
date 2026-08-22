@@ -21,7 +21,7 @@ public:
 
 FXIMPLEMENT(BatMeterWindow, FXMainWindow, NULL, 0);
 
-BatMeterWindow::BatMeterWindow(FXApp *a) : FXMainWindow(a, "Power Meter", ico_baticon, NULL, DECOR_BORDER|DECOR_CLOSE|DECOR_TITLE|DECOR_MENU, 0,0,0,0, 7,7,9,9) {
+BatMeterWindow::BatMeterWindow(FXApp *a) : FXMainWindow(a, "Miernik energii", ico_baticon, NULL, DECOR_BORDER|DECOR_CLOSE|DECOR_TITLE|DECOR_MENU, 0,0,0,0, 7,7,9,9) {
 	new I2KBatMeter(this, LAYOUT_FILL_X|LAYOUT_FILL_Y);
 }
 

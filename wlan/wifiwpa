@@ -26,12 +26,12 @@ dbms() {
 }
 
 if ! test "$1"; then
-	echo 'err: No interface specified!' >&2
+	echo 'err: Nie podano interfejsu!' >&2
 	exit 1
 fi
 
 if ! type iwctl >/dev/null 2>&1; then
-	echo 'err: IWD is not installed!' >&2;
+	echo 'err: IWD nie jest zainstalowany!' >&2;
 	exit 1
 fi
 
@@ -69,7 +69,7 @@ listnet() {
 		elif [ -f /usr/sbin/iwlist ]; then
 			sudo -n  /usr/sbin/iwlist "$1" scan | filter
 		else
-			echo "System has no wireless support"
+			echo "System nie ma wspracia sieci bezprzewodowych"
 		fi
 	else
 		if [ -f /sbin/iwlist ]; then
@@ -77,7 +77,7 @@ listnet() {
 		elif [ -f /usr/sbin/iwlist ]; then
 			/usr/sbin/iwlist "$1" scan | filter
 		else
-			echo "System has no wireless support"
+			echo "System nie ma wsparcia sieci bezprzewodowych"
 		fi
 	fi
 }

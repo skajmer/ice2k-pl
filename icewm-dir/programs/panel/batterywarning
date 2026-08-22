@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ "$1" = "low" ]; then
-	notify-send -u low "Low Battery" "You should change your battery or switch to outlet power immediately to keep from losing your work."
+	notify-send -u low "Niski poziom baterii" "Powinieneś zmienić baterię lub podłączyć sprzęt do ładowania, aby nie utracić swojej pracy."
 elif [ "$1" = "critical" ]; then
-	notify-send -u critical "Critical Battery" "You should change your battery or switch to outlet power immediately to keep from losing your work."
+	notify-send -u critical "Krytyczny poziom baterii" "Powinieneś natychmiast zmienić baterię lub podłączyć sprzęt do ładowania, aby nie utracić swojej pracy."
 fi

@@ -916,7 +916,7 @@ long TimeDateCPL::onChangeTimebox(FXObject*,FXSelector,void* ptr){
 	return 1;
 }
 
-TimeDateCPL::TimeDateCPL(FXApp *a) : FXMainWindow(a, "Date and Time Properties", mainIcon, NULL, DECOR_TITLE|DECOR_CLOSE|DECOR_BORDER, 0,0,0,0) {
+TimeDateCPL::TimeDateCPL(FXApp *a) : FXMainWindow(a, "Właściwości: Data i godzina", mainIcon, NULL, DECOR_TITLE|DECOR_CLOSE|DECOR_BORDER, 0,0,0,0) {
 	getApp()->addTimeout(this, ID_TIMER, 1000);
 	int timeval = getLocalTime(NULL);
 
@@ -924,12 +924,12 @@ TimeDateCPL::TimeDateCPL(FXApp *a) : FXMainWindow(a, "Date and Time Properties",
 	tabbook = new FXTabBook(cont, NULL, 0,
 			TABBOOK_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 0,0,0,0);
 
-	new FXTabItem(tabbook, "Date && Time", NULL, TAB_TOP_NORMAL, 0,0,0,0, 6, 6, 1, 2);
+	new FXTabItem(tabbook, "Data i godzina", NULL, TAB_TOP_NORMAL, 0,0,0,0, 6, 6, 1, 2);
 
 	generalcont = new FXVerticalFrame(tabbook, FRAME_RAISED|FRAME_THICK|LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 7,7,6,10, 8, 8);
 	generalhorcont = new FXHorizontalFrame(generalcont, LAYOUT_FILL_X|LAYOUT_FILL_Y	, 0,0,0,0, 0,0,0,0, 8,8);
 
-	dategrp = new FXGroupBox(generalhorcont, "Date",
+	dategrp = new FXGroupBox(generalhorcont, "Data",
 			GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 12,12,0,4, 4,4);
 	FXMatrix* datemtx = new FXMatrix(dategrp, 1, LAYOUT_FILL_X|LAYOUT_FILL_Y|MATRIX_BY_COLUMNS, 0,0,0,0, 0,0,0,0, 0,0);
 
@@ -957,7 +957,7 @@ TimeDateCPL::TimeDateCPL(FXApp *a) : FXMainWindow(a, "Date and Time Properties",
 	calview->setWeekendColor(calview->getDayColor());
 	calview->setOtherWeekendColor(calview->getOtherDayColor());
 
-	timegrp = new FXGroupBox(generalhorcont, "Time",
+	timegrp = new FXGroupBox(generalhorcont, "Godzina",
 			GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 12,12,0,4, 4,4);
 
 	FXMatrix* timemtx = new FXMatrix(timegrp, 1, LAYOUT_FILL_Y|MATRIX_BY_COLUMNS, 0,0,0,0, 4,4,0,0, 0,0);
@@ -995,28 +995,28 @@ TimeDateCPL::TimeDateCPL(FXApp *a) : FXMainWindow(a, "Date and Time Properties",
 
 	buttoncont = new FXHorizontalFrame(cont, PACK_UNIFORM_WIDTH|LAYOUT_RIGHT, 0,0,0,0, 0,0,0,0);
 
-	new I2KButton(buttoncont, "&OK", NULL, this,
+	new I2KButton(buttoncont, "OK", NULL, this,
 			ID_ACCEPT,
 			BUTTON_NORMAL|BUTTON_DEFAULT,
 			0,0,0,0, 19, 19);
 
-	new I2KButton(buttoncont, "&Cancel", NULL, getApp(),
+	new I2KButton(buttoncont, "Anuluj", NULL, getApp(),
 			FXApp::ID_QUIT,
 			BUTTON_NORMAL|BUTTON_DEFAULT,
 			0,0,0,0, 19, 19);
 
-	new I2KButton(buttoncont, "&Apply", NULL, this,
+	new I2KButton(buttoncont, "&Zastosuj", NULL, this,
 			ID_APPLY,
 			BUTTON_NORMAL|BUTTON_DEFAULT,
 			0,0,0,0, 19, 19);
 
-	/*new FXTabItem(tabbook, "Time Zone", NULL, TAB_TOP_NORMAL, 0,0,0,0, 5, 4, 1, 2);
+	/*new FXTabItem(tabbook, "Strefa czasowa", NULL, TAB_TOP_NORMAL, 0,0,0,0, 5, 4, 1, 2);
 	timezonecont = new FXVerticalFrame(tabbook, FRAME_RAISED|FRAME_THICK|LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 10,14,6,6, 4, 4);
 
 	new FXListBox(timezonecont, NULL, 0, LISTBOX_NORMAL|FRAME_NORMAL|LAYOUT_FILL_X);
 	new FXImageFrame(timezonecont, globeImg, LAYOUT_CENTER_X|FRAME_NORMAL);
 
-	new FXCheckButton(timezonecont, "A&utomatically adjust clock for daylight saving changes");*/
+	new FXCheckButton(timezonecont, "Automatycznie uwzględnij zmiany czasu");*/
 	/*periodbox->appendItem("AM");
 	periodbox->appendItem("PM");*/
 	//getApp()->addTimeout(this, ID_TIMER, 1000);

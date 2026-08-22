@@ -1,5 +1,7 @@
 ![Screenshot of Ice2K.sys](screenie.png)
 ```
+THIS IS A FORK of Ice2k to translate it to Polish.
+Original description below:
 
 Ice2K/XP.sys
 =================================

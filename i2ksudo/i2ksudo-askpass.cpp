@@ -47,7 +47,7 @@ class CommandBox : public FXDialogBox {
 					0,0,0,0, 26,26,3,2);
 			okbtn->setFocus();
 
-			new FXLabel(this, "Command:");
+			new FXLabel(this, "Komenda:");
 
 			textframe = new FXPacker(this, FRAME_NORMAL|LAYOUT_FILL_Y|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 0,0);
 			
@@ -57,7 +57,7 @@ class CommandBox : public FXDialogBox {
 			char* tmpenv = getenv("SUDO_COMMAND");
 
 			if (tmpenv == NULL) {
-				strcpy(command, "Unknown");
+				strcpy(command, "Nieznany");
 			} else {
 				sprintf(command, "%.*s\n", (int)sizeof(command)-2, tmpenv);
 				command[sizeof(command)-1] = '\0';
@@ -195,7 +195,7 @@ int checkPassword(const char* pw) {
 
 
 
-SudoWindow::SudoWindow(FXApp *a) : FXMainWindow(a, "Run as root", userIcon, NULL, DECOR_BORDER|DECOR_TITLE|DECOR_CLOSE, 0,0,0,0) {
+SudoWindow::SudoWindow(FXApp *a) : FXMainWindow(a, "Uruchom jako root", userIcon, NULL, DECOR_BORDER|DECOR_TITLE|DECOR_CLOSE, 0,0,0,0) {
 	/*new FXButton(this, "Hello World!", NULL, this, ID_HELLO, BUTTON_NORMAL);*/
 
 	int padtop;
@@ -209,10 +209,10 @@ SudoWindow::SudoWindow(FXApp *a) : FXMainWindow(a, "Run as root", userIcon, NULL
 	}
 
 	contents = new FXVerticalFrame(this, LAYOUT_FILL_X, 0,0,0,0, 9,9,padtop,11, 0,0);
-	new FXLabel(contents, "The action you requested needs root privileges.");
+	new FXLabel(contents, "Ta akcja wymaga uprawnień roota.");
 
 	credmtx = new FXMatrix(contents, 3, MATRIX_BY_COLUMNS|LAYOUT_FILL_X, 0,0,0,0, 2,2,11,44, 6,7);
-	new FXLabel(credmtx, "&User name:              ", NULL, LAYOUT_CENTER_Y, 0,0,0,0, 0,1,0,0);
+	new FXLabel(credmtx, "Nazwa użytkownika:              ", NULL, LAYOUT_CENTER_Y, 0,0,0,0, 0,1,0,0);
 
 	userfield = new FXHorizontalFrame(credmtx, LAYOUT_FILL_X|LAYOUT_FILL_COLUMN|FRAME_NORMAL, 0,0,0,0, 0,0,0,0, 2,2);
 	//userfield->setBackColor(getApp()->getBackColor());
@@ -234,7 +234,7 @@ SudoWindow::SudoWindow(FXApp *a) : FXMainWindow(a, "Run as root", userIcon, NULL
 	//userfieldtxt->setBaseColor(getApp()->getBackColor());
 
 	//new FXLabel(credmtx, "&Password:", NULL, LAYOUT_CENTER_Y, 0,0,0,0, 0,43,0,0);
-	new FXLabel(credmtx, "&Password:", NULL, LAYOUT_CENTER_Y, 0,0,0,0, 0,1,0,0);
+	new FXLabel(credmtx, "Hasło:", NULL, LAYOUT_CENTER_Y, 0,0,0,0, 0,1,0,0);
 	pwfieldtxt = new FXTextField(credmtx, 10, this, ID_ACCEPT,
 			TEXTFIELD_ENTER_ONLY|TEXTFIELD_PASSWD|
 			FRAME_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_COLUMN, 0,0,0,0, 4,4,1,1);
@@ -242,14 +242,14 @@ SudoWindow::SudoWindow(FXApp *a) : FXMainWindow(a, "Run as root", userIcon, NULL
 
 
 	new FXFrame(credmtx, FRAME_NONE);
-	rememberchk = new FXCheckButton(credmtx, "&Remember my password", NULL, 0, CHECKBUTTON_NORMAL|LAYOUT_FILL_COLUMN);
+	rememberchk = new FXCheckButton(credmtx, "Zapamiętaj moje hasło", NULL, 0, CHECKBUTTON_NORMAL|LAYOUT_FILL_COLUMN);
 	rememberchk->setCheck(TRUE);
 	rememberchk->disable();
 
 	btncont = new FXHorizontalFrame(contents, LAYOUT_FILL_X|PACK_UNIFORM_WIDTH, 0,0,0,0, 3,2,0,0, 6,6);
 
-	commandbtn = new FXButton(btncont, "Command...", NULL, this, ID_COMMAND, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 6,6,2,3);
-	cancelbtn = new FXButton(btncont, "Cancel", NULL, getApp(), FXApp::ID_QUIT, LAYOUT_RIGHT|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 6,6,2,3);
+	commandbtn = new FXButton(btncont, "Komenda...", NULL, this, ID_COMMAND, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 6,6,2,3);
+	cancelbtn = new FXButton(btncont, "Anuluj", NULL, getApp(), FXApp::ID_QUIT, LAYOUT_RIGHT|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 6,6,2,3);
 	okbtn = new FXButton(btncont, "OK", NULL, this, ID_ACCEPT, LAYOUT_RIGHT|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 6,6,2,3);
 
 }
@@ -306,10 +306,10 @@ long SudoWindow::onTimeoutAccept(FXObject*, FXSelector, void*) {
 		puts(pw);
 		exit(0);
 	} else {
-		FXMessageBox::error(this, MBOX_OK, "Logon Message",
-				"Unable to log on:\n"
+		FXMessageBox::error(this, MBOX_OK, "Wiadomość logowania",
+				"Nie udało się zalogować:\n"
 				"\n"
-				"Logon failure: unknown user name or bad password.");
+				"Niepowodzenie zalogowania: nieznana nazwa użytkownika lub złe hasło.");
 	}
 
 	pwfieldtxt->enable();

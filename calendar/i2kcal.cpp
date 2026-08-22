@@ -41,7 +41,7 @@ FXDEFMAP(I2KCalendar) I2KCalendarMap[] = {
 
 FXIMPLEMENT(I2KCalendar, FXMainWindow, I2KCalendarMap, ARRAYNUMBER(I2KCalendarMap));
 
-I2KCalendar::I2KCalendar(FXApp *a) : FXMainWindow(a, "Calendar", mainIcon, NULL, DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0) {
+I2KCalendar::I2KCalendar(FXApp *a) : FXMainWindow(a, "Kalendarz", mainIcon, NULL, DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0) {
 	cal = new FXCalendar(this, NULL, 0, FRAME_NORMAL);
 	cal->setWeekendColor(cal->getDayColor());
 	cal->setOtherWeekendColor(cal->getOtherDayColor());

@@ -224,7 +224,7 @@ FXIMPLEMENT(CtrlAltDelWindow,FXMainWindow,CtrlAltDelWindowMap,ARRAYNUMBER(CtrlAl
 //int workspaces;
 
 // Construct a CtrlAltDelWindow
-CtrlAltDelWindow::CtrlAltDelWindow(FXApp *a):FXMainWindow(a, "Windows Security", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0, 0, 0, 0, 0, 0, 0, 0) {
+CtrlAltDelWindow::CtrlAltDelWindow(FXApp *a):FXMainWindow(a, "Zabezpieczenia systemu Windows", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0, 0, 0, 0, 0, 0, 0, 0) {
   const unsigned char *banner = i2kBGetWinShutBrandingImage();
 
   FXIcon* bannericon = new FXGIFIcon(getApp(), banner,0,IMAGE_OPAQUE);
@@ -238,7 +238,7 @@ CtrlAltDelWindow::CtrlAltDelWindow(FXApp *a):FXMainWindow(a, "Windows Security",
   cont = new FXVerticalFrame(this, LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 11,10,8,11);
 
   // .-- Logon Information -------------------.
-  logongrp = new FXGroupBox(cont, "Logon Information", GROUPBOX_TITLE_LEFT|FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0 ,0,0);
+  logongrp = new FXGroupBox(cont, "Informacje o logowaniu", GROUPBOX_TITLE_LEFT|FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0 ,0,0);
   logongrpc = new FXVerticalFrame(logongrp, LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 10,10,3,3, 0,0);
 
   // Get hostname
@@ -256,7 +256,7 @@ CtrlAltDelWindow::CtrlAltDelWindow(FXApp *a):FXMainWindow(a, "Windows Security",
 
   char *tmp = strdup(hostname);
 
-  strcpy(hostname, "You are logged on as ");
+  strcpy(hostname, "Jesteś zalogowany jako ");
   strcat(hostname, tmp);
 
   free(tmp);
@@ -285,40 +285,40 @@ CtrlAltDelWindow::CtrlAltDelWindow(FXApp *a):FXMainWindow(a, "Windows Security",
     uptime %= 3600;
     int minutes = uptime / 60;
     int seconds = uptime % 60;
-    snprintf(uptimetxt, 200, "System Uptime:        %d days, %02d:%02d:%02d", days, hours, minutes, seconds);
+    snprintf(uptimetxt, 200, "Czas działania systemu:        %d dni, %02d:%02d:%02d", days, hours, minutes, seconds);
   } else {
     perror("sysinfo");
-    strcpy(uptimetxt, "System Uptime:        Unknown");
+    strcpy(uptimetxt, "Czas działania systemu:        Nieznany");
     //sprintf(uptimetxt, "System Uptime:        Unknown");
   }
   #else
-    strcpy(uptimetxt, "System Uptime:        Unknown");
+    strcpy(uptimetxt, "Czas działania systemu:        Nieznany");
   #endif
 
   new FXLabel(logongrpc, uptimetxt, NULL, LABEL_NORMAL, ZERO4, 0, 0, 0, 12);
 
-  new FXLabel(cont, "Use the Task Manager to close an application that is not responding.", NULL, LABEL_NORMAL, ZERO4, 0, 0, 6, 6);
+  new FXLabel(cont, "Użyj Menedżera zadań, aby zamknąć aplikację, która nie odpowiada.", NULL, LABEL_NORMAL, ZERO4, 0, 0, 6, 6);
 
 
   buttons = new FXMatrix(cont, 2, MATRIX_BY_ROWS|PACK_UNIFORM_WIDTH|LAYOUT_FILL_COLUMN|LAYOUT_FILL_ROW|LAYOUT_FILL_X, 0, 0, 0, 0, ZERO4, 6, 6);
 
-  FXButton* lockbtn = new FXButton(buttons, "Loc&k Computer", NULL, this, ID_LOCKCOMPUTER,
+  FXButton* lockbtn = new FXButton(buttons, "&Zablokuj komputer", NULL, this, ID_LOCKCOMPUTER,
 		  LAYOUT_FILL_X|LAYOUT_FILL_COLUMN|BUTTON_NORMAL|BUTTON_DEFAULT|BUTTON_INITIAL, 0,0,0,0, 2,2,2,3);
 
   lockbtn->setFocus();
 
-  new FXButton(buttons, "&Change Password...", NULL, getApp(), FXApp::ID_QUIT,
+  new FXButton(buttons, "Zmień &hasło...", NULL, getApp(), FXApp::ID_QUIT,
 		  LAYOUT_FILL_X|LAYOUT_FILL_COLUMN|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 2,2,2,3);
   
-  new FXButton(buttons, "&Log Off...", NULL, this, ID_LOGOFF,
+  new FXButton(buttons, "&Wyloguj...", NULL, this, ID_LOGOFF,
 		  LAYOUT_FILL_X|LAYOUT_FILL_COLUMN|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 2,2,2,3);
 
-  new FXButton(buttons, "&Task Manager", NULL, this, ID_TASKMANAGER,
+  new FXButton(buttons, "&Menedżer zadań", NULL, this, ID_TASKMANAGER,
 		  LAYOUT_FILL_X|LAYOUT_FILL_COLUMN|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 2,2,2,3);
-  new FXButton(buttons, "&Shut Down...", NULL, this, ID_SHUTDOWN,
+  new FXButton(buttons, "Zam&knij system...", NULL, this, ID_SHUTDOWN,
 		  LAYOUT_FILL_X|LAYOUT_FILL_COLUMN|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 2,2,2,3);
 
-  new FXButton(buttons, "Cancel", NULL, getApp(), FXApp::ID_QUIT,
+  new FXButton(buttons, "Anuluj", NULL, getApp(), FXApp::ID_QUIT,
 		  LAYOUT_FILL_X|LAYOUT_FILL_COLUMN|BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 2,2,2,3);
 
 }
@@ -559,7 +559,7 @@ int main(int argc,char *argv[]) {
     printf(taskid);
 
     if (currentwksp == -1 || workspaces == -1) {
-      fputs("Could not retrieve workspace information. Are you running this on IceWM?\n", stderr);
+      fputs("Nie można było pobrać informacji o przestrzeniach roboczychn. Czy uruchamiasz to na IceWM?\n", stderr);
       ptrapp->exit();
       exit(1);
       return 0;

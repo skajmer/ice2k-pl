@@ -6,11 +6,11 @@ sudo apt-get update
 
 a=1
 echo
-echo "your system is going to get updated"
+echo "twój system zostanie zaktualizowany"
 echo
 
 while [ $a -eq 1 ]; do
-	echo -n "is this fine? [Y/N] "
+	echo -n "Czy się na to zgadzasz? [Y/N] "
 
 	read line;
 
@@ -66,7 +66,6 @@ simplebuild i2klibs/wizard
 simplebuild i2klibs/batmeter
 simplebuild i2klibs/tray
 
-
 simplebuild games/winmine
 simplebuild mmc/devmgmt
 simplebuild ice2kver
@@ -96,9 +95,6 @@ simplebuild wlanprof
 simplebuild welcome
 simplebuild i2kcrash
 simplebuild badapp
-
-
-
 # (
 # cd icewm-dir/programs/ice2krun
 # ./compile.sh
@@ -146,7 +142,6 @@ set +e
 #set +e
 #) || exit
 
-
 mv ~/.icewm ~/.icewm-old
 cp -rf icewm-dir ~/.icewm
 cp -rf .config ~/
@@ -187,13 +182,13 @@ echo "installation successful!!!!"
 a=1
 if groups | grep -v -q input; then
 	echo
-	echo "if this is a fresh install, you probably want to add yourself"
-	echo "to the input group. else there is a high chance input won't"
-	echo "work."
+	echo "jeżeli to jest świeża instalacja,powinieneś dodać się do grupy"
+	echo "input. w innym przypadku jest duża szansa że urządzenia wejściowe nie będą działać."
+	echo ""
 	echo
 
 	while [ $a -eq 1 ]; do
-		echo -n "add $USER to input group? [Y/N] "
+		echo -n "dodać $USER do grupy input? [Y/N] "
 
 		read line;
 
@@ -201,7 +196,7 @@ if groups | grep -v -q input; then
 
 		if [ "$line" = "y" ]; then
 			a=0
-			sudo usermod -aG input "$USER" && echo "done!!!"
+			sudo usermod -aG input "$USER" && echo "gotowe!!!"
 		elif [ "$line" = "n" ]; then
 			echo "ok..."
 			a=0
@@ -215,13 +210,13 @@ if groups | grep -v -q audio; then
 	echo ======================================================
 	echo
 
-	echo "unless you will install pulseaudio/pipewire or already have it"
-	echo "installed, you should probably add yourself to the audio group"
-	echo "or you wont have working audio."
+	echo "jeżeli nie planujesz instalować pulseaudio/pipewire lub masz je"
+	echo "zainstalowane, powinieneś dodać się do grupy audio"
+	echo "albo nie będzie działał dźwięk."
 	echo
 
 	while [ $a -eq 1 ]; do
-		echo -n "add $USER to audio group? [Y/N] "
+		echo -n "dodać $USER do grupy audio? [Y/N] "
 
 		read line;
 
@@ -229,7 +224,7 @@ if groups | grep -v -q audio; then
 
 		if [ "$line" = "y" ]; then
 			a=0
-			sudo usermod -aG audio "$USER" && echo "done!!!"
+			sudo usermod -aG audio "$USER" && echo "gotowe!!!"
 		elif [ "$line" = "n" ]; then
 			echo "ok..."
 			a=0
@@ -238,12 +233,12 @@ if groups | grep -v -q audio; then
 fi
 
 echo
-echo "if you want to launch ice2k.sys..."
+echo "jeżeli chcesz uruchomić ice2k.sys..."
 echo
-echo "if you had to enable groups earlier, you have to logout first."
-echo "run exit, log back in and then you can run startx!"
+echo "jeżeli musiałeś włączyć grupy wcześniej musisz się najpierw wylogować."
+echo "uruchom exit, zaloguj się ponownie i wtedy możesz uruchomić startx!"
 echo
-echo "if not"
+echo "jeśli nie"
 echo
 echo "'cd ~ && startx'"
 echo

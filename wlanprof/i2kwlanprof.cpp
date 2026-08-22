@@ -148,11 +148,11 @@ void WLANProfiles::knownList() {
 
 }
 
-WLANProfiles::WLANProfiles(FXApp *a) : FXMainWindow(a, "Network Properties", ico_main16, NULL, DECOR_CLOSE|DECOR_MENU|DECOR_BORDER|DECOR_TITLE, 0,0,0,0, 0,0,0,0) {
+WLANProfiles::WLANProfiles(FXApp *a) : FXMainWindow(a, "Właściwości: Połączenie sieci bezprzewodowej", ico_main16, NULL, DECOR_CLOSE|DECOR_MENU|DECOR_BORDER|DECOR_TITLE, 0,0,0,0, 0,0,0,0) {
 	FXHorizontalFrame* btncont = new FXHorizontalFrame(this, LAYOUT_SIDE_BOTTOM|LAYOUT_RIGHT, 0,0,0,0, 0,6,1,7, 6,0);
 	
 	okbtn = new FXButton(btncont, "OK", NULL, getApp(), FXApp::ID_QUIT, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
-	cancelbtn = new FXButton(btncont, "Cancel", NULL, getApp(), FXApp::ID_QUIT, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
+	cancelbtn = new FXButton(btncont, "Anuluj", NULL, getApp(), FXApp::ID_QUIT, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
 	//applybtn = new FXButton(btncont, "&Apply", NULL, this, ID_DLG_APPLY, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
 
 	//applybtn->disable();
@@ -161,23 +161,24 @@ WLANProfiles::WLANProfiles(FXApp *a) : FXMainWindow(a, "Network Properties", ico
 	//new FXButton(this, "Hello World!", NULL, this, ID_HELLO, BUTTON_NORMAL);
 	tabbook = new FXTabBook(this, NULL, 0, LAYOUT_FILL, 0,0,0,0, 6,6,5,5);
 
-	new FXTabItem(tabbook, "Wireless Networks", NULL, TAB_TOP_NORMAL, 0,0,0,0, 5,5,1,2);
+	new FXTabItem(tabbook, "Sieci bezprzewodowe", NULL, TAB_TOP_NORMAL, 0,0,0,0, 5,5,1,2);
 	contents = new FXVerticalFrame(tabbook, FRAME_THICK|FRAME_RAISED, 0,0,0,0, 11,10,11,11);
-	FXCheckButton* chk = new FXCheckButton(contents, "Use &Windows to configure my wireless network settings");
+	FXCheckButton* chk = new FXCheckButton(contents, "Użyj systemu &Windows do konfiguracji ustawień sieci bezprzewodowej");
 	chk->setCheck(TRUE);
 	chk->disable();
 
 	grpcont = new FXVerticalFrame(contents, LAYOUT_FILL, 0,0,0,0, 2,2,8,0, 7,7);
-	availgrp = new FXGroupBox(grpcont, "Available networks: ", FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 7,9,0,7);
+	availgrp = new FXGroupBox(grpcont, "Sieci &dostępne: ", FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 7,9,0,7);
 	new FXLabel(availgrp,
-			"To connect to, disconnect from, or find out more information\n"
-			"about wireless networks in range, click the button below.",
+			"Aby połączyć lub rozłączyć się albo znaleźć więcej informacji o\n"
+			"sieciach bezprzewodowych w zasięgu, kliknij przycisk poniżej.",
 			NULL, JUSTIFY_LEFT, 0,0,0,0, 2,1,1,2);
-	new FXButton(availgrp, "View Wireless &Networks", NULL, this, ID_WLAN, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_RIGHT, 0,0,0,0, 9,9,2,2);
-	prefgrp = new FXGroupBox(grpcont, "Preferred networks: ", FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 8,9,0,7, 7,7);
+	new FXButton(availgrp, "Pokaż sieci bezprzewodowe", NULL, this, ID_WLAN, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_RIGHT, 0,0,0,0, 9,9,2,2);
+	prefgrp = new FXGroupBox(grpcont, "&Sieci preferowane: ", FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 8,9,0,7, 7,7);
 
 	new FXLabel(prefgrp,
-			"Automatically connect to available networks in the list below:",
+			"Automatycznie połącz sie z dostępnymi sieciami w nastepującej\n"
+			"kolejności:",
 			NULL, JUSTIFY_LEFT, 0,0,0,0, 2,1,0,0);
 
 	iconlistbox = new FXPacker(prefgrp, LAYOUT_FILL_X|FRAME_NORMAL, 0,0,0,0, 0,0,0,0);
@@ -191,7 +192,7 @@ WLANProfiles::WLANProfiles(FXApp *a) : FXMainWindow(a, "Network Properties", ico
 	treelist->appendItem(NULL, "test network", ico_infra, ico_infra);*/
 
 	
-	removebtn = new FXButton(prefgrp, "&Remove", NULL, this, ID_REMOVE, BUTTON_DEFAULT|BUTTON_NORMAL, 0,0,0,0, 16,16,2,2);
+	removebtn = new FXButton(prefgrp, "&Usuń", NULL, this, ID_REMOVE, BUTTON_DEFAULT|BUTTON_NORMAL, 0,0,0,0, 16,16,2,2);
 
 
 }
@@ -227,9 +228,9 @@ long WLANProfiles::onCmdRemove(FXObject*, FXSelector, void*) {
 
 	strcpy(ssid, iconlist->getCurrentItem()->getText().text());
 
-	sprintf(message, "Are you sure you want to forget the network %s?", ssid);
+	sprintf(message, "Czy napewno chcesz zapomnieć sieć %s?", ssid);
 
-	if (FXMessageBox::question(mainwin, MBOX_YES_NO, "Forget network", message) == MBOX_CLICKED_YES) {
+	if (FXMessageBox::question(mainwin, MBOX_YES_NO, "Zapomnij sieć", message) == MBOX_CLICKED_YES) {
 		pid = vfork();
 
 		if (pid < 0) {
@@ -296,14 +297,14 @@ int main(int argc, char *argv[]) {
 	application.init(argc, argv);
 	if (argv[1] == NULL || argv[1][0] == '\0') {
 		application.create();
-		FXMessageBox::error(&application, MBOX_OK, "Error", "No interface is specified!");
+		FXMessageBox::error(&application, MBOX_OK, "Błąd", "Nie podano interfejsu!");
 		application.exit(1);
 		return 1;
 	}
 
 	if (!ifexist(argv[1])) {
 		application.create();
-		FXMessageBox::error(&application, MBOX_OK, "Error", "Interface is non-existant!");
+		FXMessageBox::error(&application, MBOX_OK, "Błąd", "Interfejs nie istnieje!");
 		application.exit(1);
 		return 1;
 	}
@@ -314,7 +315,7 @@ int main(int argc, char *argv[]) {
 
 	mainwin = new WLANProfiles(&application);
 	char name[32];
-	sprintf(name, "%s Properties", iface);
+	sprintf(name, "Właściwości: %s", iface);
 	mainwin->setTitle(name);
 
 	application.create();

@@ -265,24 +265,24 @@ long ChangeHostnameBox::onCmdAccept(FXObject* obj, FXSelector sel, void* ptr) {
 
 			switch (exitcode) {
 				case 0:
-					FXMessageBox::information(this, MBOX_OK, "Identification Changes",
-							"Successfully changed your hostname. Please reboot for changes to take effect.");
+					FXMessageBox::information(this, MBOX_OK, "Identyfikacja sieciowa",
+							"Musisz uruchomić ponownie ten komputer, aby zmiany zostały wprowadzone.");
 					break;
 				case 2:
-					FXMessageBox::error(this, MBOX_OK, "Identification Changes",
-							"No hostname was filled in!");
+					FXMessageBox::error(this, MBOX_OK, "Identyfikacja sieciowa",
+							"Nie wpisano nazwy!");
 					break;
 				case 3:
-					FXMessageBox::error(this, MBOX_OK, "Identification Changes",
-							"Hostname is invalid!");
+					FXMessageBox::error(this, MBOX_OK, "Identyfikacja sieciowa",
+							"Nowa nazwa jest nieprawidłowa!");
 					break;
 				default:
-					FXMessageBox::error(this, MBOX_OK, "Identification Changes",
-							"There was an error changing your hostname.");	
+					FXMessageBox::error(this, MBOX_OK, "Identyfikacja sieciowa",
+							"Wystąpił błąd przy zmienianiu nazwy.");	
 			}
 		} else {
-			FXMessageBox::error(this, MBOX_OK, "Identification Changes",
-				"There was an error changing your hostname.");	
+			FXMessageBox::error(this, MBOX_OK, "Identyfikacja sieciowa",
+				"Wystąpił błąd przy zmienianiu nazwy.");	
 		}
 	}
 
@@ -293,17 +293,17 @@ long ChangeHostnameBox::onCmdAccept(FXObject* obj, FXSelector sel, void* ptr) {
 
 ChangeHostnameBox::ChangeHostnameBox(FXWindow* owner):
 
-FXDialogBox(owner, "Identification Changes", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0, 0, 0, 0,
+FXDialogBox(owner, "Zmiany identyfikacji", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0, 0, 0, 0,
 		11, 12, 11, 11, 0, 0) {
-	new FXLabel(this, "You can change the name of this computer. You must install", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  1,0,0,0);
-	new FXLabel(this, "networking before you can change this computer's domain", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  1,0,0,0);
-	new FXLabel(this, "membership.", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  1,0,0,0);
+	new FXLabel(this, "Możesz zmienić nazwę i członkostwo tego komputera. musisz zainstalować", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  1,0,0,0);
+	new FXLabel(this, "sieć przed zmianą członkostwa domeny tego", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  1,0,0,0);
+	new FXLabel(this, "komputera.", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  1,0,0,0);
 	new FXSeparator(this, SEPARATOR_NONE|LAYOUT_FIX_HEIGHT, 0,0,0,19);
 
 	char hostname[HOST_NAME_MAX+1];
 	gethostname(hostname, HOST_NAME_MAX+1);
 
-	new FXLabel(this, "&Computer name:", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  1,0,0,2);
+	new FXLabel(this, "Pełna nazwa komputera:", NULL, LABEL_NORMAL|JUSTIFY_LEFT, 0,0,0,0,  1,0,0,2);
 
 	compfield = new FXTextField(this, 49,NULL,0,FRAME_SUNKEN|FRAME_THICK);
 	//compfield->setFocus();
@@ -313,16 +313,16 @@ FXDialogBox(owner, "Identification Changes", DECOR_TITLE|DECOR_BORDER|DECOR_CLOS
 
 	new FXSeparator(this, SEPARATOR_NONE|LAYOUT_FIX_HEIGHT, 0,0,0,86); // why so much whitespace?
 
-	FXGroupBox* membergrp = new FXGroupBox(this, "Member of", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 12,12,2,12);
-	FXRadioButton* domainrad = new FXRadioButton(membergrp, "&Domain:", NULL, 0, RADIOBUTTON_NORMAL, 0,0,0,0,  2,0,2,0);
+	FXGroupBox* membergrp = new FXGroupBox(this, "Członkostwo", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 12,12,2,12);
+	FXRadioButton* domainrad = new FXRadioButton(membergrp, "&Domena:", NULL, 0, RADIOBUTTON_NORMAL, 0,0,0,0,  2,0,2,0);
 	domainrad->disable();
 	FXTextField* domaintxt = new FXTextField(membergrp, 41, NULL, 0, LAYOUT_FIX_X|TEXTFIELD_NORMAL, 31,0,0,0,  2,2,2,1);
 	domaintxt->disable();
-	FXRadioButton* workgrad = new FXRadioButton(membergrp, "&Workgroup:", NULL, 0, RADIOBUTTON_NORMAL, 0,0,0,0,  2,0,4,0);
+	FXRadioButton* workgrad = new FXRadioButton(membergrp, "Grupa robocza:", NULL, 0, RADIOBUTTON_NORMAL, 0,0,0,0,  2,0,4,0);
 	workgrad->setCheck(TRUE);
 	workgrad->disable();
 	FXTextField* worktxt = new FXTextField(membergrp, 41, NULL, 0, LAYOUT_FIX_X|TEXTFIELD_NORMAL, 31,0,0,0,  2,2,2,1);
-	worktxt->setText("WORKGROUP");
+	worktxt->setText("GRUPA_ROBOCZA");
 	worktxt->setTextColor(getApp()->getShadowColor());
 	worktxt->disable();
 	membergrp->disable();
@@ -338,7 +338,7 @@ FXDialogBox(owner, "Identification Changes", DECOR_TITLE|DECOR_BORDER|DECOR_CLOS
 			BUTTON_DEFAULT|BUTTON_INITIAL|FRAME_THICK|FRAME_RAISED|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT,
 			0, 0, 75, 23, 3, 3, 2, 3);
 
-	cancelbtn = new FXButton(btncont, "Cancel", NULL, this, ID_CANCEL,
+	cancelbtn = new FXButton(btncont, "Anuluj", NULL, this, ID_CANCEL,
 			BUTTON_DEFAULT|FRAME_THICK|FRAME_RAISED|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT,
 			0, 0, 75, 23, 3, 3, 2, 3);
 	//okbtn->setFocus();
@@ -490,7 +490,7 @@ int xp = 0;
 int srv03 = 0;
 
 //int main(int argc, char *argv[]) {
-SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "System Properties", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,404,436,  0,0,0,0,  0,0) {
+SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Właściwości systemu", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,404,436,  0,0,0,0,  0,0) {
 	this->changeFocus((FXWindow*)0);
 	this->killFocus();
 	char* windows = i2kBGetWinVersion();
@@ -521,12 +521,12 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Sy
 	btncont = new FXHorizontalFrame(generalframe, LAYOUT_RIGHT, 0, 0, 0, 0, 0, 6, 0, 7, 6, 0);
 
 	okbtn = new FXButton(btncont, "OK", NULL, this, ID_ACCEPT, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
-	cancelbtn = new FXButton(btncont, "Cancel", NULL, this, ID_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
-	applybtn = new FXButton(btncont, "&Apply", NULL, this, 0, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
+	cancelbtn = new FXButton(btncont, "Anuluj", NULL, this, ID_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
+	applybtn = new FXButton(btncont, "&Zastosuj", NULL, this, 0, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
 	applybtn->disable();
 
 
-	new FXTabItem(tabbook,"General",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
+	new FXTabItem(tabbook,"Ogólne",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
 
 	FXHorizontalFrame* horcont = new FXHorizontalFrame(tabbook,FRAME_THICK|FRAME_RAISED, 0,0,380,361, 24,24,15,16); 
 	new FXLabel(horcont, "", monitorimage, LABEL_NORMAL, 0,0,0,0,  20,29,24,20);
@@ -540,12 +540,12 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Sy
 	if (xp) {
 #ifdef __x86_64__
 		new FXLabel(vercont,    "Professional x64 Edition",               NULL, LABEL_NORMAL,              0,0,0,0,  18,0, 0,0);
-		new FXLabel(vercont,    "Version 2003",               NULL, LABEL_NORMAL,              0,0,0,0,  18,0, 0,0);
-		new FXLabel(vercont,    "Service Pack 1",          NULL, LABEL_NORMAL,              0,0,0,0,  18,0, 0,0);
+		new FXLabel(vercont,    "Wersja 2003",               NULL, LABEL_NORMAL,              0,0,0,0,  18,0, 0,0);
+		new FXLabel(vercont,    "Dodatek Service Pack 1",          NULL, LABEL_NORMAL,              0,0,0,0,  18,0, 0,0);
 #else
 		new FXLabel(vercont,    "Professional",               NULL, LABEL_NORMAL,              0,0,0,0,  18,0, 0,0);
-		new FXLabel(vercont,    "Version 2002",               NULL, LABEL_NORMAL,              0,0,0,0,  18,0, 0,0);
-		new FXLabel(vercont,    "Service Pack 2",          NULL, LABEL_NORMAL,              0,0,0,0,  18,0, 0,0);
+		new FXLabel(vercont,    "Wersja 2002",               NULL, LABEL_NORMAL,              0,0,0,0,  18,0, 0,0);
+		new FXLabel(vercont,    "Dodatek Service Pack 2",          NULL, LABEL_NORMAL,              0,0,0,0,  18,0, 0,0);
 #endif
 	} else {
 		new FXLabel(vercont,    "5.00.2195",               NULL, LABEL_NORMAL,              0,0,0,0,  18,0, 0,0);
@@ -557,15 +557,15 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Sy
 	char hostname[HOST_NAME_MAX+1];
 	gethostname(hostname, HOST_NAME_MAX+1);
 
-	new FXLabel(vercont, "Registered to:",             NULL, LABEL_NORMAL,              0,0,0,0,  0,0, 0,0);
+	new FXLabel(vercont, "Zarejestrowano dla:",             NULL, LABEL_NORMAL,              0,0,0,0,  0,0, 0,0);
 	new FXLabel(vercont,    getlogin(),                NULL, LABEL_NORMAL,              0,0,0,0, 18,0, 0,0);
 	new FXLabel(vercont,    hostname,                  NULL, LABEL_NORMAL,              0,0,0,0, 18,0, 0,0);
-	new FXLabel(vercont,    "51873-016-2312562-09215", NULL, LABEL_NORMAL,              0,0,0,0, 18,0, 0,0);
+	new FXLabel(vercont,    "76447-OEM-00119903-00102", NULL, LABEL_NORMAL,              0,0,0,0, 18,0, 0,0);
 
 	//new FXLabel(vercont, " ", NULL, LABEL_NORMAL, 0,0,0,0,          0,0, 0,0);
 	new FXSeparator(vercont, SEPARATOR_NONE|LAYOUT_FIX_HEIGHT, 0,0,0,13);
 
-	new FXLabel(vercont, "Computer:", NULL, LABEL_NORMAL, 0,0,0,0,          0,0, 0,0);
+	new FXLabel(vercont, "Komputer:", NULL, LABEL_NORMAL, 0,0,0,0,          0,0, 0,0);
 	//new FXLabel(vercont,    "Intel (R) Xeon(R) CPU", NULL, LABEL_NORMAL, 0,0,0,0,          18,0, 0,0);
 
 	char cpubrand[1024];
@@ -581,7 +581,7 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Sy
 			curLine = nextLine ? (nextLine+1) : NULL;
 		}
 	} else {
-		new FXLabel(vercont, "Unknown",                  NULL, JUSTIFY_LEFT|LABEL_NORMAL, 0,0,0,0, 18,0, 0,0); // if you are on a toy arm cpu
+		new FXLabel(vercont, "Nieznany",                  NULL, JUSTIFY_LEFT|LABEL_NORMAL, 0,0,0,0, 18,0, 0,0); // if you are on a toy arm cpu
 	}
 
 	new FXLabel(vercont,    "AT/AT COMPATIBLE", NULL, LABEL_NORMAL, 0,0,0,0,          18,0, 0,0);
@@ -594,7 +594,7 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Sy
 	char physmemtext[1024];
 	if (xp) {
 		formatnum(sys_info.totalram / 1024, physmemtext);
-		strcat(physmemtext, " MB of RAM");
+		strcat(physmemtext, " MB RAM");
 	} else {
 		formatnum(sys_info.totalram, physmemtext);
 		strcat(physmemtext, " KB RAM");
@@ -603,7 +603,7 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Sy
 	new FXLabel(vercont, physmemtext, NULL, LABEL_NORMAL, 0,0,0,0,          18,0, 0,0);
 
 
-	new FXTabItem(tabbook,"Network Identification",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
+	new FXTabItem(tabbook,"Identyfikacja sieciowa",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
 	networkframe = new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y);
 
 	FXIcon* computericon;
@@ -618,8 +618,8 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Sy
 
 	new FXLabel(nettop, "", computericon, LABEL_NORMAL, 0,0,0,0,  0,0,0,0);
 
-	new FXLabel(nettop, "Windows uses the following information to identify your computer\n"
-			"on the network.", NULL, LAYOUT_CENTER_Y|JUSTIFY_LEFT|LABEL_NORMAL, 0,0,0,0,  0,0,0,0);
+	new FXLabel(nettop, "System Windows używa następujących informacji do identyfikacji\n"
+			"komputera w sieci.", NULL, LAYOUT_CENTER_Y|JUSTIFY_LEFT|LABEL_NORMAL, 0,0,0,0,  0,0,0,0);
 
 	char hostnameup[HOST_NAME_MAX+1];
 
@@ -633,45 +633,47 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Sy
 	}
 
 	FXHorizontalFrame* compname = new FXHorizontalFrame(networkframe, LAYOUT_FILL_X, 0,0,0,0,   9,7,4,2,  0,0);
-	new FXLabel(compname, "Full computer name:", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_FIX_WIDTH,0,0,124,0, 0,0,0,0);
+	new FXLabel(compname, "Pełna nazwa komputera:", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_FIX_WIDTH,0,0,124,0, 0,0,0,0);
 	new FXLabel(compname, hostnameup, NULL, LABEL_NORMAL,0,0,0,0, 0,0,0,0);
 
 	FXHorizontalFrame* ipaddr = new FXHorizontalFrame(networkframe, LAYOUT_FILL_X, 0,0,0,0,   9,7,4,2,  0,0);
-	new FXLabel(ipaddr, "IPv4 address:", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_FIX_WIDTH,0,0,124,0, 0,0,0,0);
+	new FXLabel(ipaddr, "Adres IPv4:", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_FIX_WIDTH,0,0,124,0, 0,0,0,0);
 	char ip[16];
 	if (!getIPAddress(ip)) {
 		new FXLabel(ipaddr, ip, NULL, LABEL_NORMAL,0,0,0,0, 0,0,0,0);
 	} else {
-		new FXLabel(ipaddr, "Unknown", NULL, LABEL_NORMAL,0,0,0,0, 0,0,0,0);
+		new FXLabel(ipaddr, "Nieznany", NULL, LABEL_NORMAL,0,0,0,0, 0,0,0,0);
 	}
 
 	FXHorizontalFrame* netidcont = new FXHorizontalFrame(networkframe, LAYOUT_FILL_X, 0,0,0,0,   9,7,15,4,  17,16);
 
-	FXLabel* netidlbl = new FXLabel(netidcont, "To use the Network Identification Wizard to join a\n"
-			"domain and create a local user, click Network ID.",
+	FXLabel* netidlbl = new FXLabel(netidcont, "Aby użyć kreatora identyfikacji sieciowej w celu\n"
+			"przyłączenia się do domeny i utworzenia użytkownika\n"
+			"lokalnego, kliknij przycisk Identyfikator sieciowy.",
 			NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_FIX_WIDTH, 0,0,265,0,  0,0,0,0);
 
 	netidlbl->disable();
 
-	FXButton* netidbtn = new FXButton(netidcont, "&Network ID", NULL, NULL, 0, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);  
+	FXButton* netidbtn = new FXButton(netidcont, "Identyfikator...", NULL, NULL, 0, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 80, 23, 0, 0, 0, 0);  
 
 	netidbtn->disable();
 
 	FXHorizontalFrame* renamecont = new FXHorizontalFrame(networkframe, LAYOUT_FILL_X, 0,0,0,0,   9,7,15,4,  17,16);
 
-	new FXLabel(renamecont, "To rename this computer, click Properties.",
+	new FXLabel(renamecont, "Aby zmienić nazwę tego komputera lub przyłączyć się\n"
+			"do domeny, kliknij przycisk Właściwości.",
 			NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_FIX_WIDTH, 0,0,265,0,  0,0,0,0);
 
-	new FXButton(renamecont, "&Properties", NULL, this, ID_CHANGEHOSTNAME, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);  
+	new FXButton(renamecont, "Właś&ciwości...", NULL, this, ID_CHANGEHOSTNAME, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 80, 23, 0, 0, 0, 0);  
 
 
 
-	new FXTabItem(tabbook,"Hardware",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
+	new FXTabItem(tabbook,"Sprzęt",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
 	hardwareframe = new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED, 0,0,0,0, 13,12,19,8, 0,0); 
 
 	FXButton* btn;
 
-	FXGroupBox* hdwwizgrp = new FXGroupBox(hardwareframe, "Hardware Wizard", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 8,9,2,11, 0,0);
+	FXGroupBox* hdwwizgrp = new FXGroupBox(hardwareframe, "Kreator sprzętu", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 8,9,2,11, 0,0);
 	FXIcon* hdwwizicon;
 	if (xp) {
 		hdwwizicon = new FXBMPIcon(app, resico_hdwwiz_xp);
@@ -680,28 +682,29 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Sy
 		hdwwizicon = new FXGIFIcon(app, resico_hdwwiz);
 	}
 	new FXLabel(hdwwizgrp, "", hdwwizicon, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_LEFT|LAYOUT_FIX_HEIGHT, 0,0,0,70,  0,16,0,0);
-	new FXLabel(hdwwizgrp, "The Hardware wizard helps you install, uninstall, repair,\n"
-			"unplug, eject, and configure your hardware.", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
+	new FXLabel(hdwwizgrp, "Kreator sprzętu pomaga instalować, odinstalowywać,\n"
+			"naprawiać, odłączać, wysuwać oraz zmieniać właściwości\n"
+			"sprzętu.", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
 
 
-	btn = new FXButton(hdwwizgrp, "&Hardware Wizard...", NULL, this, ID_CHANGEHOSTNAME, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
+	btn = new FXButton(hdwwizgrp, "&Kreator sprzętu...", NULL, this, ID_CHANGEHOSTNAME, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
 	btn->disable();
 
 
 	new FXSeparator(hardwareframe, SEPARATOR_NONE|LAYOUT_FIX_HEIGHT, 0,0,0,5);
 
-	FXGroupBox* devmgmtgrp = new FXGroupBox(hardwareframe, "Device Manager", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 8,9,2,10, 7,0);
+	FXGroupBox* devmgmtgrp = new FXGroupBox(hardwareframe, "Menedżer urządzeń", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 8,9,2,10, 7,0);
 	FXIcon* devmgmticon = new FXGIFIcon(app, resico_devmgmt);
 	new FXLabel(devmgmtgrp, "", devmgmticon, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_LEFT|LAYOUT_FIX_HEIGHT, 0,0,0,76,  0,9,1,0);
 	/* new FXLabel(devmgmtgrp, "The Device Manager lists all the hardware devices installed\n"
 	   "on your computer. Use the Device Manager to change the\n"
 	   "properties of any device.", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0); */
-	new FXLabel(devmgmtgrp, "The Device Manager lists all the hardware devices installed", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
-	new FXLabel(devmgmtgrp, "on your computer. Use the Device Manager to change the", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
-	new FXLabel(devmgmtgrp, "properties of any device.", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
+	new FXLabel(devmgmtgrp, "Menedżer urządzeń wyświetla wszystkie urządzenia sprzętowe", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
+	new FXLabel(devmgmtgrp, "zainstalowane w komputerze. Możesz użyć Menedżera", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
+	new FXLabel(devmgmtgrp, "urządzeń, aby zmienić właściwości każdego urządzenia.", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
 
-	btn = new FXButton(devmgmtgrp, "&Device Manager...", NULL, this, ID_DEVMGMT, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
-	btn = new FXButton(devmgmtgrp, "Driver &Signing...", NULL, this, ID_CHANGEHOSTNAME, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
+	btn = new FXButton(devmgmtgrp, "&Menedżer urządzeń", NULL, this, ID_DEVMGMT, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
+	btn = new FXButton(devmgmtgrp, "&Podpisywanie sterowników", NULL, this, ID_CHANGEHOSTNAME, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
 	btn->disable();
 
 
@@ -709,18 +712,18 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Sy
 
 
 
-	FXGroupBox* hwprofgrp = new FXGroupBox(hardwareframe, "Hardware Wizard", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 8,9,2,10, 0,0);
+	FXGroupBox* hwprofgrp = new FXGroupBox(hardwareframe, "Profile sprzętu", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 8,9,2,10, 0,0);
 	FXIcon* hwproficon = new FXGIFIcon(app, resico_hwprof);
 	new FXLabel(hwprofgrp, "", hwproficon, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_LEFT|LAYOUT_FIX_HEIGHT, 0,0,0,71,  0,16,0,0);
-	new FXLabel(hwprofgrp, "Hardware profiles provide a way for you to set up and store,\n"
-			"different hardware configurations.", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
+	new FXLabel(hwprofgrp, "Dzięki profilom sprzętu możesz instalować oraz przechowywać\n"
+			"różne konfiguracje sprzętu.", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
 
 
-	btn = new FXButton(hwprofgrp, "Hardware &Profiles...", NULL, this, ID_CHANGEHOSTNAME, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
+	btn = new FXButton(hwprofgrp, "Profile &sprzętu", NULL, this, ID_CHANGEHOSTNAME, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
 	btn->disable();
 
 
-	new FXTabItem(tabbook,"User Profiles",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
+	new FXTabItem(tabbook,"Profile użytkownika",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
 	userframe = new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED,0,0,0,0,  14,13,18,10, 0,0); 
 
 	FXIcon* userproficon;
@@ -734,12 +737,12 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Sy
 
 	FXPacker* infocont = new FXPacker(userframe,FRAME_NONE,0,0,0,0,  0,0,0,25, 26,0);
 	new FXLabel(infocont, "", userproficon, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_LEFT, 0,0,0,0,  0,0,0,0);
-	new FXLabel(infocont, "User profiles contain desktop settings and other information", NULL, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
-	new FXLabel(infocont, "related to your logon.  A different profile can be created on", NULL, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
-	new FXLabel(infocont, "each computer you use, or you can select a roaming profile", NULL, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
-	new FXLabel(infocont, "that is the same on every computer you use.", NULL, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
+	new FXLabel(infocont, "Profile użytkownika przechowują ustawienia pulpitu oraz inne", NULL, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
+	new FXLabel(infocont, "informacje związane z kontem użytkownika. Możesz utworzyć", NULL, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
+	new FXLabel(infocont, "inny profil na każdym z używanych komputerów lub wybrać profil", NULL, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
+	new FXLabel(infocont, "mobilny, który jest taki sam dla każdego z używanych komputerów.", NULL, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
 
-	new FXLabel(userframe, "&Profiles stored on this computer:", NULL, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,4);
+	new FXLabel(userframe, "&Profile przechowywane na tym komputerze:", NULL, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,4);
 
 	FXPacker* tablecont = new FXPacker(userframe,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0,  0,1,0,0, 0,0);  
 	FXPacker* tablecont2 = new FXPacker(tablecont,LAYOUT_FILL_X|LAYOUT_FILL_Y|FRAME_THICK|FRAME_SUNKEN,0,0,0,0,  0,0,0,0, 0,0);  
@@ -765,9 +768,9 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Sy
 	// https://stackoverflow.com/questions/14970938/print-out-all-users-of-a-machine-in-c
 	int users = 0;
 
-	table->setColumnText(0, "Name");
+	table->setColumnText(0, "Nazwa");
 	table->setColumnText(1, "UID");
-	table->setColumnText(2, "Type");	
+	table->setColumnText(2, "Typ");	
 
 	table->setDefRowHeight(fontpx + 3);
 
@@ -789,7 +792,7 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Sy
 			table->setItemText(users, 1, uidstr);
 
 			table->setItemJustify(users, 2, FXTableItem::LEFT);
-			table->setItemText(users, 2, "Local");
+			table->setItemText(users, 2, "Lokalny");
 			users++;
 
 		}
@@ -804,53 +807,53 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "Sy
 	//botbuttons->setBackColor(FXRGB(255,0,0));
 
 
-	btn = new FXButton(botbuttons, "&Delete", NULL, NULL, 0, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_COLUMN|LAYOUT_FILL_X,         0,0,0,21, 0,0,0,0);
+	btn = new FXButton(botbuttons, "&Usuń", NULL, NULL, 0, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_COLUMN|LAYOUT_FILL_X,         0,0,0,21, 0,0,0,0);
 	btn->disable();
-	btn = new FXButton(botbuttons, "&Change Type...", NULL, NULL, 0, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_COLUMN|LAYOUT_FILL_X, 0,0,0,21, 0,0,0,0);  
+	btn = new FXButton(botbuttons, "&Zmień typ...", NULL, NULL, 0, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_COLUMN|LAYOUT_FILL_X, 0,0,0,21, 0,0,0,0);  
 	btn->disable();
-	btn = new FXButton(botbuttons, "Copy &To...", NULL, NULL, 0, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_COLUMN|LAYOUT_FILL_X,     0,0,0,21, 0,0,0,0);  
+	btn = new FXButton(botbuttons, "&Kopiuj do...", NULL, NULL, 0, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_COLUMN|LAYOUT_FILL_X,     0,0,0,21, 0,0,0,0);  
 	btn->disable();
 
 
-	new FXTabItem(tabbook,"Advanced",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
+	new FXTabItem(tabbook,"Zaawansowane",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
 	advframe = new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED, 0,0,0,0, 13,12,19,8, 0,0); 
 
-	FXGroupBox* performgrp = new FXGroupBox(advframe, "Performance", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 8,9,2,11, 0,0);
+	FXGroupBox* performgrp = new FXGroupBox(advframe, "Wydajność", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 8,9,2,11, 0,0);
 	FXIcon* performicon = new FXGIFIcon(app, resico_perform);
 	new FXLabel(performgrp, "", performicon, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_LEFT|LAYOUT_FIX_HEIGHT, 0,0,0,70,  0,16,0,0);
-	new FXLabel(performgrp, "Performance options control how applications use memory,\n"
-			"which affects the speed of your computer.", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
+	new FXLabel(performgrp, "Efekty wizualne, planowanie użycia procesora, wykorzystanie\n"
+			"pamięci i pamięć wirtualna", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
 
 
-	btn = new FXButton(performgrp, "&Performance Options...", NULL, NULL, 0, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
+	btn = new FXButton(performgrp, "&Ustawienia", NULL, NULL, 0, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
 	btn->disable();
 
 
 	new FXSeparator(advframe, SEPARATOR_NONE|LAYOUT_FIX_HEIGHT, 0,0,0,5);
 
-	FXGroupBox* envvarsgrp = new FXGroupBox(advframe, "Environment Variables", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 8,9,2,10, 7,0);
+	FXGroupBox* envvarsgrp = new FXGroupBox(advframe, "Zmienne środowiskowe", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 8,9,2,10, 7,0);
 	FXIcon* envvarsicon = new FXGIFIcon(app, resico_envvars);
 	new FXLabel(envvarsgrp, "", envvarsicon, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_LEFT|LAYOUT_FIX_HEIGHT, 0,0,0,71,  0,9,1,0);
 	/* new FXLabel(devmgmtgrp, "The Device Manager lists all the hardware devices installed\n"
 	   "on your computer. Use the Device Manager to change the\n"
 	   "properties of any device.", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0); */
-	new FXLabel(envvarsgrp, "Environment variables tell your computer where to find", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
-	new FXLabel(envvarsgrp, "certain types of information.", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
+	new FXLabel(envvarsgrp, "Zmienne środowiskowe informują komputer, gdzie można", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
+	new FXLabel(envvarsgrp, "znaleźć określone informacje.", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
 
-	btn = new FXButton(envvarsgrp, "&Environment Variables...", NULL, this, ID_ENVVARS, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
+	btn = new FXButton(envvarsgrp, "Z&mienne środowiskowe", NULL, this, ID_ENVVARS, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
 
 	new FXSeparator(advframe, SEPARATOR_NONE|LAYOUT_FIX_HEIGHT, 0,0,0,6);
 
 
 
-	FXGroupBox* ntldrgrp = new FXGroupBox(advframe, "Startup and Recovery", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 8,9,2,10, 0,0);
+	FXGroupBox* ntldrgrp = new FXGroupBox(advframe, "Uruchamianie i odzyskiwanie", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 8,9,2,10, 0,0);
 	FXIcon* ntldricon = new FXGIFIcon(app, resico_ntldr);
 	new FXLabel(ntldrgrp, "", ntldricon, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_LEFT|LAYOUT_FIX_HEIGHT, 0,0,0,76,  0,16,0,0);
-	new FXLabel(ntldrgrp, "Startup and recovery options tell your computer how to start\n"
-			"and what to do if an error causes your computer to stop.", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
+	new FXLabel(ntldrgrp, "Informacje o uruchamianiu systemu, awariach systemu i\n"
+			"debugowaniu", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);
 
 
-	btn = new FXButton(ntldrgrp, "&Startup and Recovery...", NULL, this, ID_NTLDR, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
+	btn = new FXButton(ntldrgrp, "Ust&awienia", NULL, this, ID_NTLDR, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
 
 	//getApp()->addTimeout(this,SystemPropertiesWindow::ID_SETFOCUS_T,10);
 

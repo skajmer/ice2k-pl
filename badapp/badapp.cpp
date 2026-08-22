@@ -61,16 +61,16 @@ class AboutBox: public FXDialogBox {
 protected:
 	AboutBox() {};
 public:
-	AboutBox(FXWindow* owner): FXDialogBox(owner,"About Bad App",DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0, 8,8,8,8, 8,10) {
+	AboutBox(FXWindow* owner): FXDialogBox(owner,"Bad App - informacje",DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0, 8,8,8,8, 8,10) {
 		FXHorizontalFrame* cont = new FXHorizontalFrame(this, LAYOUT_SIDE_TOP, 0,0,0,0, 4,4,4,4, 8,8);
 
 		new FXLabel(cont, "", ico_main32);
 
 		new FXLabel(cont,
-		"Bad App Version 0.0.1\n\n"
-		"Demonstrate Microsoft Windows 3.1 handling\n"
-		"of bad applications.\n\n"
-		"Written by xcomposite",
+		"Wersja Bad App 0.0.1\n\n"
+		"Pokazuje obsługę złych aplikacji\n"
+		"Microsoft Windows 3.1.\n\n"
+		"Napisane przez xcomposite",
 		NULL, JUSTIFY_LEFT);
 
 		FXButton* okbtn = new FXButton(this, "OK", NULL, this, ID_ACCEPT,
@@ -127,23 +127,23 @@ public:
 		return FXDialogBox::onCmdAccept(obj, sel, ptr);
 	}
 
-	OptionsBox(FXWindow* owner): FXDialogBox(owner,"Options",DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0, 4,8,8,8, 8,10) {
+	OptionsBox(FXWindow* owner): FXDialogBox(owner,"Opcje",DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0, 4,8,8,8, 8,10) {
 		horcont = new FXHorizontalFrame(this, LAYOUT_SIDE_TOP, 0,0,0,0, 0,0,0,0, 8,8);
 		leftcont  = new FXVerticalFrame(horcont, LAYOUT_SIDE_TOP, 0,0,0,0, 0,0,0,0, 5,5);
 		rightcont = new FXVerticalFrame(horcont, PACK_UNIFORM_WIDTH, 0,0,0,0, 0,0,0,0, 3,3);
 
-		sndbox = new FXCheckButton(leftcont, "&Sound");
+		sndbox = new FXCheckButton(leftcont, "Dźwięk");
 		sndbox->disable();
 
 		zoomcont = new FXHorizontalFrame(leftcont, LAYOUT_SIDE_TOP, 0,0,0,0, 0,0,0,0, 0,0);
-		new FXLabel(zoomcont, "&Zoom Factor: ", NULL, LABEL_NORMAL|LAYOUT_CENTER_Y);
+		new FXLabel(zoomcont, "Poziom powiększenia: ", NULL, LABEL_NORMAL|LAYOUT_CENTER_Y);
 
 		spin = new FXSpinner(zoomcont, 5, NULL, 0, SPIN_NORMAL|FRAME_NORMAL|LAYOUT_CENTER_Y, 0,0,0,0, 1,1,1,1);
 		spin->setRange(1, 10);
 		spin->setValue(imgscale);
 
 		titlecont = new FXHorizontalFrame(leftcont, LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 0,0);
-		new FXLabel(titlecont, "Title: ", NULL, LABEL_NORMAL|LAYOUT_CENTER_Y);
+		new FXLabel(titlecont, "Tytuł: ", NULL, LABEL_NORMAL|LAYOUT_CENTER_Y);
 		text = new FXTextField(titlecont, 6, this, ID_ACCEPT, TEXTFIELD_NORMAL|TEXTFIELD_ENTER_ONLY|LAYOUT_FILL_X, 0,0,0,0, 2,2,1,1);
 		text->setText(mainwin->getTitle());
 
@@ -151,7 +151,7 @@ public:
 			BUTTON_DEFAULT|BUTTON_INITIAL|LAYOUT_RIGHT|FRAME_THICK|FRAME_RAISED,
 			0,0,75,23, 12,12,2,3);
 
-		new FXButton(rightcont, "Cancel", NULL, this, ID_CANCEL,
+		new FXButton(rightcont, "Anuluj", NULL, this, ID_CANCEL,
 			BUTTON_DEFAULT|BUTTON_INITIAL|LAYOUT_RIGHT|FRAME_THICK|FRAME_RAISED,
 			0,0,75,23, 12,12,2,3);
 
@@ -233,15 +233,15 @@ BadApp::BadApp(FXApp *a) : FXMainWindow(a, "Bad App", NULL, ico_main32, DECOR_CL
 
 	actionpane = new FXMenuPane(this);
 	new FXMenuCommand(actionpane, "&Seg-Fault", NULL, this, ID_SEGFAULT);
-	new FXMenuCommand(actionpane, "&Hang", NULL, this, ID_HANG);
+	new FXMenuCommand(actionpane, "Zawieś", NULL, this, ID_HANG);
 	new FXMenuSeparator(actionpane);
-	new FXMenuCommand(actionpane, "&Options...", NULL, this, ID_OPTIONS);
+	new FXMenuCommand(actionpane, "&Opcje...", NULL, this, ID_OPTIONS);
 	
 	helppane = new FXMenuPane(this);
-	new FXMenuCommand(helppane, "&About...", NULL, this, ID_ABOUT);
+	new FXMenuCommand(helppane, "&Informacje...", NULL, this, ID_ABOUT);
 
-	new FXMenuTitle(menubar, "&Action", NULL, actionpane);
-	new FXMenuTitle(menubar, "&Help", NULL, helppane);
+	new FXMenuTitle(menubar, "&Akcje", NULL, actionpane);
+	new FXMenuTitle(menubar, "&Pomoc", NULL, helppane);
 
 	canvas = new FXCanvas(this, this, ID_CANVAS, LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT);
 
