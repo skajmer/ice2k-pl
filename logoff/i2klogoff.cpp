@@ -385,6 +385,7 @@ int main(int argc,char *argv[]) {
 		logoffIcon = new FXPNGIcon(ptrapp, resico_2k_logoff);
 	} else {
 		logoffIcon = new FXPNGIcon(ptrapp, resico_xp_logoff);
+	}
 	logoffIcon->blend(ptrapp->getBaseColor());
 
 	xdisplay = (Display*)ptrapp->getDisplay();
