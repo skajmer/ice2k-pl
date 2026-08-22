@@ -911,52 +911,53 @@ int makeDirectory(const char *dir) {
 
 
 
-int writeWallpaperConfig(char* image,
-                         int imgmode,
-                         FXColor color,
-                         void* pattern = NULL) {
-    char dirpath[PATH_MAX];
-    char cfgpath[PATH_MAX];
+int writeWallpaperConfig(char* image, int imgmode, FXColor color, void* pattern=NULL) {
+	char cfgpath[512] = "";
+	snprintf(cfgpath, sizeof(cfgpath), "%s/%s", getHomeDir(), ".icewm/cfg");
 
-    snprintf(dirpath, sizeof(dirpath),
-             "%s/.icewm/cfg", getHomeDir());
+	unsigned int cfgpathlen = strlen(cfgpath);
 
-    if (makeDirectory(dirpath) < 0) {
-        perror("Nie udało się utworzyć folderu konfiguracji tapety!");
-        return 0;
-    }
+	if (makeDirectory(cfgpath)) {
+		strncat(cfgpath, "/backmgr.ini", sizeof(cfgpath)-cfgpathlen-1);
+		cfgpath[sizeof(cfgpath)-1] = '\0';
+	}
 
-    snprintf(cfgpath, sizeof(cfgpath),
-             "%s/backmgr.ini", dirpath);
+	FILE* fp = fopen(cfgpath, "w");
 
-    FILE* fp = fopen(cfgpath, "w");
-    if (!fp) {
-        perror(cfgpath);
-        return 0;
-    }
-    fputs("[Tło:]\n", fp);
+	fputs("[Wallpaper]\n", fp);
 
-    if (imgmode == _IMGMODE_TILED) {
-        fputs("Położenie:=Sąsiadująco\n", fp);
-    } else if (imgmode == _IMGMODE_CENTER) {
-        fputs("Położenie:=Do środka\n", fp);
-    } else if (imgmode == _IMGMODE_STRETCH) {
-        fputs("Położenie:=Rozciągnięcie\n", fp);
-    } else {
-        fputs("Położenie:=Wypełnienie\n", fp);
-    }
+	if (imgmode == _IMGMODE_TILED) {
+		fputs("Mode=Tiled\n", fp);
+	} else if (imgmode == _IMGMODE_CENTER) {
+		fputs("Mode=Center\n", fp);
+	} else if (imgmode == _IMGMODE_STRETCH) {
+		fputs("Mode=Stretch\n", fp);
+	} else {
+		fputs("Mode=Fill\n", fp);
+	}
 
-    fprintf(fp, "Kolor:=#%02X%02X%02X\n",
-            FXREDVAL(color),
-            FXGREENVAL(color),
-            FXBLUEVAL(color));
+	char hex[8];
 
-    if (image != NULL && image[0] != '\0') {
-        fprintf(fp, "Obraz=%s\n", image);
-    }
+	//color = ((color & 0xFF) << 16) | (color & 0xFF00) | ((color >> 16) & 0xFF);
 
-    fclose(fp);
-    return 1;
+	unsigned char r = FXREDVAL(color);
+	unsigned char g = FXGREENVAL(color);
+	unsigned char b = FXBLUEVAL(color);
+
+	snprintf(hex, sizeof(hex), "#%02X%02X%02X", r, g, b);
+
+	fprintf(fp, "Color=%s\n", hex);
+
+	char* img = (char*)image;
+	if (img)
+		//	fprintf(fp, "Image=\n")else
+		fprintf(fp, "Image=%s\n", image);
+
+	//fprintf(stdout, 
+
+	fclose(fp);
+
+	return 1;
 }
 
 
