@@ -228,7 +228,8 @@ int main(int argc, char *argv[]) {
 
 	char *tmp = strdup(physmemtext);
 
-	strcpy(physmemtext, "Pamięć fizyczna dostępna dla systemu Windows:    ");
+	strcpy(physmemtext, "Pamięć fizyczna dostępna dla systemu\n"
+		"Windows:    ");
 	strcat(physmemtext, tmp);
 
 	free(tmp);
