@@ -247,10 +247,6 @@ int main(int argc, char *argv[]) {
 
 	okbutton->setFocus();
 
-
-
-	application.create();
-	return application.run();
 	application.create();
 
 	const FXint bannerWidth = bannericon->getWidth();
