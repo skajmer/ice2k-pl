@@ -107,10 +107,10 @@ FXCalendar::FXCalendar(FXComposite *p,FXObject* tgt,FXSelector sel,FXuint opts,F
   /*for(int i=1; i<=12; i++){
     new FXOption(months,tr(FXDate::monthName(i)),NULL,this,ID_MONTH_START+(i-1),OPTIONMENU_NOGLYPH|LAYOUT_LEFT|JUSTIFY_CENTER_X|ICON_AFTER_TEXT);
     }*/
-    for(int i=1; i<=12; i++){
-	new FXMenuCommand(months, tr(FXDate::monthName(i)), NULL, this, ID_MONTH_START+(i-1));
-    }
 
+months = new FXPopup(this);
+static const FXchar* polishMonths[] = {  "styczeń", "luty", "marzec", "kwiecień",  "maj", "czerwiec", "lipiec", "sierpień",  "wrzesień", "październik", "listopad", "grudzień"};
+for(int i = 1; i <= 12; i++) {  new FXMenuCommand(    months,    polishMonths[i - 1],    NULL,    this,    ID_MONTH_START + (i - 1)  );}
 
   // Caption above
   frame=new FXHorizontalFrame(this,LAYOUT_SIDE_TOP|LAYOUT_FILL_X,0,0,0,0,0,0,0,0,0,0);
