@@ -254,9 +254,8 @@ int main(int argc, char *argv[]) {
 	application.create();
 
 	const FXint bannerWidth = bannericon->getWidth();
-	const FXint windowHeight = main->getDefaultHeight();
 
-	main->resize(bannerWidth, windowHeight);
+	main->resize(bannerWidth, main->getDefaultHeight());
 
 	Display* display =
 	    static_cast<Display*>(application.getDisplay());
@@ -264,11 +263,15 @@ int main(int argc, char *argv[]) {
 	Window window = main->id();
 
 	XSizeHints sizeHints;
-	sizeHints.flags = PMinSize | PMaxSize;
+	long supplied;
+
+	if (!XGetWMNormalHints(display, window, &sizeHints, &supplied)) {
+	    sizeHints.flags = 0;
+	}
+
+	sizeHints.flags |= PMinSize | PMaxSize;
 	sizeHints.min_width = bannerWidth;
 	sizeHints.max_width = bannerWidth;
-	sizeHints.min_height = 0;
-	sizeHints.max_height = 0;
 
 	XSetWMNormalHints(display, window, &sizeHints);
 	XFlush(display);
@@ -276,7 +279,4 @@ int main(int argc, char *argv[]) {
 	main->show(PLACEMENT_SCREEN);
 
 	return application.run();
-
-
-
 }
