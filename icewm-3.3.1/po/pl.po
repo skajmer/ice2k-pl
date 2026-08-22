@@ -2768,7 +2768,7 @@ msgstr "Ukryj pasek zadań"
 
 #: src/wmtaskbar.cc:337
 msgid "Favorite Applications"
-msgstr "Ulubione aplikacje"
+msgstr "Kliknij, aby rozpocząć"
 
 #: src/wmtaskbar.cc:362
 msgid "Window List Menu"
