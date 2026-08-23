@@ -524,7 +524,7 @@ WLANWizard::WLANWizard(FXApp *a) : FXMainWindow(a, "Połączenie sieci bezprzewo
 
 	cont = new FXVerticalFrame(wiz->getSwitcher(),FRAME_NONE, 0,0,0,0, 0,0,0,0, 0,0);
 
-	new I2KWizHeader(cont, wizIcon, "Połączenie siebi bezprzewodowej", "Wybierz sieć bezprzewodową");
+	new I2KWizHeader(cont, wizIcon, "Połączenie sieci bezprzewodowej", "Wybierz sieć bezprzewodową");
 	cont = new FXVerticalFrame(cont, LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 22,20,23,12, 10,10);
 
 	switcher = new FXSwitcher(cont, LAYOUT_FILL_X|LAYOUT_FILL_Y|FRAME_NORMAL, 0,0,0,0, 0,0,0,0);
