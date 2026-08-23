@@ -1,4 +1,4 @@
-![Screenshot of Ice2K.sys](screenie.png)
+![Screenshot of Ice2K.sys](https://github.com/skajmer/ice2k-pl/blob/a674cedd108ce25c252f22842b142e8348ee3cff/screenie.png)
 ```
 THIS IS A FORK of Ice2k to translate it to Polish.
 Original description below:
