@@ -339,7 +339,7 @@ NCPAStatWindow::NCPAStatWindow(FXApp *a) : FXMainWindow(a, "Właściwości sieci
 			BUTTON_NORMAL|BUTTON_DEFAULT|BUTTON_INITIAL,
 			0,0,0,0, 12, 12);
 	
-	wlanbtn = new FXButton(horfrm, "Wyświetl sieci bezprzewodowe", NULL, this, ID_WLAN,
+	wlanbtn = new FXButton(horfrm, "Wyświetl sieci", NULL, this, ID_WLAN,
 			BUTTON_NORMAL|BUTTON_DEFAULT|BUTTON_INITIAL|LAYOUT_FILL_X,
 			0,0,0,0, 12, 12);
 
