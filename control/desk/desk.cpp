@@ -26,6 +26,7 @@
 
 FXIcon*                  ico_mainico;
 FXIcon*                  prvimage;
+FXIcon*                  ico_energy;
 
 FXTreeItem* noneitem;
 
@@ -59,6 +60,8 @@ class DesktopProperties : public FXMainWindow {
 
 		FXTreeList* tree;
 
+		FXText* energy_box;
+
 
 	protected:
 		DesktopProperties(){}
@@ -89,6 +92,8 @@ class DesktopProperties : public FXMainWindow {
 
 		long onCloseCmd(FXObject*,FXSelector,void*);
 		long onCmdBrowse(FXObject*,FXSelector,void*);
+		long onCmdPower(FXObject*,FXSelector,void*);
+
 
 
 		long onResSliderChange(FXObject*,FXSelector,void*);
@@ -114,6 +119,7 @@ class DesktopProperties : public FXMainWindow {
 			ID_COLORCHANGE,
 
 			ID_RESSLIDER,
+			ID_POWER,
 
 			ID_BROWSE
 		};
@@ -125,6 +131,7 @@ class DesktopProperties : public FXMainWindow {
 
 		// Initialize
 		virtual void create();
+		void setFocus() {};
 
 		virtual ~DesktopProperties();
 };
@@ -151,6 +158,8 @@ FXDEFMAP(DesktopProperties) DesktopPropertiesMap[] = {
 	FXMAPFUNC(SEL_COMMAND, DesktopProperties::ID_IMAGECHANGE, DesktopProperties::onImageChange),
 	FXMAPFUNC(SEL_CHANGED, DesktopProperties::ID_COLORCHANGE, DesktopProperties::onColorChange),
 	FXMAPFUNC(SEL_COMMAND, DesktopProperties::ID_COLORCHANGE, DesktopProperties::onColorChangeCmd),
+	FXMAPFUNC(SEL_COMMAND, DesktopProperties::ID_POWER, DesktopProperties::onCmdPower),
+
 
 	FXMAPFUNC(SEL_LEFTBUTTONPRESS, DesktopProperties::ID_RESSLIDER, DesktopProperties::onResSliderChange),
 	FXMAPFUNC(SEL_MIDDLEBUTTONPRESS, DesktopProperties::ID_RESSLIDER, DesktopProperties::onResSliderChange),
@@ -175,6 +184,7 @@ FXIMPLEMENT(DesktopProperties,FXMainWindow,DesktopPropertiesMap,ARRAYNUMBER(Desk
 
 	void DesktopProperties::create() {
 		FXMainWindow::create();
+		energy_box->setHeight(energy_box->getContentHeight());
 
 		tree->makeItemVisible(tree->getCurrentItem());
 	}
@@ -424,7 +434,8 @@ FXColor lastColor;
 FXIcon* monitorsource;
 FXIcon* previewsource;
 FXIcon* monitorimage;
-FXIcon* monitornopimage;
+FXIcon* monitorscrimage;
+//FXIcon* monitornopimage;
 
 
 FXLabel* scrmonitor;
@@ -543,7 +554,8 @@ long DesktopProperties::onColorChangeCmd(FXObject* obj,FXSelector sel,void* ptr)
 		onChange(obj, sel, ptr);
 
 		genMonitorPreview(getApp(), monitorimage, previewsource, deskcol);
-		genMonitorPreview(getApp(), monitornopimage, NULL, deskcol);
+		//genMonitorPreview(getApp(), monitorscrimage, NULL, FXRGB(0,0,0));
+		//genMonitorPreview(getApp(), monitornopimage, NULL, deskcol);
 
 		if (udata == NULL) {
 			prvimage->detach();
@@ -690,6 +702,12 @@ const char* getHomeDir() {
 
 	return homedir;
 }
+
+long DesktopProperties::onCmdPower(FXObject*,FXSelector,void*) {
+	system("powercfg.cpi &");
+	return 1;
+}
+
 
 // from fox imageviewer example
 long DesktopProperties::onCmdBrowse(FXObject*,FXSelector,void*){
@@ -988,7 +1006,13 @@ long DesktopProperties::onCmdApply(FXObject* obj,FXSelector sel,void* ptr) {
 
 	//printf("XLock.mode: %s\n", scrvalue);
 
-	fprintf(fptr, "XLock.mode: %s\n", scrvalue);
+	if (strcmp(scrvalue, "(Brak)") == 0 ) {
+		fprintf(fptr, "XLock.mode: blank\n");
+		fprintf(fptr, "XLock.modeNone: 1\n");
+	} else {
+		fprintf(fptr, "XLock.mode: %s\n", scrvalue);
+		fprintf(fptr, "XLock.modeNone: 0\n");
+	}
 	fprintf(fptr, "XIdle.delay: %d\n", scrdelay * 60);
 	fprintf(fptr, "XIdle.timeout: %d\n", scrdelay * 60);
 
@@ -1144,9 +1168,11 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Właściwoś
 		xp = 1;
 		monitorsource = new FXGIFIcon(app, resico_monitorxp); monitorsource->create();
 		previewsource = new FXGIFIcon(app, resico_previewxp); previewsource->create();
+		ico_energy = new FXGIFIcon(app, resico_energyxp, 0, IMAGE_ALPHAGUESS); ico_energy->create();
 	} else {
 		monitorsource = new FXGIFIcon(app, resico_monitor); monitorsource->create();
 		previewsource = new FXGIFIcon(app, resico_preview); previewsource->create();
+		ico_energy = new FXGIFIcon(app, resico_energy2k, 0, IMAGE_ALPHAGUESS); ico_energy->create();
 	}
 
 
@@ -1156,10 +1182,13 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Właściwoś
 	genMonitorPreview(app, monitorimage, previewsource, deskcol);
 
 	prvimage = new FXIcon(app, NULL, 0, IMAGE_OPAQUE, 184, 170);
-	monitornopimage = new FXIcon(app, NULL, 0, IMAGE_OPAQUE, 184, 170);
+	//monitornopimage = new FXIcon(app, NULL, 0, IMAGE_OPAQUE, 184, 170);
+	monitorscrimage = new FXIcon(app, NULL, 0, IMAGE_OPAQUE, 184, 170);
 
 	genMonitorPreview(app, monitorimage, previewsource, deskcol);
-	genMonitorPreview(app, monitornopimage, NULL, deskcol);
+	//genMonitorPreview(app, monitornopimage, NULL, deskcol);
+	genMonitorPreview(app, monitorscrimage, NULL, FXRGB(0,0,0));
+
 
 
 	FXIcon* ico_nobg;
@@ -1293,8 +1322,8 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Właściwoś
 	// !! SCREENSAVER TAB
 	// i think it should be obvious but i somehow get confused on what is what sometimes
 	new FXTabItem(tabbook,"Wygaszacz ekranu",NULL,TAB_TOP_NORMAL,0,0,0,0,4,4,1,3);
-	FXVerticalFrame* scrframe = new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED, 0,0,0,0, 13,12,13,13, 0,0);
-	scrmonitor = new FXLabel(scrframe, "", monitornopimage, LABEL_NORMAL|LAYOUT_CENTER_X, 0,0,0,0,  0,0,0,0);
+	FXVerticalFrame* scrframe = new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED, 0,0,0,0, 13,12,13,13, 2,2);
+	scrmonitor = new FXLabel(scrframe, "", monitorscrimage, LABEL_NORMAL|LAYOUT_CENTER_X, 0,0,0,0,  0,0,0,0);
 
 	FXGroupBox* scrgrp = new FXGroupBox(scrframe, "Wygaszacz ekranu", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 7,12,-1,5);
 
@@ -1318,6 +1347,7 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Właściwoś
 	XrmValue value;
 
 	char* type;
+	int modenone = 0;
 
 
 	if (resmgr) {
@@ -1327,6 +1357,12 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Właściwoś
 		if (XrmGetResource(db, "XLock.mode", "Xlock.mode", &type, &value)) {
 			scrvalue = value.addr;
 		}
+
+		if (XrmGetResource(db, "XLock.modeNone", "Xlock.modeNone", &type, &value)) {
+			if (*value.addr == '1') modenone = 1;
+			//scrvalue = value.addr;
+		}
+
 
 		if (XrmGetResource(db, "XIdle.delay", "Xidle.delay", &type, &value)) {
 			scrdelay = atoi(value.addr) / 60;
@@ -1352,8 +1388,11 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Właściwoś
 	} else {
 		for (int i = 0; i < modec; ++i) {
 			scrsel->insertItem(i+1, modes[i]);
-			if (!strcmp(modes[i], scrvalue))
-				scrsel->setCurrentItem(i+1);
+			if (!modenone) {
+				if (!strcmp(modes[i], scrvalue)) {
+					scrsel->setCurrentItem(i+1);
+				}
+			}
 		}
 
 		//free(modes[i]);
@@ -1392,6 +1431,20 @@ DesktopProperties::DesktopProperties(FXApp *app):FXMainWindow(app, "Właściwoś
 	waitspin = new FXSpinner(waitcont,4,this,ID_CHANGE,SPIN_NORMAL|LAYOUT_CENTER_Y|FRAME_SUNKEN|FRAME_THICK, 0,0,0,0, 0,0,1,1);
 	waitspin->setValue(scrdelay);
 	new FXLabel(waitcont, "  min", NULL, LABEL_NORMAL|LAYOUT_CENTER_Y, 0,0,0,0,  0,0,0,0);
+
+	FXGroupBox* mongrp = new FXGroupBox(scrframe, "Zasilanie monitora", FRAME_THICK|LAYOUT_FILL_X, 0,0,0,0, 7,10,-1,6);
+
+	new FXLabel(mongrp, "", ico_energy, LAYOUT_SIDE_LEFT, 0,0,0,0, 0,0,4,0);
+
+	energy_box = new FXText(mongrp, NULL, 0, LAYOUT_FILL_X|LAYOUT_FIX_HEIGHT|TEXT_WORDWRAP|VSCROLLER_NEVER, 0,0,0,0, 4,0,0,0);
+	energy_box->setText("Kliknij przycisk Zasilanie, aby dopasować ustawienia zasilania dla monitora i oszczędzanie energii.");
+	energy_box->disable();
+	energy_box->setBackColor(getApp()->getBaseColor());
+	energy_box->setDefaultCursor(getApp()->getDefaultCursor(DEF_ARROW_CURSOR));
+
+	//FXHorizontalFrame* powerfrm	= 
+	new FXButton(mongrp, "Z&asilanie...", NULL, this, ID_POWER, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_RIGHT|LAYOUT_BOTTOM, 0,0,0,0, 14,15,2,3);
+
 
 
 	// !! EFFECTS TAB

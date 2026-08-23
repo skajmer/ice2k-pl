@@ -38,7 +38,7 @@ bc alsa-utils xfonts-cronyx* idesk gtk2-engines libxt-dev xidle \
 || exit
 
 
-if [ "$ONLYTOOLS" -eq 1 ]; then
+if test "$ONLYTOOLS"; then
 	exit
 fi
 
@@ -79,7 +79,7 @@ simplebuild shell/nettray
 simplebuild shell/ejtray
 
 simplebuild control/control
-simplebuild control/ncpaprop
+simplebuild control/ncpastat
 simplebuild control/sysdm
 simplebuild control/timedate
 simplebuild control/desk
@@ -132,15 +132,15 @@ sudo make install
 set +e
 ) || exit
 
-#(
-#cd xlockmore-*
-#set -e
-#./configure --disable-mb --without-motif --without-xaw --without-xaw3d --without-gtk --without-gtk2 --disable-pam
-#make clean
-#make -j$(nproc)
-#sudo make install
-#set +e
-#) || exit
+(
+cd xlockmore-*
+set -e
+./configure --disable-mb --without-motif --without-xaw --without-xaw3d --without-gtk --without-gtk2 --disable-pam
+make clean
+make -j$(nproc)
+sudo make install
+set +e
+) || exit
 
 mv ~/.icewm ~/.icewm-old
 cp -rf icewm-dir ~/.icewm
@@ -169,6 +169,8 @@ sudo update-fonts-dir misc
 sudo update-fonts-alias misc
 sudo update-fonts-dir 100dpi
 sudo update-fonts-alias 100dpi
+
+sudo ldconfig
 
 echo "$USER ALL=(ALL) NOPASSWD: /usr/sbin/poweroff, /sbin/poweroff, /usr/sbin/reboot, /sbin/reboot, /sbin/shutdown, /sbin/pm-suspend, /usr/sbin/pm-suspend
 $USER ALL=(ALL) NOPASSWD: /usr/bin/cpupower

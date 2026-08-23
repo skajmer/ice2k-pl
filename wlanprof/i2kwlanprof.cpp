@@ -144,6 +144,8 @@ void WLANProfiles::knownList() {
 	if (!s) {
 		removebtn->disable();
 		return;
+	} else {
+		removebtn->enable();
 	}
 
 }
@@ -185,7 +187,6 @@ WLANProfiles::WLANProfiles(FXApp *a) : FXMainWindow(a, "Właściwości: Połącz
 	iconlist = new FXTreeList(iconlistbox, this, ID_LIST, LAYOUT_FILL|TREELIST_BROWSESELECT|SCROLLERS_DONT_TRACK);
 	iconlist->setNumVisible(5);
 
-	knownList();
 
 	/*treelist->appendItem(NULL, "test network (PSK)", ico_infra, ico_infra);
 	treelist->appendItem(NULL, "test network", ico_infra, ico_infra);
@@ -194,6 +195,7 @@ WLANProfiles::WLANProfiles(FXApp *a) : FXMainWindow(a, "Właściwości: Połącz
 	
 	removebtn = new FXButton(prefgrp, "&Usuń", NULL, this, ID_REMOVE, BUTTON_DEFAULT|BUTTON_NORMAL, 0,0,0,0, 16,16,2,2);
 
+	knownList();
 
 }
 

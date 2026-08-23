@@ -224,7 +224,7 @@ FXIMPLEMENT(CtrlAltDelWindow,FXMainWindow,CtrlAltDelWindowMap,ARRAYNUMBER(CtrlAl
 //int workspaces;
 
 // Construct a CtrlAltDelWindow
-CtrlAltDelWindow::CtrlAltDelWindow(FXApp *a):FXMainWindow(a, "Zabezpieczenia systemu Windows", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0, 0, 0, 0, 0, 0, 0, 0) {
+CtrlAltDelWindow::CtrlAltDelWindow(FXApp *a):FXMainWindow(a, "Zabezpieczenia systemu Windows", NULL, NULL, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,0,0, 0,0,0,0) {
   const unsigned char *banner = i2kBGetWinShutBrandingImage();
 
   FXIcon* bannericon = new FXGIFIcon(getApp(), banner,0,IMAGE_OPAQUE);
@@ -265,9 +265,9 @@ CtrlAltDelWindow::CtrlAltDelWindow(FXApp *a):FXMainWindow(a, "Zabezpieczenia sys
   strcat(hostname, getlogin());
   strcat(hostname, ".");
 
-  // new FXLabel(logongrpc, "You are logged on as HOSTNAME\\USERNAME.", NULL, LABEL_NORMAL, ZERO4, 0, 0, 0, 3);
-  new FXLabel(logongrpc, hostname, NULL, LABEL_NORMAL, ZERO4, 0, 0, 0, 3);
-  new FXLabel(logongrpc, " ", NULL, LABEL_NORMAL, ZERO4, 0, 0, 0, 3);
+  // new FXLabel(logongrpc, "You are logged on as HOSTNAME\\USERNAME.", NULL, LABEL_NORMAL, 0,0,0,0, 0, 0, 0, 3);
+  new FXLabel(logongrpc, hostname, NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,3);
+  new FXLabel(logongrpc, " ", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,3);
 
   char uptimetxt[200];
 
@@ -295,12 +295,12 @@ CtrlAltDelWindow::CtrlAltDelWindow(FXApp *a):FXMainWindow(a, "Zabezpieczenia sys
     strcpy(uptimetxt, "Czas działania systemu:        Nieznany");
   #endif
 
-  new FXLabel(logongrpc, uptimetxt, NULL, LABEL_NORMAL, ZERO4, 0, 0, 0, 12);
+  new FXLabel(logongrpc, uptimetxt, NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,12);
 
-  new FXLabel(cont, "Użyj Menedżera zadań, aby zamknąć aplikację, która nie odpowiada.", NULL, LABEL_NORMAL, ZERO4, 0, 0, 6, 6);
+  new FXLabel(cont, "Użyj Menedżera zadań, aby zamknąć aplikację, która nie odpowiada.", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,6,6);
 
 
-  buttons = new FXMatrix(cont, 2, MATRIX_BY_ROWS|PACK_UNIFORM_WIDTH|LAYOUT_FILL_COLUMN|LAYOUT_FILL_ROW|LAYOUT_FILL_X, 0, 0, 0, 0, ZERO4, 6, 6);
+  buttons = new FXMatrix(cont, 2, MATRIX_BY_ROWS|PACK_UNIFORM_WIDTH|LAYOUT_FILL_COLUMN|LAYOUT_FILL_ROW|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 6,6);
 
   FXButton* lockbtn = new FXButton(buttons, "&Zablokuj komputer", NULL, this, ID_LOCKCOMPUTER,
 		  LAYOUT_FILL_X|LAYOUT_FILL_COLUMN|BUTTON_NORMAL|BUTTON_DEFAULT|BUTTON_INITIAL, 0,0,0,0, 2,2,2,3);

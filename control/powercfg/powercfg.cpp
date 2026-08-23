@@ -5,9 +5,11 @@
 #include <ice2k/batmeter/I2KBatMeter.h>
 #include "res/foxres.h"
 
-
+FXSettings settings;
 FXIcon* ico_powercfg_32;
 FXIcon* ico_powercfg_16;
+
+int bat_detailed = 0;
 
 class PowerCfgWindow : public FXMainWindow {
 	FXDECLARE(PowerCfgWindow);
@@ -30,13 +32,14 @@ private:
 	FXPacker*               batmetercont;
 	I2KBatMeter*            batmeter;
 
-	FXPacker*               advancedcont;
-	FXHorizontalFrame*      advancedtopcont;
+	FXPacker*               advanced_frm;
+	FXHorizontalFrame*      advanced_top_frm;
 
-	FXGroupBox* optionsgrp;
-	FXGroupBox* powerbtngrp;
-	FXVerticalFrame* powerbtncont;
-	FXListBox* powerbtnbox;
+	FXGroupBox* options_grp;
+	FXGroupBox* powerbtn_grp;
+	FXVerticalFrame* powerbtn_frm;
+	FXListBox* powerbtn_box;
+	FXCheckButton* showicon_chk;
 
 
 	FXButton*               okbtn;
@@ -45,6 +48,8 @@ private:
 public:
 	long onCmdPowerBox(FXObject*,FXSelector,void*);
 	long onCmdShowIcon(FXObject*,FXSelector,void*);
+	long onCmdBatMeter(FXObject*,FXSelector,void*);
+
 
 	long onCmdDialogOK(FXObject*,FXSelector,void*);
 	long onCmdDialogApply(FXObject*,FXSelector,void*);
@@ -55,6 +60,7 @@ public:
 	enum {
 		ID_POWERBOX = FXMainWindow::ID_LAST,
 		ID_SHOWICON,
+		ID_BATMETER,
 		ID_DLG_OK,
 		ID_DLG_CANCEL,
 		ID_DLG_APPLY,
@@ -75,6 +81,8 @@ FXDEFMAP(PowerCfgWindow) PowerCfgWindowMap[] = {
 	FXMAPFUNC(SEL_COMMAND, PowerCfgWindow::ID_POWERBOX, PowerCfgWindow::onCmdPowerBox),
 
 	FXMAPFUNC(SEL_COMMAND, PowerCfgWindow::ID_SHOWICON, PowerCfgWindow::onCmdShowIcon),
+	FXMAPFUNC(SEL_COMMAND, PowerCfgWindow::ID_BATMETER, PowerCfgWindow::onCmdBatMeter),
+
 
 
 };
@@ -82,10 +90,10 @@ FXDEFMAP(PowerCfgWindow) PowerCfgWindowMap[] = {
 FXIMPLEMENT(PowerCfgWindow, FXMainWindow, PowerCfgWindowMap, ARRAYNUMBER(PowerCfgWindowMap));
 
 
-#define GOVERNOR_PERFORMANCE 0
-#define GOVERNOR_POWERSAVE 1
-#define GOVERNOR_SCHEDUTIL 2
-#define GOVERNOR_ONDEMAND 3
+#define GOVERNOR_PERFORMANCE 1
+#define GOVERNOR_POWERSAVE 2
+#define GOVERNOR_SCHEDUTIL 3
+#define GOVERNOR_ONDEMAND 4
 
 long PowerCfgWindow::onCmdDialogOK(FXObject* obj,FXSelector sel, void* ptr) {
 	onCmdDialogApply(obj, sel, ptr);
@@ -100,28 +108,57 @@ long PowerCfgWindow::onCmdDialogCancel(FXObject* obj,FXSelector sel, void* ptr) 
 }
 
 long PowerCfgWindow::onCmdDialogApply(FXObject* obj,FXSelector sel, void* ptr) {
-	unsigned gov = (int)(FXuval)powerbox->getItemData(powerbox->getCurrentItem());
-	switch (gov) {
-		case GOVERNOR_PERFORMANCE:
-			system("i2ksudo cpupower frequency-set -g performance > /dev/null &");
-			break;
-		case GOVERNOR_POWERSAVE:
-			system("i2ksudo cpupower frequency-set -g powersave > /dev/null &");
-			break;
-		case GOVERNOR_SCHEDUTIL:
-			system("i2ksudo cpupower frequency-set -g schedutil > /dev/null &");
-			break;
-		case GOVERNOR_ONDEMAND:
-			system("i2ksudo cpupower frequency-set -g ondemand > /dev/null &");
-			break;
-		default:
-			return 0;
+	int index = powerbox->getCurrentItem();
+	if (index != 0) {
+		unsigned gov = (unsigned)(FXuval)powerbox->getItemData(index);
+		switch (gov) {
+			case GOVERNOR_PERFORMANCE:
+				system("i2ksudo cpupower frequency-set -g performance > /dev/null &");
+				break;
+			case GOVERNOR_POWERSAVE:
+				system("i2ksudo cpupower frequency-set -g powersave > /dev/null &");
+				break;
+			case GOVERNOR_SCHEDUTIL:
+				system("i2ksudo cpupower frequency-set -g schedutil > /dev/null &");
+				break;
+			case GOVERNOR_ONDEMAND:
+				system("i2ksudo cpupower frequency-set -g ondemand > /dev/null &");
+				break;
+		}
 	}
+
+	FXString desktopfile = FXSystem::getHomeDirectory()+PATHSEPSTRING+".foxrc"+PATHSEPSTRING+"Desktop";
+	if (FXStat::exists(desktopfile)) {
+		settings.parseFile(desktopfile, TRUE);
+	}
+
+
+
+	settings.writeIntEntry("BatMeter", "AlwaysShow", showicon_chk->getCheck());
+	settings.writeIntEntry("BatMeter", "Detailed", bat_detailed);
+
+
+	settings.unparseFile(desktopfile);
+	settings.clear();
+
 
 	applybtn->disable();
 	return 1;
 }
 
+long PowerCfgWindow::onCmdBatMeter(FXObject* obj,FXSelector sel, void* ptr) {
+	switch((unsigned)(FXuval)ptr) {
+		case BATMETER_DETAILED_ON:
+			bat_detailed = 1;
+			break;
+		case BATMETER_DETAILED_OFF:
+			bat_detailed = 0;
+			break;
+	}
+
+	applybtn->enable();
+	return 1;
+}
 
 long PowerCfgWindow::onCmdPowerBox(FXObject* obj,FXSelector sel, void* ptr) {
 	//obj->handle(this, FXSEL(SEL_COMMAND,ID_ENABLE), NULL);
@@ -155,17 +192,19 @@ void addPowerSchemes(FXListBox* lb) {
 	int govschedutil = 0;
 	int govondemand = 0;
 
-	if (lb == NULL) return;
+	int anyadded = 0;
+
+	if (lb == NULL) goto fail;
 	
 	fp = fopen("/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors", "r");
-	if (fp == NULL) return;
+	if (fp == NULL) goto fail;
 	fgets(buf, sizeof(buf), fp);
 	fclose(fp);
 
-	if (buf[0] == '\0') return;
+	if (buf[0] == '\0') goto fail;
 
 	fpcur = fopen("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor", "r");
-	if (fpcur == NULL) return;
+	if (fpcur == NULL) goto fail;
 	fgets(curbuf, sizeof(curbuf), fpcur);
 	fclose(fpcur);
 
@@ -176,12 +215,16 @@ void addPowerSchemes(FXListBox* lb) {
 	while (token != NULL) {
 		if (strcmp(token, "performance") == 0) {
 			govperformance = 1;
+			anyadded = 1;
 		} else if (strcmp(token, "ondemand") == 0) {
 			govondemand = 1;
+			anyadded = 1;
 		} else if (strcmp(token, "schedutil") == 0) {
 			govschedutil = 1;
+			anyadded = 1;
 		} else if (strcmp(token, "powersave") == 0) {
 			govpowersave = 1;
+			anyadded = 1;
 		}
 
 		token = strtok(NULL, " \n");
@@ -225,7 +268,12 @@ void addPowerSchemes(FXListBox* lb) {
 
 	lb->setNumVisible(lb->getNumItems());
 
-	return;
+	if (anyadded) return;
+
+fail:
+	lb->disable();
+	lb->clearItems();
+	lb->appendItem("(Unknown)", NULL, 0);
 }
 
 PowerCfgWindow::PowerCfgWindow(FXApp *a) : FXMainWindow(a, "Właściwości: Opcje zasilania", ico_powercfg_16, NULL, DECOR_BORDER|DECOR_CLOSE|DECOR_TITLE, 0,0,0,0, 0,0,3,3, 0,6) {
@@ -277,29 +325,33 @@ PowerCfgWindow::PowerCfgWindow(FXApp *a) : FXMainWindow(a, "Właściwości: Opcj
 	new FXTabItem(tabbook, "Miernik Mocy", NULL, TAB_TOP_NORMAL, 0,0,0,0, 4,4,1,2);
 	batmetercont = new FXVerticalFrame(tabbook, LAYOUT_FILL|FRAME_RAISED|FRAME_THICK, 0,0,0,0, 6,8,9,8, 0,0);
 	batmeter = new I2KBatMeter(batmetercont, LAYOUT_FILL);
+	batmeter->setTarget(this);
+	batmeter->setSelector(ID_BATMETER);
 	batmeter->hideAlwaysShowChk();
 
 	new FXTabItem(tabbook, "Zaawansowane", NULL, TAB_TOP_NORMAL, 0,0,0,0, 4,4,1,2);
 
-	advancedcont = new FXVerticalFrame(tabbook, LAYOUT_FILL|FRAME_RAISED|FRAME_THICK, 0,0,0,0, 13,15,11,30, 8,8);
-	advancedtopcont = new FXHorizontalFrame(advancedcont, LAYOUT_FILL_X, 0,0,0,0, 0,0,0,4, 16,16);
-	new FXLabel(advancedtopcont, "", ico_powercfg_32, FRAME_NONE, 0,0,0,0, 0,0,0,0);
-	new FXLabel(advancedtopcont, "Wybierz ustawienia oszczędzania energii, których chcesz używać.", NULL, LAYOUT_CENTER_Y, 0,0,0,0, 0,0,0,0);
+	advanced_frm = new FXVerticalFrame(tabbook, LAYOUT_FILL|FRAME_RAISED|FRAME_THICK, 0,0,0,0, 13,15,11,30, 8,8);
+	advanced_top_frm = new FXHorizontalFrame(advanced_frm, LAYOUT_FILL_X, 0,0,0,0, 0,0,0,4, 16,16);
+	new FXLabel(advanced_top_frm, "", ico_powercfg_32, FRAME_NONE, 0,0,0,0, 0,0,0,0);
+	new FXLabel(advanced_top_frm, "Wybierz ustawienia oszczędzania energii, których chcesz używać.", NULL, LAYOUT_CENTER_Y, 0,0,0,0, 0,0,0,0);
 
-	optionsgrp = new FXGroupBox(advancedcont, "Opcje", GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 6,7, 2,60);
-	new FXCheckButton(optionsgrp, "Z&awsze pokazuj ikonę na pasku zadań", this, ID_SHOWICON);
-	powerbtngrp = new FXGroupBox(advancedcont, "Przyciski zasilania", GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL, 0,0,0,0, 6,7, 2,20);
-	powerbtncont = new FXVerticalFrame(powerbtngrp, LAYOUT_CENTER_Y|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 4,4);
+	options_grp = new FXGroupBox(advanced_frm, "Opcje", GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X, 0,0,0,0, 6,7, 2,60);
+	showicon_chk = new FXCheckButton(options_grp, "Z&awsze pokazuj ikonę na pasku zadań", this, ID_SHOWICON);
+	showicon_chk->setCheck(getApp()->reg().readIntEntry("BatMeter", "AlwaysShow", FALSE));
+	powerbtn_grp = new FXGroupBox(advanced_frm, "Przyciski zasilania", GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL, 0,0,0,0, 6,7, 2,20);
+	powerbtn_frm = new FXVerticalFrame(powerbtn_grp, LAYOUT_CENTER_Y|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 4,4);
 	
-	new FXLabel(powerbtncont, "Ki&edy w komputerze zostanie naciśnięty przycisk zasilania:", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
-	powerbtnbox = new FXListBox(powerbtncont, NULL, 0, FRAME_NORMAL|LISTBOX_NORMAL|LAYOUT_FILL_X, 0,0,0,0, 3,3,2,1);
-	powerbtnbox->appendItem("Najwyższa wydajność");
-	powerbtnbox->appendItem("Oszczędzanie energii");
-	powerbtnbox->appendItem("Zrównoważony");
-	powerbtnbox->disable();
-
+	new FXLabel(powerbtn_frm, "Ki&edy w komputerze zostanie naciśnięty przycisk zasilania:", NULL, LABEL_NORMAL, 0,0,0,0, 0,0,0,0);
+	powerbtn_box = new FXListBox(powerbtn_frm, NULL, 0, FRAME_NORMAL|LISTBOX_NORMAL|LAYOUT_FILL_X, 0,0,0,0, 3,3,2,1);
+	powerbtn_box->appendItem("Najwyższa wydajność");
+	powerbtn_box->appendItem("Oszczędzanie energii");
+	powerbtn_box->appendItem("Zrównoważony");
+	powerbtn_box->disable();
 
 	FXHorizontalFrame* btncont = new FXHorizontalFrame(cont, LAYOUT_RIGHT, 0,0,0,0, 0,6,1,4, 6,0);
+
+	bat_detailed = getApp()->reg().readIntEntry("BatMeter", "Detailed", FALSE);
 	
 	okbtn = new FXButton(btncont, "OK", NULL, this, ID_DLG_OK, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
 	cancelbtn = new FXButton(btncont, "Anuluj", NULL, this, ID_DLG_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0, 0, 75, 23, 0, 0, 0, 0);
