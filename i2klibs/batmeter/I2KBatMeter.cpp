@@ -235,7 +235,7 @@ I2KBatMeter::I2KBatMeter(FXComposite* p, FXuint opts, FXint x, FXint y, FXint w,
 
 	topcont = new FXHorizontalFrame(this, LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 12,12);
 	showiconchk = new FXCheckButton(topcont, "Zawsze pokazuj ikonę na pasku zadań.", this, ID_SHOWICON);
-	showdetailschk = new FXCheckButton(topcont, "Pokaż szczegóły dla kazdej baterii.", this, ID_DETAILED,
+	showdetailschk = new FXCheckButton(topcont, "Pokaż szczegóły dla każdej baterii.", this, ID_DETAILED,
 			CHECKBUTTON_NORMAL);
 
 	powergrpcont = new FXPacker(this, LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 7,8,1,5, 0,0);
