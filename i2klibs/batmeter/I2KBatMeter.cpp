@@ -333,7 +333,17 @@ long I2KBatMeter::onCmdBattery(FXObject* obj, FXSelector, void*) {
 	dlg.execute(PLACEMENT_OWNER);
 	return 1;
 }
+long I2KBatMeter::onChkShowIcon(FXObject*, FXSelector, void* ptr) {
+	if (target != NULL) {
+		if (ptr == 0) {
+			target->tryHandle(this, FXSEL(SEL_COMMAND, message), (void*)(FXuval)BATMETER_SHOWICON_OFF);
+		} else {
+			target->tryHandle(this, FXSEL(SEL_COMMAND, message), (void*)(FXuval)BATMETER_SHOWICON_ON);
+		}
+	}
 
+	return 1;
+}
 long I2KBatMeter::onTimeout(FXObject*, FXSelector, void*) {
 	refreshInfo();
 	getApp()->addTimeout(this, ID_TIMEOUT, 2000);
