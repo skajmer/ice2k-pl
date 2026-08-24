@@ -328,22 +328,6 @@ long I2KBatMeter::onChkDetailed(FXObject*, FXSelector, void* ptr) {
 	else switcher->setCurrent(1);
 	return 1;
 }
-<<<<<<< HEAD
-=======
-
-long I2KBatMeter::onChkShowIcon(FXObject*, FXSelector, void* ptr) {
-	if (target != NULL) {
-		if (ptr == 0) {
-			target->tryHandle(this, FXSEL(SEL_COMMAND, message), (void*)(FXuval)BATMETER_SHOWICON_OFF);
-		} else {
-			target->tryHandle(this, FXSEL(SEL_COMMAND, message), (void*)(FXuval)BATMETER_SHOWICON_ON);
-		}
-	}
-
-	return 1;
-}
-
->>>>>>> upstream/master
 long I2KBatMeter::onCmdBattery(FXObject* obj, FXSelector, void*) {
 	I2KBatDialog dlg(this, 1, (char*)((I2KBatButton*)obj)->getUserData());
 	dlg.execute(PLACEMENT_OWNER);
