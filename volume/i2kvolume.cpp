@@ -209,7 +209,7 @@ Volume::Volume(FXApp *a) : FXMainWindow(a, "Głośność główna", ico_volume, 
 
 	snd_mixer_selem_id_alloca(&s_sid);
 	snd_mixer_selem_id_set_index(s_sid, 0);
-	snd_mixer_selem_id_set_name(s_sid, "Głośność główna");
+	snd_mixer_selem_id_set_name(s_sid, "Master");
 	s_elem = snd_mixer_find_selem(s_mixer, s_sid);
 
 	bmp1 = new FXBitmap(a, leftside1_bits, 0, leftside1_width, leftside1_height);
