@@ -95,6 +95,13 @@ simplebuild wlanprof
 simplebuild welcome
 simplebuild i2kcrash
 simplebuild badapp
+<<<<<<< HEAD
+=======
+simplebuild i2kvolume
+
+
+
+>>>>>>> upstream/master
 # (
 # cd icewm-dir/programs/ice2krun
 # ./compile.sh
