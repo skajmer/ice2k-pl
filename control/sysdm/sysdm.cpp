@@ -904,7 +904,7 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "WÅ
 	if (!xp) new FXLabel(ntldrgrp, "", ntldricon, JUSTIFY_TOP|LABEL_NORMAL|LAYOUT_SIDE_LEFT|LAYOUT_FIX_HEIGHT, 0,0,0,76,  0,16,0,0);
 	/*new FXLabel(ntldrgrp, "Startup and recovery options tell your computer how to start\n"
 			"and what to do if an error causes your computer to stop.", NULL, JUSTIFY_LEFT|LABEL_NORMAL|LAYOUT_SIDE_TOP, 0,0,0,0,  0,0,0,0);*/
-	makeWrapLabel(ntldrgrp, "Informacje o uruchamianiu systemu, awariach systemu i\n""
+	makeWrapLabel(ntldrgrp, "Informacje o uruchamianiu systemu, awariach systemu i\n"
 			"debugowaniu.");
 
 	btn = new FXButton(ntldrgrp, "Ust&awienia", NULL, this, ID_NTLDR, BUTTON_DEFAULT|BUTTON_NORMAL|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_BOTTOM|LAYOUT_SIDE_RIGHT, 0, 0, 147, 23, 0, 0, 0, 0);  
