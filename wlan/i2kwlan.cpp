@@ -512,7 +512,6 @@ long WLANWizard::onListDoubleClk(FXObject* obj,FXSelector sel, void* ptr) {
 
 
 WLANWizard::WLANWizard(FXApp *a) : FXMainWindow(a, "Połączenie sieci bezprzewodowej", NULL, mainIcon, DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,497,360) {
->>>>>>> upstream/master
 	wiz = new I2KWizard(this, this, ID_WIZARD);
 	wiz->getNextButton()->disable();
 
