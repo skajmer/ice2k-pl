@@ -51,56 +51,47 @@ FXIcon* ico_devmgmt_32;
 
 
 class AboutBox : public FXDialogBox {
-	FXDECLARE(AboutBox)
+	FXDECLARE(AboutBox);
+private:
+	FXHorizontalFrame *cont;
+	FXButton          *okbtn;
+protected:
+	AboutBox() {}
+public:
+	AboutBox(FXWindow* owner) :
+	FXDialogBox(owner, "Menedżer urządzeń - informacje", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE, 0,0,0,0,
+			10,10,10,10, 8,12) {
+		cont = new FXHorizontalFrame(this, LAYOUT_SIDE_TOP, 0,0,0,0, 4,4,4,4, 10,10);
+		new FXLabel(cont, "", ico_devmgmt_32);
 
-	private:
-		// Controls
-		FXHorizontalFrame *cont;                 // Container
+		new FXLabel(cont,
+				"Menedżer urządzeń\n"
+				"Napisany przez xcomposite\n"
+				"\n"
+				"Za pomocą Menedżera urządzeń możesz wyświetlić listę urządzeń\n"
+				"sprzętowych zainstalowanych w komputerze i ustawić właściwości\n"
+				"każdego z urządzeń.",
+				NULL, JUSTIFY_LEFT);
 
-		FXLabel           *icon;                 // About icon
-		FXLabel           *text;                 // About text
+		okbtn = new FXButton(this, "OK", NULL, this, ID_ACCEPT,
+				BUTTON_DEFAULT|LAYOUT_RIGHT|BUTTON_NORMAL,
+				0,0,0,0, 27,27,2,3);
 
-		FXButton          *okbtn;                // OK button
+		okbtn->setFocus();
+	}
 
-	protected:
-		AboutBox() {}
-
-	public:
-		AboutBox(FXWindow* owner) :
-		FXDialogBox(owner, "Menedżer urządzeń - informacje", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU, 0,0,0,0,
-				10,10,10,10, 8,12) {
-			cont = new FXHorizontalFrame(this, LAYOUT_SIDE_TOP, 0,0,0,0, 4,4,4,4, 10,10);
-			icon = new FXLabel(cont, "", ico_devmgmt_32);
-
-			text = new FXLabel(cont,
-					"Menedżer urządzeń\n"
-					"Napisany przez xcomposite\n"
-					"\n"
-					"Za pomocą Menedżera urządzeń możesz wyświetlić listę urządzeń\n"
-					"sprzętowych zainstalowanych w komputerze i ustawić właściwości\n"
-					"każdego z urządzeń.",
-					NULL, JUSTIFY_LEFT);
-
-			okbtn = new FXButton(this, "OK", NULL, this, ID_ACCEPT,
-					BUTTON_DEFAULT|LAYOUT_RIGHT|BUTTON_NORMAL,
-					0,0,0,0, 27,27,2,3);
-
-			okbtn->setFocus();
-		}
-
-		virtual void create() { FXDialogBox::create(); }
-		void setFocus() {};
-		virtual ~AboutBox() {};
+	virtual void create() { FXDialogBox::create(); }
+	void setFocus() {};
+	virtual ~AboutBox() {};
 };
 
 FXIMPLEMENT(AboutBox, FXDialogBox, NULL, 0);
 
 int checkAcpiSupport() {
-	int i = 0;
 	DIR* dir;
+	int i = 0;
 
 acpicheck:
-
 	switch(i) {
 		case 0:
 			dir = opendir("/sys/module/acpi");
@@ -115,16 +106,14 @@ acpicheck:
 			break;
 
 		default:
-			return 0;
+			return 1;
 	}
 
 	closedir(dir);
 
-	if (!dir) {
-		return 1;
-	}
+	if (dir == NULL) return 0;
 
-	i++;
+	++i;
 
 	goto acpicheck;
 }
@@ -289,118 +278,100 @@ int getMonitors(char* buf, int bufsize ) {
 
 // Main Window
 class DeviceManager : public FXMainWindow {
+FXDECLARE(DeviceManager);
 
-	// Macro for class hierarchy declarations
-	FXDECLARE(DeviceManager)
+private:
+	FXDockSite*              topdock;
 
-	private:
-		// gui
-		FXDockSite*              topdock;
+	FXHorizontalFrame*       statusbarcont;
 
-		FXHorizontalFrame*       statusbarcont;
+	FXToolBarShell*          mbshell;
+	FXMenuBar*               menubar;
 
-		FXToolBarShell*          mbshell;
-		FXMenuBar*               menubar;
+	FXMenuPane*              filemenu;
+	FXMenuPane*              actionmenu;
+	FXMenuPane*              viewmenu;
+	FXMenuPane*              helpmenu;
 
-		FXMenuPane*              filemenu;
-		FXMenuPane*              actionmenu;
-		FXMenuPane*              viewmenu;
-		FXMenuPane*              helpmenu;
+	FXToolBarShell*          tbshell;
+	FXToolBarShell*          tb2shell;
 
-		FXToolBarShell*          tbshell;
-		FXToolBarShell*          tb2shell;
-
-		FXToolBar*               toolbar;
-		FXToolBar*               toolbar2;
+	FXToolBar*               toolbar;
+	FXToolBar*               toolbar2;
 
 
-		// tree
-		FXPacker*                treeframe;
-		FXTreeList*              tree;
+	// tree
+	FXPacker*                treeframe;
+	FXTreeList*              tree;
 
-		FXTreeItem               *branch, *top;
+	FXTreeItem               *branch, *top;
 
-		FXTreeItem*              devVga;
-		FXTreeItem*              devCdRom;
-		FXTreeItem*              devFloppyCon;
-		FXTreeItem*              devFloppyDrive;
-		FXTreeItem*              devStorage;
-		FXTreeItem*              devFirewire;
-		FXTreeItem*              devKeyboards;
-		FXTreeItem*              devMice;
-		FXTreeItem*              devMonitors;
-		FXTreeItem*              devNetwork;
-		FXTreeItem*              devUnknown;
-		FXTreeItem*              devSerial;
-		FXTreeItem*              devPrinters;
-		FXTreeItem*              devSound;
-		FXTreeItem*              devSystem;
-		FXTreeItem*              devUsbCon;
+	FXTreeItem*              devVga;
+	FXTreeItem*              devCdRom;
+	FXTreeItem*              devFloppyCon;
+	FXTreeItem*              devFloppyDrive;
+	FXTreeItem*              devStorage;
+	FXTreeItem*              devFirewire;
+	FXTreeItem*              devKeyboards;
+	FXTreeItem*              devMice;
+	FXTreeItem*              devMonitors;
+	FXTreeItem*              devNetwork;
+	FXTreeItem*              devUnknown;
+	FXTreeItem*              devSerial;
+	FXTreeItem*              devPrinters;
+	FXTreeItem*              devSound;
+	FXTreeItem*              devSystem;
+	FXTreeItem*              devUsbCon;
 
-		// icons
-		FXIcon*                  ico_back;
-		FXIcon*                  ico_forward;
+	// icons
+	FXIcon*                  ico_back;
+	FXIcon*                  ico_forward;
+	FXIcon*                  ico_up;
+	FXIcon*                  ico_contree;
+	FXIcon*                  ico_properties;
+	FXIcon*                  ico_help;
+	FXIcon*                  ico_scan;
 
-		FXIcon*                  ico_up;
-		FXIcon*                  ico_contree;
-
-		FXIcon*                  ico_properties;
-
-		FXIcon*                  ico_help;
-
-		FXIcon*                  ico_scan;
-
-		FXIcon*                  ico_dev_computer;
-		FXIcon*                  ico_dev_cdrom;
-		FXIcon*                  ico_dev_disk;
-		FXIcon*                  ico_dev_disp;
-		FXIcon*                  ico_dev_ide;
-		FXIcon*                  ico_dev_floppy;
-		FXIcon*                  ico_dev_mice;
-		FXIcon*                  ico_dev_keyb;
-		FXIcon*                  ico_dev_network;
-		FXIcon*                  ico_dev_unknown;
-		FXIcon*                  ico_dev_serial;
-		FXIcon*                  ico_dev_printer;
-		FXIcon*                  ico_dev_sound;
-		FXIcon*                  ico_dev_usb;
-		FXIcon*                  ico_dev_firewire;
+	FXIcon*                  ico_dev_computer;
+	FXIcon*                  ico_dev_cdrom;
+	FXIcon*                  ico_dev_disk;
+	FXIcon*                  ico_dev_disp;
+	FXIcon*                  ico_dev_ide;
+	FXIcon*                  ico_dev_floppy;
+	FXIcon*                  ico_dev_mice;
+	FXIcon*                  ico_dev_keyb;
+	FXIcon*                  ico_dev_network;
+	FXIcon*                  ico_dev_unknown;
+	FXIcon*                  ico_dev_serial;
+	FXIcon*                  ico_dev_printer;
+	FXIcon*                  ico_dev_sound;
+	FXIcon*                  ico_dev_usb;
+	FXIcon*                  ico_dev_firewire;
 
 
-	protected:
-		DeviceManager(){}
+protected:
+	DeviceManager() {};
 
-	public:
-		void setFocus() {};
+public:
+	void setFocus() {};
 
-		// Message handlers
-		long onItemChange(FXObject*,FXSelector,void*);
-		long onStatus(FXObject*,FXSelector,void*);
-		long onChangeText(FXObject*,FXSelector,void*);
-		long onCmdAbout(FXObject*,FXSelector,void*);
+	long onItemChange(FXObject*,FXSelector,void*);
+	long onStatus(FXObject*,FXSelector,void*);
+	long onChangeText(FXObject*,FXSelector,void*);
+	long onCmdAbout(FXObject*,FXSelector,void*);
+	long addDevices(FXObject*,FXSelector,void*);
 
-		long addDevices(FXObject*,FXSelector,void*);
+public:
+	enum {
+		ID_TREE=FXMainWindow::ID_LAST,
+		ID_ADDDEV,
+		ID_ABOUT,
+	};
 
-
-	public:
-
-		// Messages for our class
-		enum {
-			ID_MAINWIN=FXMainWindow::ID_LAST,
-			ID_TREE,
-			ID_ADDDEV,
-			ID_ABOUT,
-		};
-
-	public:
-
-		// CtrlAltDelWindow's constructor
-		DeviceManager(FXApp* a);
-
-		// Initialize
-		virtual void create();
-
-		virtual ~DeviceManager();
+public:
+	DeviceManager(FXApp* a);
+	virtual void create();
+	virtual ~DeviceManager();
 };
 
 FXDEFMAP(DeviceManager) DeviceManagerMap[] = {
@@ -413,7 +384,7 @@ FXDEFMAP(DeviceManager) DeviceManagerMap[] = {
 	FXMAPFUNC(SEL_CHANGED, DeviceManager::ID_TREE, DeviceManager::onItemChange),
 };
 
-FXIMPLEMENT(DeviceManager,FXMainWindow,DeviceManagerMap,ARRAYNUMBER(DeviceManagerMap))
+FXIMPLEMENT(DeviceManager,FXMainWindow,DeviceManagerMap,ARRAYNUMBER(DeviceManagerMap));
 
 
 
@@ -472,18 +443,19 @@ void DeviceManager::create() {
 void getComputerName(char* computerType, int size) {
 	// asked chatgpt to clean it up, did it's job well. was a bunch of nested ifs before
 	int acpiSupport = checkAcpiSupport();
-	int amd64Cpu = checkAmd64();
 	int multiProcessor = 0;
 
-	if (get_nprocs_conf() > 1)
-		multiProcessor = 1;
-
-	const char* arch = amd64Cpu ? "" : " x64";
+	if (get_nprocs_conf() > 1) multiProcessor = 1;
+#ifdef __x86_64__
+	const char arch[] = " x64";
+#else
+	const  char arch[] = "";
+#endif
 	const char* biosType;
 
-	if (!acpiSupport) {
+	if (acpiSupport) {
 		biosType = multiProcessor ? "Wieloprocesorowy komputer PC z interejsem ACPI"
-			: "Zaawansowany interfjes konfiguracji i zasilania (ACPI)";
+			: "Zaawansowany interfjes konfiguracji i zasilania (ACPI))";
 	} else {
 		biosType = multiProcessor ? "Wieloprocesor MPS"
 			: "Standard";
@@ -493,18 +465,14 @@ void getComputerName(char* computerType, int size) {
 }
 
 long DeviceManager::addDevices(FXObject* sender, FXSelector sel, void* ptr) {
-	FXApp* app = getApp();
-
 	char hostname[HOST_NAME_MAX+1];
+	char computerType[64];
+	char* upper = hostname;
+	char drives[256];
+	char driveModel[256];
+	char* drive;
 
-	gethostname(hostname, HOST_NAME_MAX+1);
-
-	char *upper = hostname;
-
-	while (*upper) {
-		*upper = toupper((unsigned char) *upper);
-		upper++;
-	}
+	FXApp* app = getApp();
 
 	// pci related code is based off here
 	// thank you https://josuedhg.wordpress.com/2014/11/15/how-to-list-pci-devices-with-c-on-linux/
@@ -522,19 +490,22 @@ long DeviceManager::addDevices(FXObject* sender, FXSelector sel, void* ptr) {
 
 	propbtn->getParent()->recalc();
 
+	hostname[0] = '\0';
+	gethostname(hostname, HOST_NAME_MAX+1);
 
-	top = tree->appendItem(0,hostname,ico_devmgmt,ico_devmgmt);
+	while (*upper) {
+		*upper = toupper((unsigned char)*upper);
+		++upper;
+	}
+
+
+	top = tree->appendItem(0, hostname, ico_devmgmt, ico_devmgmt);
 	tree->expandTree(top);
 
-	char computerType[64];
 	getComputerName(computerType, sizeof(computerType));
 
-	branch = tree->appendItem(top,"Komputer",ico_dev_computer,ico_dev_computer);    
-	tree->appendItem(branch,computerType,ico_dev_computer,ico_dev_computer);
-
-	char drives[256];
-	char* drive;
-	char driveModel[256];
+	branch = tree->appendItem(top, "Komputer", ico_dev_computer, ico_dev_computer);    
+	tree->appendItem(branch, computerType, ico_dev_computer, ico_dev_computer);
 	getHardDrives(drives, sizeof(drives));
 
 	drive = strtok(drives, ",");
@@ -741,7 +712,7 @@ long DeviceManager::addDevices(FXObject* sender, FXSelector sel, void* ptr) {
 	int i = 0;
 
 	while (loopthru) {
-		i++;
+		++i;
 
 		loopthruprev = loopthru;
 		loopthru = loopthru->getNext();
@@ -822,14 +793,10 @@ DeviceManager::DeviceManager(FXApp *app):FXMainWindow(app, "Menedżer urządzeń
 
 	ico_back = new FXGIFIcon(app, resico_mmc_back);
 	ico_forward = new FXGIFIcon(app, resico_mmc_forward);
-
 	ico_up = new FXGIFIcon(app, resico_mmc_up);
 	ico_contree = new FXGIFIcon(app, resico_mmc_contree);
-
 	ico_properties = new FXGIFIcon(app, resico_mmc_properties);
-
 	ico_help = new FXGIFIcon(app, resico_mmc_help);
-
 	ico_scan = new FXGIFIcon(app, resico_dmg_scan);
 
 
@@ -932,8 +899,6 @@ DeviceManager::DeviceManager(FXApp *app):FXMainWindow(app, "Menedżer urządzeń
 
 	addDevices(NULL, 0, NULL);
 
-	//new FXButton(toolbar,"\tUp",ico_hist_up,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  0,0,0,0);
-
 }
 
 
@@ -950,21 +915,9 @@ int main(int argc,char *argv[]) {
 
 	devmgmtwin = new DeviceManager(&application);
 
-	// create windows
 	application.create();
-	devmgmtwin->killFocus();
-
 	devmgmtwin->show(PLACEMENT_OWNER);
-	devmgmtwin->killFocus();
 
-	devmgmtwin->changeFocus((FXWindow*)0);
-
-	//devmgmtwin->changeFocus(devmgmtwin);
-
-
-	//devmgmtwin->show(PLACEMENT_SCREEN);
-
-	// Run the application
 	return application.run();
 }
 
