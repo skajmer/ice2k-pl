@@ -938,7 +938,7 @@ TimeDateCPL::TimeDateCPL(FXApp *a) : FXMainWindow(a, "Właściwości: Data i god
 	generalhorcont = new FXHorizontalFrame(generalcont, LAYOUT_FILL_X|LAYOUT_FILL_Y	, 0,0,0,0, 0,0,0,0, 8,8);
 
 	dategrp = new FXGroupBox(generalhorcont, "Data",
-			GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 12,12,0,4, 4,4);
+			GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 12,12,2,8, 8,8);
 	FXMatrix* datemtx = new FXMatrix(dategrp, 1, LAYOUT_FILL_X|LAYOUT_FILL_Y|MATRIX_BY_COLUMNS, 0,0,0,0, 0,0,0,0, 0,0);
 
 	datetop = new FXHorizontalFrame(datemtx, LAYOUT_FILL_X|PACK_UNIFORM_WIDTH|LAYOUT_CENTER_Y|LAYOUT_FILL_ROW, 0,0,0,0, 0,0,3,6, 10,10);
@@ -982,7 +982,7 @@ for (int i = 0; i < 12; ++i) {
 	calview->setOtherWeekendColor(calview->getOtherDayColor());
 
 	timegrp = new FXGroupBox(generalhorcont, "Godzina",
-			GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 12,12,0,4, 4,4);
+			GROUPBOX_NORMAL|FRAME_GROOVE|LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 12,12,4,4, 6,6);
 
 	FXMatrix* timemtx = new FXMatrix(timegrp, 1, LAYOUT_FILL_Y|MATRIX_BY_COLUMNS, 0,0,0,0, 4,4,0,0, 0,0);
 
