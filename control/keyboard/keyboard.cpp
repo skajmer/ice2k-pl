@@ -38,10 +38,12 @@ private:
 	FXPacker* rdelay_cnt;
 	FXHorizontalFrame* rdelay_sld_cnt;
 	FXSlider* rdelay_sld;
+	FXLabel* rdelay_sld_left_lbl;
 
 	FXPacker* rrate_cnt;
 	FXHorizontalFrame* rrate_sld_cnt;
 	FXSlider* rrate_sld;
+	FXLabel* rrate_sld_left_lbl;
 
 	FXPacker* test_cnt;
 	FXTextField* test_txt;
@@ -51,6 +53,7 @@ private:
 	FXCanvas* blink_cvs;
 	FXHorizontalFrame* blink_sld_cnt;
 	FXSlider* blink_sld;
+	FXLabel* blink_sld_left_lbl;
 
 	FXButton* ok_btn;
 	FXButton* cancel_btn;
@@ -135,10 +138,10 @@ KeyboardProperties::KeyboardProperties(FXApp *a) : FXMainWindow(a, "Właściwoś
 			LAYOUT_FILL_X,
 			0,0,0,0, 0,0,0,0, 10,10);
 
-	new FXLabel(rdelay_sld_cnt, "Duże");
+	rdelay_sld_left_lbl = new FXLabel(rdelay_sld_cnt, "Duże", NULL, LAYOUT_FIX_WIDTH);
 	rdelay_sld = new FXSlider(rdelay_sld_cnt, this, ID_REPEAT_DELAY,
-			LAYOUT_FIX_HEIGHT|LAYOUT_FIX_WIDTH|SLIDER_TICKS_BOTTOM|SLIDER_ARROW_DOWN,
-			0,0,185,25+6, 0,0,6,0);
+			LAYOUT_FIX_HEIGHT|LAYOUT_FILL_X|SLIDER_TICKS_BOTTOM|SLIDER_ARROW_DOWN,
+			0,0,0,25+6, 0,0,6,0);
 	rdelay_sld->setRange(1, 4);
 	rdelay_sld->setSlotSize(4);
 	rdelay_sld->setHeadSize(11);
@@ -151,11 +154,10 @@ KeyboardProperties::KeyboardProperties(FXApp *a) : FXMainWindow(a, "Właściwoś
 	rrate_sld_cnt = new FXHorizontalFrame(rrate_cnt,
 			LAYOUT_FILL_X,
 			0,0,0,0, 0,0,0,0, 10,10);
-
-	new FXLabel(rrate_sld_cnt, "Mała");
+	rrate_sld_left_lbl = new FXLabel(rrate_sld_cnt, "Mała", NULL, LAYOUT_FIX_WIDTH);
 	rrate_sld = new FXSlider(rrate_sld_cnt, this, ID_REPEAT_SPEED,
-			LAYOUT_FIX_HEIGHT|LAYOUT_FIX_WIDTH|SLIDER_TICKS_BOTTOM|SLIDER_ARROW_DOWN,
-			0,0,185,25+6, 0,0,6,0);
+			LAYOUT_FIX_HEIGHT|LAYOUT_FILL_X|SLIDER_TICKS_BOTTOM|SLIDER_ARROW_DOWN,
+			0,0,0,25+6, 0,0,6,0);
 	rrate_sld->setRange(1, 32);
 	rrate_sld->setSlotSize(4);
 	rrate_sld->setHeadSize(11);
@@ -163,7 +165,8 @@ KeyboardProperties::KeyboardProperties(FXApp *a) : FXMainWindow(a, "Właściwoś
 
 	test_cnt = new FXVerticalFrame(repeat_grp, LAYOUT_FILL_X, 0,0,0,0, 2,2,1,2, 0,0);
 
-	new FXLabel(test_cnt, "Kliknij tutaj i przytrzymaj klawisz, aby sprawdzić szybkość powtarzania:", NULL, LABEL_NORMAL, 0,0,0,0, 1,1,1,2);
+	new FXLabel(test_cnt, "Kliknij tutaj i przytrzymaj klawisz, aby sprawdzić szybkość powtarzania:" "                     ", NULL, LABEL_NORMAL, 0,0,0,0, 1,1,1,2);
+	//lbl->setBackColor(FXRGB(255,0,0));
 
 	test_txt = new FXTextField(test_cnt, 10, NULL, 0, LAYOUT_FILL_X|TEXTFIELD_NORMAL, 0,0,0,0, 2,2,1,4);
 
@@ -178,10 +181,11 @@ KeyboardProperties::KeyboardProperties(FXApp *a) : FXMainWindow(a, "Właściwoś
 	blink_sld_cnt = new FXHorizontalFrame(blink_cnt,
 			LAYOUT_FILL_X,
 			0,0,0,0, 0,0,0,0, 10,10);
-	new FXLabel(blink_sld_cnt, "Brak");
+
+	blink_sld_left_lbl = new FXLabel(blink_sld_cnt, "Brak", NULL, LAYOUT_FIX_WIDTH);
 	blink_sld = new FXSlider(blink_sld_cnt, this, ID_BLINK,
-			LAYOUT_FIX_HEIGHT|LAYOUT_FIX_WIDTH|SLIDER_TICKS_BOTTOM|SLIDER_ARROW_DOWN,
-			0,0,185,25+6, 0,0,6,0);
+			LAYOUT_FIX_HEIGHT|LAYOUT_FILL_X|SLIDER_TICKS_BOTTOM|SLIDER_ARROW_DOWN,
+			0,0,0,25+6, 0,0,6,0);
 	blink_sld->setRange(1, 12);
 	blink_sld->setSlotSize(4);
 	blink_sld->setHeadSize(11);
@@ -232,6 +236,21 @@ KeyboardProperties::~KeyboardProperties() {
 }
 
 void KeyboardProperties::create() {
+	FXint tmpwidth, lblwidth;
+
+	lblwidth = getApp()->getNormalFont()->getTextWidth(rrate_sld_left_lbl->getText());
+	tmpwidth = getApp()->getNormalFont()->getTextWidth(rdelay_sld_left_lbl->getText());
+
+	if (tmpwidth > lblwidth) lblwidth = tmpwidth;
+	tmpwidth = getApp()->getNormalFont()->getTextWidth(blink_sld_left_lbl->getText());
+	if (tmpwidth > lblwidth) lblwidth = tmpwidth;
+
+	tmpwidth += (rrate_sld_left_lbl->getPadLeft() + rrate_sld_left_lbl->getPadRight());
+
+	rrate_sld_left_lbl->setWidth(tmpwidth);
+	rdelay_sld_left_lbl->setWidth(tmpwidth);
+	blink_sld_left_lbl->setWidth(tmpwidth);
+
 	FXMainWindow::create();
 	test_txt->setFocus();
 
