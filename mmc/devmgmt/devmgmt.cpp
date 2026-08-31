@@ -803,20 +803,20 @@ DeviceManager::DeviceManager(FXApp *app):FXMainWindow(app, "Menedżer urządzeń
 	//FXIcon* ico_hist_up = new FXGIFIcon(app, resico_hist_up);
 	FXButton* btn;
 
-	btn = new FXButton(toolbar,"\tWstecz",ico_back,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
+	btn = new FXButton(toolbar,"\tWstecz",ico_back,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_CENTER_Y,0,0,0,0,  2,2,2,2);
 	btn->disable();
-	btn = new FXButton(toolbar,"\tDalej",ico_forward,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
+	btn = new FXButton(toolbar,"\tDalej",ico_forward,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_CENTER_Y,0,0,0,0,  2,2,2,2);
 	btn->disable();
 	new FXVerticalSeparator(toolbar, SEPARATOR_GROOVE|LAYOUT_FILL_Y, 0,0,0,0,  3,2,2,2);
-	btn = new FXButton(toolbar,"\tDo góry o jeden poziom",ico_up,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
+	btn = new FXButton(toolbar,"\tDo góry o jeden poziom",ico_up,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_CENTER_Y,0,0,0,0,  2,2,2,2);
 	btn->disable();
-	btn = new FXButton(toolbar,"\tPokazuje/ukrywa drzewo konsoli/Ulubione.",ico_contree,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
+	btn = new FXButton(toolbar,"\tPokazuje/ukrywa drzewo konsoli/Ulubione.",ico_contree,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_CENTER_Y,0,0,0,0,  2,2,2,2);
 	new FXVerticalSeparator(toolbar, SEPARATOR_GROOVE|LAYOUT_FILL_Y, 0,0,0,0,  3,2,2,2);
 
-	propbtn = new FXButton(toolbar,"\tWłaściwości",ico_properties,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
+	propbtn = new FXButton(toolbar,"\tWłaściwości",ico_properties,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_CENTER_Y,0,0,0,0,  2,2,2,2);
 	propsep = new FXVerticalSeparator(toolbar, SEPARATOR_GROOVE|LAYOUT_FILL_Y, 0,0,0,0,  3,2,2,2);
 
-	btn = new FXButton(toolbar,"\tPomoc",ico_help,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
+	btn = new FXButton(toolbar,"\tPomoc",ico_help,NULL,0,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_CENTER_Y,0,0,0,0,  2,2,2,2);
 
 	tb2shell = new FXToolBarShell(this,FRAME_SUNKEN);
 
@@ -831,8 +831,7 @@ DeviceManager::DeviceManager(FXApp *app):FXMainWindow(app, "Menedżer urządzeń
 		new FXVerticalSeparator(toolbar, SEPARATOR_GROOVE|LAYOUT_FILL_Y, 0,0,0,0,  3,2,2,2);
 	}
 
-	btn = new FXButton(scantb,"\tSkanuj w poszukiwaniu zmian sprzętu",ico_scan,this,ID_ADDDEV,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,  2,2,2,2);
-
+	btn = new FXButton(scantb,"\tSkanuj w poszukiwaniu zmian sprzętu",ico_scan,this,ID_ADDDEV,BUTTON_TOOLBAR|FRAME_RAISED|LAYOUT_CENTER_Y,0,0,0,0,  2,2,2,2);
 	new FXSeparator(this, SEPARATOR_NONE|LAYOUT_FIX_HEIGHT, 0,0,0,2); // semantics r cute  
 
 	treeframe = new FXPacker(this, FRAME_NORMAL|LAYOUT_FILL_Y|LAYOUT_FILL_X, 0,0,0,0,  0,0,0,0);
