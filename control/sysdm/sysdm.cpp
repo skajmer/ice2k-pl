@@ -335,14 +335,7 @@ FXDialogBox(owner, "Zmiany identyfikacji", DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE,
 	FXHorizontalFrame* btncont = new FXHorizontalFrame(this, LAYOUT_RIGHT|PACK_UNIFORM_WIDTH, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0);
 
 	okbtn = new FXButton(btncont, "OK", NULL, this, ID_ACCEPT, BUTTON_DEFAULT|BUTTON_NORMAL, 0,0,0,0, 19,20,2,3);
-	cancelbtn = new FXButton(btncont, "Cancel", NULL, this, ID_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 19,20,2,3);
-
-<<<<<<< HEAD
-	cancelbtn = new FXButton(btncont, "Anuluj", NULL, this, ID_CANCEL,
-			BUTTON_DEFAULT|FRAME_THICK|FRAME_RAISED|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT,
-			0, 0, 75, 23, 3, 3, 2, 3);
-=======
->>>>>>> upstream/master
+	cancelbtn = new FXButton(btncont, "Anuluj", NULL, this, ID_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 19,20,2,3);
 	//okbtn->setFocus();
 }
 
@@ -578,7 +571,6 @@ SystemPropertiesWindow::SystemPropertiesWindow(FXApp *app):FXMainWindow(app, "WÅ
 	okbtn = new FXButton(btncont, "OK", NULL, this, ID_ACCEPT, BUTTON_DEFAULT|BUTTON_NORMAL, 0,0,0,0, 19,20,2,3);
 	cancelbtn = new FXButton(btncont, "Anuluj", NULL, this, ID_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 19,20,2,3);
 	applybtn = new FXButton(btncont, "&Zastosuj", NULL, NULL, 0, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 19,19,2,3);
->>>>>>> upstream/master
 	applybtn->disable();
 
 
