@@ -1,0 +1,843 @@
+#include <errno.h>
+#include <fx.h>
+#include <fxkeys.h>
+#include <ice2k/comctl32.h>
+#include <ice2k/wizard/I2KWizard.h>
+
+#include <unistd.h>
+#include <pwd.h>
+#include <grp.h>
+#include "res/foxres.h"
+
+int refreshlist = 0;
+
+char seluser[32] = {0};
+
+FXIcon* ico_main16;
+FXIcon* ico_main32;
+
+FXIcon* ico_user16;
+FXIcon* ico_user32;
+
+FXIcon* ico_check;
+FXIcon* ico_uncheck;
+
+
+FXImage* img_banner;
+
+int changePassword(const char* user, const char* pass) {
+	setenv("SETADDUSER", user, 1);
+	setenv("SETADDPASSWORD", pass, 1);
+
+	if (pass[0] != '\0') {
+		if (!system("echo \"$SETADDUSER:$SETADDPASSWORD\" | i2ksudo chpasswd")) {
+			return 1;
+		} else {
+			return 0;
+		}
+	} else {
+		if (!system("i2ksudo passwd -d \"$SETADDUSER\"")) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+	return 0;
+}
+
+class ChangePasswordBox : public FXDialogBox {
+	FXDECLARE(ChangePasswordBox);
+
+protected:
+	ChangePasswordBox() {}
+
+private:
+	FXMatrix* mtx;
+	FXTextField* pw_box;
+	FXTextField* c_pw_box;
+
+public:
+	long onCmdAccept(FXObject*, FXSelector, void*);
+	long onChange(FXObject*, FXSelector, void*);
+
+
+
+public:
+	enum {
+		ID_ACCEPT = FXDialogBox::ID_LAST,
+		ID_LAST
+	};
+
+public:
+	ChangePasswordBox(FXWindow* owner);
+
+	virtual void create();
+	virtual void setFocus() {};
+	virtual ~ChangePasswordBox();
+};
+
+FXDEFMAP(ChangePasswordBox) ChangePasswordBoxMap[] = {
+	FXMAPFUNC(SEL_COMMAND,           ChangePasswordBox::ID_ACCEPT,     ChangePasswordBox::onCmdAccept),
+	//FXMAPFUNC(SEL_CHANGED,           ChangePasswordBox::ID_ACCEPT,     ChangePasswordBox::onChange),
+
+};
+
+FXIMPLEMENT(ChangePasswordBox, FXDialogBox, ChangePasswordBoxMap, ARRAYNUMBER(ChangePasswordBoxMap));
+
+ChangePasswordBox::ChangePasswordBox(FXWindow* owner) : FXDialogBox(owner, "Ustawianie hasła", DECOR_BORDER|DECOR_CLOSE|DECOR_TITLE, 0,0,0,0, 9,9,9,9, 12,12) {
+	mtx = new FXMatrix(this, 2, MATRIX_BY_COLUMNS|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 16,8);
+	new FXLabel(mtx, "&Nowe hasło:", NULL, LAYOUT_CENTER_Y);
+	pw_box = new FXTextField(mtx, 28, this, ID_ACCEPT, TEXTFIELD_NORMAL|TEXTFIELD_PASSWD|TEXTFIELD_ENTER_ONLY|LAYOUT_FILL_X|LAYOUT_FILL_COLUMN, 0,0,0,0, 4,0,1,4);
+	new FXLabel(mtx, "&Potwierdź nowe hasło:", NULL, LAYOUT_CENTER_Y);
+	c_pw_box = new FXTextField(mtx, 28, this, ID_ACCEPT, TEXTFIELD_NORMAL|TEXTFIELD_PASSWD|TEXTFIELD_ENTER_ONLY|LAYOUT_FILL_X|LAYOUT_FILL_COLUMN, 0,0,0,0, 4,0,1,4);
+
+	FXHorizontalFrame* btncont = new FXHorizontalFrame(this, LAYOUT_RIGHT|PACK_UNIFORM_WIDTH, 0,0,0,0, 0,0,0,0, 6,0);
+
+	new FXButton(btncont, "OK", NULL, this, ID_ACCEPT, BUTTON_DEFAULT|BUTTON_NORMAL, 0,0,0,0, 19,20,2,3);
+	new FXButton(btncont, "Anuluj", NULL, this, ID_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 19,20,2,3);
+}
+
+long ChangePasswordBox::onCmdAccept(FXObject* sender, FXSelector sel, void* ptr) {
+	if (strcmp(pw_box->getText().text(), c_pw_box->getText().text()) == 0) {
+		if (changePassword(seluser, pw_box->getText().text())) {
+			FXMessageBox::information(this, MBOX_OK, "Kreator dodawania użytkownika", "Pomyślnie ustawiono hasło.");
+			tryHandle(this, FXSEL(SEL_CLOSE, 0), (void*)(FXuval)0);
+		} else {
+			FXMessageBox::error(this, MBOX_OK, "Kreator dodawania użytkownika", "Wystąpił błąd podczas ustawiania hasła!");
+		}
+	} else {
+		FXMessageBox::error(this, MBOX_OK, "Kreator dodawania użytkownika", "Wpisane hasło nie pasuje. Wpisz hasło dla tego konta w obu polach tekstowych.");
+	}
+	return 1;
+}
+
+
+ChangePasswordBox::~ChangePasswordBox() {
+}
+
+void ChangePasswordBox::create() {
+	FXDialogBox::create();
+	pw_box->setFocus();
+	show(PLACEMENT_SCREEN);
+}
+
+
+
+
+
+
+
+class NewUserWizard : public FXDialogBox {
+	FXDECLARE(NewUserWizard);
+
+protected:
+	NewUserWizard() {}
+
+private:
+	I2KWizard* wiz;
+	FXHorizontalFrame* userinfo_page;
+	FXVerticalFrame* userinfo_main;
+
+	FXHorizontalFrame* password_page;
+	FXVerticalFrame* password_main;
+
+	FXHorizontalFrame* groups_page;
+	FXVerticalFrame* groups_main;
+
+	FXMatrix* userinfo_fld_mtx;
+	FXMatrix* password_fld_mtx;
+
+	FXTextField* username_txt;
+	FXTextField* password_txt;
+	FXTextField* password_c_txt;
+
+	FXPacker* groups_list_cont;
+	FXTreeList* groups_list;
+
+
+
+public:
+	//long onCmdHello(FXObject*, FXSelector, void*);
+	long onCmdWizard(FXObject*, FXSelector, void*);
+	long onChangeUserField(FXObject*, FXSelector, void*);
+	long onChangePassword(FXObject*, FXSelector, void*);
+
+	long onCmdUserField(FXObject*, FXSelector, void*);
+	long onCmdPassword(FXObject*, FXSelector, void*);
+	long onCmdGroupList(FXObject*, FXSelector, void*);
+	long onKeyPressGroupList(FXObject*, FXSelector, void*);
+	long onUpdateGroupList(FXObject*, FXSelector, void*);
+
+
+
+
+public:
+	enum {
+		ID_WIZARD = FXDialogBox::ID_LAST,
+		ID_USERFIELD,
+		ID_PASSWORD,
+
+		ID_GROUPLIST,
+
+		ID_LAST
+	};
+
+public:
+	NewUserWizard(FXWindow* window);
+
+	virtual void create();
+	virtual void setFocus() {};
+	virtual ~NewUserWizard();
+};
+
+FXDEFMAP(NewUserWizard) NewUserWizardMap[] = {
+	FXMAPFUNC(SEL_COMMAND,           NewUserWizard::ID_WIZARD,     NewUserWizard::onCmdWizard),
+	FXMAPFUNC(SEL_CHANGED,           NewUserWizard::ID_USERFIELD,  NewUserWizard::onChangeUserField),
+	FXMAPFUNC(SEL_CHANGED,           NewUserWizard::ID_PASSWORD,   NewUserWizard::onChangePassword),
+	FXMAPFUNC(SEL_COMMAND,           NewUserWizard::ID_PASSWORD,   NewUserWizard::onCmdPassword),
+
+	FXMAPFUNC(SEL_COMMAND,           NewUserWizard::ID_GROUPLIST,  NewUserWizard::onCmdGroupList),
+	FXMAPFUNC(SEL_UPDATE,            NewUserWizard::ID_GROUPLIST,  NewUserWizard::onUpdateGroupList),
+
+	FXMAPFUNC(SEL_KEYPRESS,          NewUserWizard::ID_GROUPLIST,  NewUserWizard::onKeyPressGroupList),
+
+	FXMAPFUNC(SEL_COMMAND,           NewUserWizard::ID_USERFIELD,  NewUserWizard::onCmdUserField),
+
+
+};
+
+FXIMPLEMENT(NewUserWizard, FXDialogBox, NewUserWizardMap, ARRAYNUMBER(NewUserWizardMap));
+long NewUserWizard::onChangeUserField(FXObject* sender, FXSelector sel, void* ptr) {
+	if (strlen(username_txt->getText().text()) > 0) {
+		wiz->getNextButton()->enable();
+	} else {
+		wiz->getNextButton()->disable();
+	}
+	return 1;
+}
+
+long NewUserWizard::onChangePassword(FXObject* sender, FXSelector sel, void* ptr) {
+	if (strcmp(password_txt->getText().text(), password_c_txt->getText().text()) == 0) {
+		wiz->getNextButton()->enable();
+	} else {
+		wiz->getNextButton()->disable();
+	}
+	return 1;
+}
+long NewUserWizard::onCmdGroupList(FXObject* sender, FXSelector sel, void* ptr) {
+	FXTreeList* list = (FXTreeList*)sender;
+
+	if (list->getItemOpenIcon(list->getCurrentItem()) == ico_check) {
+		list->setItemOpenIcon(list->getCurrentItem(), ico_uncheck);
+		list->setItemClosedIcon(list->getCurrentItem(), ico_uncheck);
+	} else {
+		list->setItemOpenIcon(list->getCurrentItem(), ico_check);
+		list->setItemClosedIcon(list->getCurrentItem(), ico_check);
+	}
+
+	return 1;
+}
+
+FXTreeItem* item = NULL;
+
+long NewUserWizard::onKeyPressGroupList(FXObject* sender, FXSelector sel, void* ptr) {
+	FXEvent* ev = (FXEvent*)ptr;
+	FXTreeList* list = (FXTreeList*)sender;
+
+
+	if ( (!(ev->code >= KEY_Shift_L && ev->code <= KEY_Hyper_R)) && ev->code != KEY_space && ev->code != KEY_Linefeed && ev->code != KEY_Return) {
+		item = list->getCurrentItem();
+	}
+	//printf("%d\n", ev->code);
+	return 0;
+}
+
+long NewUserWizard::onUpdateGroupList(FXObject* sender, FXSelector sel, void* ptr) {
+	FXTreeList* list = (FXTreeList*)sender;
+
+	if (item != NULL) {
+		onCmdGroupList(sender, 0, NULL);
+		item = NULL;
+	}
+
+	return 0;
+}
+
+long NewUserWizard::onCmdPassword(FXObject* sender, FXSelector sel, void* ptr) {
+	if (strcmp(password_txt->getText().text(), password_c_txt->getText().text()) == 0) {
+		wiz->tryHandle(this, FXSEL(SEL_COMMAND, ID_WIZARD), (void*)(FXuval)IWIZARD_ANEXT);
+	}
+	return 1;
+}
+
+
+long NewUserWizard::onCmdUserField(FXObject* sender, FXSelector sel, void* ptr) {
+	wiz->tryHandle(this, FXSEL(SEL_COMMAND, ID_WIZARD), (void*)(FXuval)IWIZARD_ABACK);
+	return 1;
+}
+
+
+long NewUserWizard::onCmdWizard(FXObject* sender, FXSelector sel, void* ptr) {
+	char groups[4096];
+	groups[0] = '\0';
+	char* groupptr = groups;
+	char* groups_end = groups+sizeof(groups)/sizeof(groups[0])-1;
+
+	int current = wiz->getSwitcher()->getCurrent();
+
+	switch ((unsigned)(FXuval)ptr) {
+		case IWIZARD_ABACK:
+			wiz->setCurrent(--current);
+			wiz->setFinish(FALSE);
+
+			if (current == 0) {
+				wiz->getBackButton()->disable();
+				wiz->getNextButton()->enable();
+			}
+			break;
+
+		case IWIZARD_ANEXT:
+			if (current+1 == 1) {
+				if (username_txt->getText().text()[0] == '\0') {
+					FXMessageBox::error(this, MBOX_OK, "Błąd", "Nie podano nazwy użytkownika!");
+					wiz->getNextButton()->disable();
+					return 1;
+				} else {
+					tryHandle(password_txt, FXSEL(SEL_CHANGED, ID_PASSWORD), 0);
+				}
+
+
+			} else {
+				wiz->getNextButton()->enable();
+			}
+				
+			wiz->setCurrent(++current);
+			wiz->getBackButton()->enable();
+
+			if (current == wiz->getSwitcher()->numChildren()-1) {
+				wiz->setFinish(TRUE);
+			} else if (current == wiz->getSwitcher()->numChildren()) {
+				FXTreeItem* tritem = groups_list->getFirstItem();
+
+				while (tritem) {
+					if (tritem->getOpenIcon() == ico_check) {
+						if (groupptr < groups_end ) {
+							if (groupptr == groups) {
+								groupptr += snprintf(groupptr, groups_end-groupptr, "%s", tritem->getText().text());
+							} else {
+								groupptr += snprintf(groupptr, groups_end-groupptr, ",%s", tritem->getText().text());
+							}
+						}
+					}
+					tritem = tritem->getNext();
+				}
+
+
+				setenv("SETADDUSER", username_txt->getText().text(), 1);
+				setenv("SETADDPASSWORD", password_txt->getText().text(), 1);
+				int stop = 0;
+				if (groups[0] != '\0') {
+					setenv("SETADDGROUPS", groups, 1);
+					if (!system("i2ksudo useradd -m -G \"$SETADDGROUPS\" \"$SETADDUSER\"")) {
+						(void)0;
+					} else {
+						stop = 1;
+						FXMessageBox::error(this, MBOX_OK, "Błąd", "Nie udało się utworzyć użytkownika!");
+					}
+				} else {
+					if (!stop) {
+						if (!system("i2ksudo useradd -m \"$SETADDUSER\"")) {
+							(void)0;
+							//tryHandle(this, FXSEL(SEL_CLOSE, 0), (void*)(FXuval)0);
+						} else {
+							stop = 1;
+							FXMessageBox::error(this, MBOX_OK, "Błąd", "Nie udało się utworzyć użytkownika!");
+						}
+					}
+				}
+
+				if (!stop) {
+					refreshlist = 1;
+					/*if (password_txt->getText().text()[0] != '\0') {
+						if (!system("echo \"$SETADDUSER:$SETADDPASSWORD\" | i2ksudo chpasswd")) {
+							(void)0;
+						} else {
+							stop = 1;
+							FXMessageBox::error(this, MBOX_OK, "Error", "Could not set password!");
+						}
+						tryHandle(this, FXSEL(SEL_CLOSE, 0), (void*)(FXuval)0);
+					} else {
+						if (!system("i2ksudo passwd -d \"$SETADDUSER\"")) {
+							(void)0;
+						} else {
+							stop = 1;
+							FXMessageBox::error(this, MBOX_OK, "Error", "Could not set password!");
+						}
+						tryHandle(this, FXSEL(SEL_CLOSE, 0), (void*)(FXuval)0);
+					}*/
+
+					if (changePassword(username_txt->getText().text(), password_txt->getText().text())) {
+						tryHandle(this, FXSEL(SEL_CLOSE, 0), (void*)(FXuval)0);
+					} else {
+						FXMessageBox::error(this, MBOX_OK, "Błąd", "Nie udało się ustawić hasła!");
+						stop = 1;
+						tryHandle(this, FXSEL(SEL_CLOSE, 0), (void*)(FXuval)0);
+					}
+				}
+
+			}
+
+			if (current == 1) {
+				password_txt->setFocus();
+			}
+				
+			break;
+
+		case IWIZARD_ACANCEL:
+			//puts("hi");
+			tryHandle(this, FXSEL(SEL_CLOSE, 0), (void*)(FXuval)0);
+			return 1;
+	}
+
+	return 1;
+}
+
+
+
+NewUserWizard::NewUserWizard(FXWindow* owner) : FXDialogBox(owner, "Dodawanie nowego użytkownika", DECOR_BORDER|DECOR_CLOSE|DECOR_TITLE, 0,0,0,0, 0,0,0,0, 0,0) {
+	struct group* grp;
+	//FXDebugTarget* dbg = new FXDebugTarget();
+	wiz = new I2KWizard(this, this, ID_WIZARD, IWIZARD_NOFOCUSNEXT);
+
+	userinfo_page = new FXHorizontalFrame(wiz->getSwitcher(), LAYOUT_FILL, 0,0,0,0, 0,1,0,0, 7,7);
+	new FXImageFrame(userinfo_page, img_banner, LAYOUT_FIX_HEIGHT, 0,0,0,img_banner->getHeight()-2);
+	userinfo_main = new FXVerticalFrame(userinfo_page, LAYOUT_FILL, 0,0,0,0, 9,9,9,9, 8,8);
+
+	new FXLabel(userinfo_main, "Wprowadź podstawowe informacje dotyczące nowego użytkownika.");
+	userinfo_fld_mtx = new FXMatrix(userinfo_main, 2, MATRIX_BY_COLUMNS, 0,0,0,0, 0,0,0,0, 16,6);
+	new FXLabel(userinfo_fld_mtx, "&Nazwa użytkownika:", NULL, LAYOUT_CENTER_Y);
+	username_txt = new FXTextField(userinfo_fld_mtx, 33, this, ID_USERFIELD, TEXTFIELD_NORMAL|TEXTFIELD_ENTER_ONLY, 0,0,0,0, 4,0,1,4);
+	new FXLabel(userinfo_fld_mtx, "&Imię i nazwisko:", NULL, LAYOUT_CENTER_Y);
+	new FXTextField(userinfo_fld_mtx, 33, wiz, I2KWizard::ID_NEXT, TEXTFIELD_NORMAL|TEXTFIELD_ENTER_ONLY, 0,0,0,0, 4,0,1,4);
+	new FXLabel(userinfo_fld_mtx, "&Opis:", NULL, LAYOUT_CENTER_Y);
+	new FXTextField(userinfo_fld_mtx, 33, wiz, I2KWizard::ID_NEXT, TEXTFIELD_NORMAL|TEXTFIELD_ENTER_ONLY, 0,0,0,0, 4,0,1,4);
+	new FXLabel(userinfo_main, "Aby kontynuować, kliknij przycisk Dalej.", NULL, LABEL_NORMAL, 0,0,0,0, 2,2,24,2);
+
+	password_page = new FXHorizontalFrame(wiz->getSwitcher(), LAYOUT_FILL, 0,0,0,0, 0,1,0,0, 7,7);
+	new FXImageFrame(password_page, img_banner, LAYOUT_FIX_HEIGHT, 0,0,0,img_banner->getHeight()-2);
+	password_main = new FXVerticalFrame(password_page, LAYOUT_FILL, 0,0,0,0, 9,9,9,9, 8,8);
+
+	new FXLabel(password_main, "Wpisz i potwierdź hasło dla tego użytkownika.");
+	password_fld_mtx = new FXMatrix(password_main, 2, MATRIX_BY_COLUMNS|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 16,6);
+	new FXLabel(password_fld_mtx, "&Hasło:", NULL, LAYOUT_CENTER_Y);
+	password_txt = new FXTextField(password_fld_mtx, 10, this, ID_PASSWORD, TEXTFIELD_ENTER_ONLY|TEXTFIELD_NORMAL|TEXTFIELD_PASSWD|LAYOUT_FILL_X|LAYOUT_FILL_COLUMN, 0,0,0,0, 4,0,1,4);
+	new FXLabel(password_fld_mtx, "&Potwierdź hasło:", NULL, LAYOUT_CENTER_Y);
+	password_c_txt = new FXTextField(password_fld_mtx, 10, this, ID_PASSWORD, TEXTFIELD_ENTER_ONLY|TEXTFIELD_NORMAL|TEXTFIELD_PASSWD|LAYOUT_FILL_X|LAYOUT_FILL_COLUMN, 0,0,0,0, 4,0,1,4);
+	new FXLabel(password_main, "Aby kontynuować, kliknij przycisk Dalej.", NULL, LABEL_NORMAL, 0,0,0,0, 2,2,24,2);
+
+	groups_page = new FXHorizontalFrame(wiz->getSwitcher(), LAYOUT_FILL, 0,0,0,0, 0,1,0,0, 7,7);
+	new FXImageFrame(groups_page, img_banner, LAYOUT_FIX_HEIGHT, 0,0,0,img_banner->getHeight()-2);
+	groups_main = new FXVerticalFrame(groups_page, LAYOUT_FILL, 0,0,0,0, 9,9,9,18, 4,4);
+
+	new FXLabel(groups_main, "Jakie grupy chcesz nadać temu użytkownikowi?");
+
+
+	groups_list_cont = new FXPacker(groups_main, LAYOUT_FILL|FRAME_NORMAL, 0,0,0,0, 0,0,0,0);
+	//groups_list = new FXTreeList(groups_list_cont, dbg, 0, LAYOUT_FILL|TREELIST_BROWSESELECT|SCROLLERS_DONT_TRACK);
+	groups_list = new FXTreeList(groups_list_cont, this, ID_GROUPLIST, LAYOUT_FILL|TREELIST_BROWSESELECT|SCROLLERS_DONT_TRACK);
+
+	//FXTreeItem* item = groups_list->appendItem(NULL, "wheel", ico_check, ico_uncheck);
+
+	setgrent();
+
+	while ((grp = getgrent()) != NULL) {
+		groups_list->appendItem(NULL, grp->gr_name, ico_uncheck, ico_uncheck);
+	}
+
+	endgrent();
+
+	wiz->getNextButton()->disable();
+}
+
+NewUserWizard::~NewUserWizard() {
+}
+
+void NewUserWizard::create() {
+	ico_uncheck->create();
+	ico_check->create();
+	FXDialogBox::create();
+	username_txt->setFocus();
+	//show(PLACEMENT_SCREEN);
+}
+
+class UsersAndPasswords : public FXMainWindow {
+	FXDECLARE(UsersAndPasswords);
+
+protected:
+	UsersAndPasswords() {}
+
+private:
+	FXVerticalFrame*        cont;
+	FXTabBook*              tabbook;
+
+	FXButton*               okbtn;
+	FXButton*               cancelbtn;
+	FXButton*               applybtn;
+
+	FXButton* rem_btn;
+	FXButton* prop_btn;
+
+	FXVerticalFrame*        userscont;
+	FXHorizontalFrame*      users_top_cont;
+
+	FXPacker*   users_list_cont;
+	FXPacker*   users_list_frame;
+
+	FXIconList* users_list;
+
+	FXHorizontalFrame* users_buttons;
+
+	FXPacker* pass_cnt;
+	FXGroupBox* pass_grp;
+
+	FXText* pass_box;
+
+	FXButton* reset_btn;
+
+public:
+	long onCmdAdd(FXObject*, FXSelector, void*);
+	long onCmdRemove(FXObject*, FXSelector, void*);
+	long onCmdSetPassword(FXObject*, FXSelector, void*);
+
+
+	long onSelectUsersList(FXObject*, FXSelector, void*);
+	long onDeSelectUsersList(FXObject*, FXSelector, void*);
+	long onCmdDialogOK(FXObject*,FXSelector,void*);
+	long onCmdDialogApply(FXObject*,FXSelector,void*);
+	long onCmdDialogCancel(FXObject*,FXSelector,void*);
+
+
+public:
+	enum {
+		ID_DLG_OK = FXMainWindow::ID_LAST,
+		ID_DLG_CANCEL,
+		ID_DLG_APPLY,
+		ID_ADD,
+		ID_REMOVE,
+		ID_USERSLIST,
+		ID_SETPASSWORD,
+		ID_LAST
+	};
+
+public:
+	UsersAndPasswords(FXApp* a);
+
+	virtual void create();
+	virtual void setFocus() {};
+	virtual ~UsersAndPasswords();
+};
+
+FXDEFMAP(UsersAndPasswords) UsersAndPasswordsMap[] = {
+	FXMAPFUNC(SEL_COMMAND, UsersAndPasswords::ID_DLG_OK, UsersAndPasswords::onCmdDialogOK),
+	FXMAPFUNC(SEL_COMMAND, UsersAndPasswords::ID_DLG_APPLY, UsersAndPasswords::onCmdDialogApply),
+	FXMAPFUNC(SEL_COMMAND, UsersAndPasswords::ID_DLG_CANCEL, UsersAndPasswords::onCmdDialogCancel),
+
+	FXMAPFUNC(SEL_COMMAND,           UsersAndPasswords::ID_ADD,        UsersAndPasswords::onCmdAdd),
+	FXMAPFUNC(SEL_COMMAND,           UsersAndPasswords::ID_REMOVE,     UsersAndPasswords::onCmdRemove),
+	FXMAPFUNC(SEL_COMMAND,           UsersAndPasswords::ID_SETPASSWORD,     UsersAndPasswords::onCmdSetPassword),
+
+
+	FXMAPFUNC(SEL_SELECTED,          UsersAndPasswords::ID_USERSLIST,  UsersAndPasswords::onSelectUsersList),
+	FXMAPFUNC(SEL_DESELECTED,        UsersAndPasswords::ID_USERSLIST,  UsersAndPasswords::onDeSelectUsersList),
+
+
+};
+
+FXIMPLEMENT(UsersAndPasswords, FXMainWindow, UsersAndPasswordsMap, ARRAYNUMBER(UsersAndPasswordsMap));
+
+long UsersAndPasswords::onCmdDialogOK(FXObject* obj,FXSelector sel, void* ptr) {
+	onCmdDialogApply(obj, sel, ptr);
+	getApp()->exit();
+	return 1;
+}
+
+
+long UsersAndPasswords::onCmdDialogCancel(FXObject* obj,FXSelector sel, void* ptr) {
+	getApp()->exit(1);
+	return 1;
+}
+
+long UsersAndPasswords::onCmdDialogApply(FXObject* obj,FXSelector sel, void* ptr) {
+	return 1;
+}
+
+
+int getGroups(char arr[32][32], __uid_t uid) {
+	struct passwd* pw = getpwuid(uid);
+	if (pw == NULL) return 0;
+
+	__gid_t groups[32];
+	int ngroups = 31;
+
+	getgrouplist(pw->pw_name, pw->pw_gid, groups, &ngroups);
+
+	int i;
+	for (i = 0; i < ngroups; ++i) {
+		struct group* gr = getgrgid(groups[i]);
+		if (gr != NULL) sprintf(arr[i], "%.*s", 31, gr->gr_name);
+	}
+
+	return i;
+}
+
+void genUsersList(FXIconList* list) {
+	char name[2048];
+	char groups[32][32];
+
+	struct passwd* pw;
+
+	setpwent();
+
+	while ( (pw = getpwent()) ) {
+		if (pw->pw_uid == 0 || (pw->pw_uid >= 1000 && pw->pw_uid <= 65000)) {
+			int ngroups = getGroups(groups, pw->pw_uid);
+			int chars = sprintf(name, "%.*s\t", 31, pw->pw_name);
+
+			for (int i = 0; i < ngroups; ++i) {
+				if (chars < (int)sizeof(name)-1) {
+					if (i == ngroups-1) {
+						chars += sprintf(name+chars, "%.*s", 31, groups[i]);
+					} else {
+						chars += sprintf(name+chars, "%.*s, ",31, groups[i]);
+					}
+				} else {
+					break;
+				}
+			}
+
+			list->appendItem(name, ico_user32, ico_user16);
+		}
+	}
+
+	endpwent();
+}
+
+UsersAndPasswords::UsersAndPasswords(FXApp *a) : FXMainWindow(a, "Użytkownicy i hasła", ico_main16, NULL, DECOR_CLOSE|DECOR_BORDER|DECOR_TITLE, 0,0,0,0) {
+	cont = new FXVerticalFrame(this, LAYOUT_FILL_Y|LAYOUT_FILL_X, 0,0,0,0, 0,0,0,0, 0,0);
+	
+	tabbook = new FXTabBook(cont, NULL, 0, TABBOOK_NORMAL|LAYOUT_FILL, 0,0,0,0, 6,6,7,5);
+
+	new FXTabItem(tabbook, "Użytkownicy ", NULL, TAB_TOP_NORMAL, 0,0,0,0, 6,6,1,2);
+	userscont = new FXVerticalFrame(tabbook, LAYOUT_FILL|FRAME_RAISED|FRAME_THICK, 0,0,0,0, 11,10,10,12, 2,2);
+	users_top_cont = new FXHorizontalFrame(userscont, LAYOUT_FILL_X, 0,0,0,0, 0,0,0,7, 5,5);
+
+	new FXLabel(users_top_cont, "", ico_main32);
+
+	new FXLabel(users_top_cont,
+			"Poniższa lista umożliwia nadawanie lub odmawianie użytkownikom dostępu do tego\n"
+			"komputera, zmianę haseł i innych ustawień.");
+
+	new FXCheckButton(userscont, "Aby używać tego komputera, użytkownik &musi wprowadzić nazwę użytkownika i hasło.",
+			NULL, 0, CHECKBUTTON_NORMAL, 0,0,0,0, 2,2,2,6);
+
+	new FXLabel(userscont, "Użytkownicy tego &komputera:");
+
+	users_list_cont = new FXPacker(userscont, LAYOUT_FILL_X, 0,0,0,0, 2,2,0,1);
+	users_list_frame = new FXPacker(users_list_cont, LAYOUT_FILL_X|FRAME_NORMAL|LAYOUT_FIX_HEIGHT, 0,0,0,117, 0,0,0,0);
+	users_list = new FXIconList(users_list_frame, this, ID_USERSLIST, LAYOUT_FILL|ICONLIST_DETAILED|ICONLIST_SINGLESELECT|HSCROLLER_NEVER);
+
+	users_list->appendHeader("Nazwa użytkownika", NULL, 168);
+	users_list->appendHeader("Grupuj", NULL, 168); //actual W2K translation
+
+
+	/*users_list->getHeader()->setPadLeft(4);
+	users_list->getHeader()->setPadTop(0);
+
+	users_list->getHeader()->setPadBottom(-1);*/
+	users_list->getHeader()->setPadTop(0);
+	users_list->getHeader()->setPadBottom(0);
+
+	/*users_list->appendItem("Administrator\tAdministrators", ico_user32, ico_user16);
+	users_list->appendItem("Guest\tGuests", ico_user32, ico_user16);
+	users_list->appendItem("xcomp\tAdministrators", ico_user32, ico_user16);*/
+
+	genUsersList(users_list);
+
+
+	new FXFrame(users_list_cont, FRAME_NONE|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT, 0,0,357,0, 0,0,0,0);
+
+	users_buttons = new FXHorizontalFrame(userscont, LAYOUT_RIGHT|PACK_UNIFORM_WIDTH, 0,0,0,0, 0,2,0,0, 6,6);
+
+	new FXButton(users_buttons, "&Dodaj...", NULL, this, ID_ADD, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 11,11,2,3);
+	rem_btn = new FXButton(users_buttons, "&Usuń", NULL, this, ID_REMOVE, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 11,11,2,3);
+	prop_btn = new FXButton(users_buttons, "&Właściwości", NULL, NULL, 0, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 11,11,2,3);
+
+
+	pass_cnt = new FXPacker(userscont, LAYOUT_FILL_X, 0,0,0,0, 2,2,6,1);
+	pass_grp = new FXGroupBox(pass_cnt, "Hasło", LAYOUT_FILL_X|FRAME_GROOVE, 0,0,0,0, 9,10,5,11, 3,3);
+	new FXLabel(pass_grp, "", ico_user32, LAYOUT_SIDE_LEFT);
+	pass_box = new FXText(pass_grp, NULL, 0, LAYOUT_FILL_X|TEXT_WORDWRAP|VSCROLLER_NEVER|HSCROLLER_NEVER, 0,0,0,0, 0,0,0,0);
+	pass_box->disable();
+	pass_box->setBackColor(getApp()->getBaseColor());
+	pass_box->setDefaultCursor(getApp()->getDefaultCursor(DEF_ARROW_CURSOR));
+	pass_box->setVisibleRows(2);
+
+	//pass_box->setText("To change the password for tf, click Set Password.");
+	//new FXLabel(pass_grp, "To change the password for tf, click Set Password.", NULL, LAYOUT_SIDE_TOP);
+	reset_btn = new FXButton(pass_grp, "Ustaw &hasło...", NULL, this, ID_SETPASSWORD, BUTTON_NORMAL|BUTTON_DEFAULT|LAYOUT_SIDE_BOTTOM|LAYOUT_RIGHT, 0,0,0,0, 15,15,2,3);
+	reset_btn->disable();
+
+
+	FXHorizontalFrame* btncont = new FXHorizontalFrame(cont, LAYOUT_RIGHT|PACK_UNIFORM_WIDTH, 0,0,0,0, 0,6,1,7, 6,0);
+
+	okbtn = new FXButton(btncont, "OK", NULL, this, ID_DLG_OK, BUTTON_DEFAULT|BUTTON_NORMAL, 0,0,0,0, 19,20,2,3);
+	cancelbtn = new FXButton(btncont, "Anuluj", NULL, this, ID_DLG_CANCEL, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 19,20,2,3);
+	applybtn = new FXButton(btncont, "&Zastosuj", NULL, this, ID_DLG_APPLY, BUTTON_NORMAL|BUTTON_DEFAULT, 0,0,0,0, 19,19,2,3);
+
+	applybtn->disable();
+	rem_btn->disable();
+	prop_btn->disable();
+	users_list->selectItem(0, TRUE);
+	//tryHandle(users_list, FXSEL(SEL_SELECTED, ID_USERSLIST), 0);
+	//users_list->setNumVisible(4);
+	//new FXLabel(userscont, "SMOKE ROCK BIETCHHHH =)");
+
+}
+
+UsersAndPasswords::~UsersAndPasswords() {
+}
+
+void UsersAndPasswords::create() {
+	FXMainWindow::create();
+
+	show(PLACEMENT_SCREEN);
+}
+	
+long UsersAndPasswords::onSelectUsersList(FXObject*, FXSelector, void*) {
+	char user[32];
+	char grptext[128];
+	char info[256];
+
+	if (users_list->getItem(users_list->getCurrentItem()) == NULL) return 1;
+
+	sprintf(user, "%.31s", users_list->getItem(users_list->getCurrentItem())->getText().text());
+	user[strcspn(user, "\t")] = 0;
+
+	//size_t len = strcspn(item, "\t");
+
+	sprintf(info, "Aby zmienić hasło dla %.31s, kliknij przycisk Ustaw hasło.", user);
+	sprintf(grptext, "Hasło dla %.31s", user);
+	pass_box->setText(info);
+	pass_grp->setText(grptext);
+	reset_btn->enable();
+	rem_btn->enable();
+	prop_btn->enable();
+
+	sprintf(seluser, "%.31s", user);
+
+	return 1;
+}
+long UsersAndPasswords::onDeSelectUsersList(FXObject*, FXSelector, void*) {
+	reset_btn->disable();
+
+	rem_btn->disable();
+	prop_btn->disable();
+
+	return 1;
+}
+
+
+long UsersAndPasswords::onCmdAdd(FXObject*, FXSelector, void*) {
+	NewUserWizard wiz(this);
+	wiz.execute(PLACEMENT_OWNER);
+
+	if (refreshlist) {
+		users_list->clearItems();
+		genUsersList(users_list);
+	}
+
+	return 1;
+}
+
+long UsersAndPasswords::onCmdSetPassword(FXObject*, FXSelector, void*) {
+	ChangePasswordBox wiz(this);
+	wiz.execute(PLACEMENT_OWNER);
+
+	return 1;
+}
+
+
+
+long UsersAndPasswords::onCmdRemove(FXObject*, FXSelector, void*) {
+	char item[512];
+	char msg[1024];
+	char curuser[32];
+
+	uid_t uid = getuid();
+	struct passwd* pw = getpwuid(uid);
+	sprintf(item, "%.511s", users_list->getItem(users_list->getCurrentItem())->getText().text());
+
+	size_t len = strcspn(item, "\t");
+
+	if (pw != NULL) {
+		sprintf(curuser, "%.31s", pw->pw_name);
+	} else {
+		strcpy(curuser, "?");
+	}
+
+	if (strncmp(item, "root", len) == 0) {
+		FXMessageBox::error(this, MBOX_OK, "Błąd", "Nie możesz usunąć uzytkownika roota!");
+		return 1;
+	} else if (strncmp(item, curuser, len) == 0) {
+		FXMessageBox::error(this, MBOX_OK, "Błąd", "Nie możesz usunąć swojego użytkownika!");
+		return 1;
+	}
+
+	item[strcspn(item, "\t")] = '\0';
+
+	sprintf(msg,
+			"Została wybrana opcja usunięcia użytkownika %.31s z listy użytkowników tego komputera. Użytkownik\n"
+			"%.31s nie będzie mógł już korzystać z tego komputera.\n"
+			"\n"
+			"Czy napewno chcesz usunąć użytkownika %.31s?",
+		   item, item, item);
+
+	if (FXMessageBox::warning(this, MBOX_YES_NO, "Użytkownicy i hasła", msg) == MBOX_CLICKED_YES) {
+		setenv("SETADDUSER", item, 1);
+		if (system("i2ksudo userdel \"$SETADDUSER\"") == 0) {
+			FXMessageBox::information(this, MBOX_OK, "Użytkownicy i hasła",
+					"Użytkownik został usunięty z listy użytkowników tego komputera.");
+			users_list->clearItems();
+			genUsersList(users_list);
+		} else {
+			FXMessageBox::error(this, MBOX_OK, "Użytkownicy i hasła",
+					"Wystąpił błąd podczas usuwania użytkownika z listy użytkowników tego komputera.");
+		}
+	}
+
+	//puts("Hello world!");
+	return 1;
+}
+
+int main(int argc, char *argv[]) {
+	FXApp application("netplwiz", "I2KProject");
+
+	ico_main16  = new FXGIFIcon (&application, res_ico_main16);
+	ico_main32  = new FXGIFIcon (&application, res_ico_main32);
+
+	ico_user16  = new FXGIFIcon (&application, res_ico_user16);
+	ico_user32  = new FXGIFIcon (&application, res_ico_user32);
+
+	ico_check   = new FXGIFIcon (&application, res_ico_check);
+	ico_uncheck = new FXGIFIcon (&application, res_ico_uncheck);
+
+	img_banner  = new FXGIFImage(&application, res_img_banner);
+
+	application.init(argc, argv);
+
+	new UsersAndPasswords(&application);
+
+	application.create();
+	return application.run();
+}

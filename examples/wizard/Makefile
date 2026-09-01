@@ -9,10 +9,10 @@ LDFLAGS = `fox-config --libs` -lctl32 -li2kbrand -liwiz97
 
 PREFIX=/usr/local
 
-SOURCES = netplwiz.cpp
-OBJECTS = netplwiz.o res/foxres.o
+SOURCES = i2khello.cpp
+OBJECTS = i2khello.o res/foxres.o
 ICONS = res/*.gif
-EXECUTABLE = netplwiz.cpi
+EXECUTABLE = i2khello
 
 CPPFLAGS += `fox-config --cflags`
 
