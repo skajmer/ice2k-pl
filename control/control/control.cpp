@@ -447,7 +447,7 @@ void controlPanelList(FXIconList* icl) {
 	icl->appendItem("Drukarki i faksy\tPokazuje zainstalowane drukarki i faks-drukarki oraz pomaga w dodawaniu nowych.", ico_printers_32, ico_printers_16, (void*)CPL_ID_PRINTERS);
 	icl->appendItem("Dźwięki i urządzenia audio\tZmień schemat dźwiękowy dla tego komputera lub skonfiguruj ustawienia głośników i urządzeń nagrywających.", ico_mmsys_32, ico_mmsys_16, (void*)CPL_ID_MMSYS);
 	icl->appendItem("System\tWyświetl informacje o swoim systemie komputerowym i zmień ustawienia sprzętu, wydajności i automatycznych aktualizacji.", ico_sysdm_32, ico_sysdm_16, (void*)CPL_ID_SYSDM);
-	icl->appendItem("Konta użytkowników\tZmien ustawienia kont użytkowników i hasła dla osób współużytkujacych ten komputer.", ico_netplwiz_32, ico_netplwiz_16, (void*)CPL_ID_NETPLWIZ);
+	icl->appendItem("Konta użytkowników\tZmień ustawienia kont użytkowników i hasła dla osób współużytkujących ten komputer.", ico_netplwiz_32, ico_netplwiz_16, (void*)CPL_ID_NETPLWIZ);
 }
 
 void adminList(FXIconList* icl) {
