@@ -538,6 +538,10 @@ getejecttray()
 	fi
 #fi
 
+
+mkdir -p "$HOME/.config/qt5ct/colors"
+mkdir -p "$HOME/.config/qt6ct/colors"
+
 getqtcolors | sed -e \
 "s/selbackcolor/$selbackcolor/gI
 s/seltextcolor/$seltextcolor/gI; \
@@ -582,11 +586,21 @@ fi
 
 (echo '*background: '"$basecolor"
 echo '*foreground: '"$textcolor"
+
 echo '*bottomShadowColor: '"$lightshadowcolor"
 echo '*topShadowColor: '"$lightcolor"
+
+echo '*bottomShadowPixmap: none'
+echo '*topShadowPixmap: none'
+
 echo 'xman*manualPage.background: '"$backcolor"
 echo 'xman*directory.background: '"$backcolor"
-echo '*shadowThickness: 1') | tee ~/.icewm/xrescolors | xrdb -merge
+echo '*selectBackground: '"$selbackcolor"
+echo '*Text.background: '"$backcolor"
+echo '*XmText.background: '"$backcolor"
+echo '*XmTextField.background: '"$backcolor"
+echo '*XmList.background: '"$backcolor"
+) | tee ~/.icewm/xrescolors | xrdb -merge
 
 if [ "$firstrun" -ne 0 ]; then
 	if test -f "/tmp/ice2k-$USER/volume.pid"; then
